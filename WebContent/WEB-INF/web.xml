@@ -9,7 +9,11 @@
 		<!-- 配置Spring mvc下的配置文件的位置和名称 -->
 		<init-param>
 			<param-name>contextConfigLocation</param-name>
-			<param-value>classpath:springmvc.xml</param-value>
+			<param-value>
+			    classpath:applicationContext-mvc.xml
+			    classpath:applicationContext-profile.xml
+			    classpath:applicationContext-jpa.xml
+			</param-value>
 		</init-param>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
