@@ -1,5 +1,5 @@
 package com.steelIndustry.model;
-
+//测试用
 public class TestParaOb {
 	private String a;
 	private String b;
