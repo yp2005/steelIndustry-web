@@ -13,8 +13,6 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import org.springframework.security.acls.model.ChildrenExistException;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.steelIndustry.framework.base.BaseSimplePojo;
 

@@ -1,24 +1,31 @@
 package com.steelIndustry.util;
 
+import java.util.UUID;
+
 /**
- * 生成器
- * TODO What the class does
+ * 生成器 TODO What the class does
+ * 
  * @author wanglei
- * @date   2016年11月14日-下午3:20:51
+ * @date 2016年11月14日-下午3:20:51
  *
  */
 public class GeneratorUtil {
 
-	/**
-	 * 生成相对唯一短码
-	 * @author wanglei
-	 * @date   2016年11月14日-下午3:20:59
-	 *
-	 * @param codeAlias
-	 * @return
-	 */
-	public static String generatorCode(String codeAlias) {
-		
-		return codeAlias + "";
-	}
+    /**
+     * 生成相对唯一短码
+     * 
+     * @author wanglei
+     * @date 2016年11月14日-下午3:20:59
+     *
+     * @param codeAlias
+     * @return
+     */
+    public static String generatorCode(String codeAlias) {
+
+        return codeAlias + "";
+    }
+
+    public static String createUUID() {
+        return UUID.randomUUID().toString().replaceAll("-", "");
+    }
 }

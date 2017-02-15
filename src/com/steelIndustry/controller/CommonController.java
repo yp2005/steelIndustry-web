@@ -2,12 +2,12 @@ package com.steelIndustry.controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Enumeration;
-import java.util.HashMap;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Iterator;
-import java.util.Map;
 import java.util.UUID;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.io.FileUtils;
@@ -20,11 +20,19 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.alibaba.fastjson.JSONObject;
 import com.steelIndustry.bo.AjaxResult;
+import com.steelIndustry.model.AppVersion;
+import com.steelIndustry.service.AppVersionService;
 import com.steelIndustry.util.CommonProperties;
+import com.steelIndustry.util.CommonUtil;
+import com.steelIndustry.util.GeneratorUtil;
 
 @Controller
 @RequestMapping("/common")
 public class CommonController {
+    
+    @Resource(name = "appVersionService")
+    private AppVersionService appVersionService;
+    
     @RequestMapping(value = "/upload_image", method = RequestMethod.POST)
     public @ResponseBody AjaxResult uploadImage(HttpServletRequest request) {
         AjaxResult result = new AjaxResult();
@@ -46,18 +54,17 @@ public class CommonController {
                 result.setErroMsg("上传图片为空");
             } else {
                 String uploadImgPath = CommonProperties.getInstance().getProperty("uploadImgPath");
-                String imgServer = CommonProperties.getInstance().getProperty("imgServer");
                 File dir = new File(uploadImgPath);
                 if (!dir.exists()) {
                     dir.mkdirs();
                 }
                 String originFileName = mFile.getOriginalFilename();
                 String suffix = originFileName.split("\\.")[originFileName.split("\\.").length - 1];
-                String base64Name = UUID.randomUUID().toString();
+                String base64Name = GeneratorUtil.createUUID();
                 File file = new File(uploadImgPath, base64Name + "." + suffix);
                 try {
                     FileUtils.copyInputStreamToFile(mFile.getInputStream(), file);
-                    fileurl = imgServer + base64Name + "." + suffix;
+                    fileurl = base64Name + "." + suffix;
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -73,20 +80,23 @@ public class CommonController {
     
     @RequestMapping(value = "/appupdate", method = RequestMethod.POST)
     public @ResponseBody AjaxResult appUpdate() {
+        AppVersion appVersion = appVersionService.getLatestAppVersion();
         AjaxResult result = new AjaxResult();
         JSONObject json = new JSONObject();
         JSONObject ios = new JSONObject();
-        ios.put("version", "");
+        ios.put("version", appVersion.getAppVersion());
         ios.put("title", "");
-        ios.put("note", "");
-        ios.put("url", "");
+        ios.put("note", appVersion.getDescription());
+        ios.put("url", appVersion.getIosUrl());
         JSONObject android = new JSONObject();
-        android.put("version", "");
+        android.put("version", appVersion.getAppVersion());
         android.put("title", "");
-        android.put("note", "");
-        android.put("url", "");
+        android.put("note", appVersion.getDescription());
+        android.put("url", appVersion.getAndroidUrl());
         json.put("iOS", ios);
         json.put("Android", android);
+        DateFormat sdf = new SimpleDateFormat(CommonUtil.DATAFORMAT_SS);   
+        json.put("versionTime", sdf.format(appVersion.getVersionTime()));
         result.setErroCode(2000);
         result.setErroMsg("");
         result.setResult(json);
