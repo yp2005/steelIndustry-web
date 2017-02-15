@@ -27,16 +27,13 @@ public class Test {
 	public String hello() {
 		System.out.println("hello world");
 		AreaData a = areaDataService.allAreaData().get(0);
-        System.out.println("===============" + a.getAreaNname());
-		return "views/success.jsp";
+		return "views/test.jsp";
 	}
 	
 	@RequestMapping(value = "/allAreaData", method=RequestMethod.GET)
     @ResponseBody
     public List<AreaData> allAreaData() {
-        System.out.println("===============1111");
         List<AreaData> result = areaDataService.allAreaData();
-        System.out.println("===============2222");
         return result;
     }
 	
