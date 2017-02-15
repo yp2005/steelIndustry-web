@@ -1,4 +1,4 @@
-package com.stellIndustry.framework.service;
+package com.steelIndustry.framework.service;
 
 import java.io.Serializable;
 import java.util.List;

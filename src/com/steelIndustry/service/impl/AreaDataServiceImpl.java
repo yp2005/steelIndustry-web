@@ -8,9 +8,9 @@ import org.springframework.stereotype.Service;
 
 import com.steelIndustry.dao.AreaDataDao;
 import com.steelIndustry.framework.dao.EntityJpaDao;
+import com.steelIndustry.framework.service.impl.DataServiceImpl;
 import com.steelIndustry.model.AreaData;
 import com.steelIndustry.service.AreaDataService;
-import com.stellIndustry.framework.service.impl.DataServiceImpl;
 
 @Service("areaDataService")
 public class AreaDataServiceImpl extends DataServiceImpl<AreaData, Integer> implements AreaDataService {

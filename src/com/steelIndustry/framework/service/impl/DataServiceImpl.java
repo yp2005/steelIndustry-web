@@ -1,4 +1,4 @@
-package com.stellIndustry.framework.service.impl;
+package com.steelIndustry.framework.service.impl;
 
 import java.io.Serializable;
 import java.util.List;
@@ -10,7 +10,7 @@ import org.springframework.data.domain.Sort;
 import com.steelIndustry.framework.base.BaseSimplePojo;
 import com.steelIndustry.framework.dao.EntityJpaDao;
 import com.steelIndustry.framework.dao.RepositoryAccessor;
-import com.stellIndustry.framework.service.DataService;
+import com.steelIndustry.framework.service.DataService;
 
 public abstract class DataServiceImpl<T extends BaseSimplePojo, ID extends Serializable>
 		implements DataService<T, ID>, RepositoryAccessor<EntityJpaDao<T, ID>> {
