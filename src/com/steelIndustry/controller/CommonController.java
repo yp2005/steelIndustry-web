@@ -45,7 +45,7 @@ public class CommonController {
         // 将请求转换成
         MultipartHttpServletRequest mRequest = (MultipartHttpServletRequest) request;
         Iterator<String> fns = mRequest.getFileNames();// 获取上传的文件列表
-        String fileurl = "";
+        String imgName = "";
         while (fns.hasNext()) {
             String s = fns.next();
             MultipartFile mFile = mRequest.getFile(s);
@@ -60,11 +60,10 @@ public class CommonController {
                 }
                 String originFileName = mFile.getOriginalFilename();
                 String suffix = originFileName.split("\\.")[originFileName.split("\\.").length - 1];
-                String base64Name = GeneratorUtil.createUUID();
-                File file = new File(uploadImgPath, base64Name + "." + suffix);
+                imgName = GeneratorUtil.createUUID() + "." + suffix;
+                File file = new File(uploadImgPath, imgName);
                 try {
                     FileUtils.copyInputStreamToFile(mFile.getInputStream(), file);
-                    fileurl = base64Name + "." + suffix;
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -73,7 +72,7 @@ public class CommonController {
         result.setErroCode(2000);
         result.setErroMsg("");
         JSONObject datajson = new JSONObject();
-        datajson.put("site_url", fileurl);
+        datajson.put("imgName", imgName);
         result.setResult(datajson);
         return result;
     }
