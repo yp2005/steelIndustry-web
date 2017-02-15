@@ -7,26 +7,37 @@
           http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd">
 
 	<!-- 配置自动扫描的包 -->
-	<context:component-scan base-package="com.steelIndustry.controler"></context:component-scan>
-    <mvc:annotation-driven/>
+	<context:component-scan base-package="com.steelIndustry.controller"></context:component-scan>
+	<mvc:annotation-driven />
 	<!-- 配置视图解析器 如何把handler 方法返回值解析为实际的物理视图 -->
 	<bean
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="prefix" value="/WEB-INF/"></property>
 	</bean>
-	<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">  
-	    <property name="messageConverters">  
-	        <list>  
-	            <ref bean="jsonHttpMessageConverter" />  
-	        </list>  
-	    </property>  
-	</bean>  
-	  
-	<bean id="jsonHttpMessageConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">  
-	    <property name="supportedMediaTypes">  
-	        <list>  
-	            <value>application/json;charset=UTF-8</value>  
-	        </list>  
-	    </property>  
-	</bean> 
+	<bean
+		class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+		<property name="messageConverters">
+			<list>
+				<ref bean="jsonHttpMessageConverter" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="jsonHttpMessageConverter"
+		class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+		<property name="supportedMediaTypes">
+			<list>
+				<value>application/json;charset=UTF-8</value>
+			</list>
+		</property>
+	</bean>
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="maxUploadSize">
+			<value>104857600</value>
+		</property>
+		<property name="maxInMemorySize">
+			<value>4096</value>
+		</property>
+	</bean>
 </beans>

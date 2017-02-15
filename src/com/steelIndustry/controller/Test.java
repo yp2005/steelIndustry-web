@@ -1,4 +1,4 @@
-package com.steelIndustry.controler;
+package com.steelIndustry.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -22,12 +22,7 @@ import com.steelIndustry.service.AreaDataService;
 public class Test {
     @Resource(name = "areaDataService")
     private AreaDataService areaDataService;
-	@RequestMapping("/")
-	public String index() {
-		System.out.println("hello index");
-		return "index.html";
-	}
-	
+    
 	@RequestMapping("/helloworld")
 	public String hello() {
 		System.out.println("hello world");
