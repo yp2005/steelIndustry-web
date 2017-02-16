@@ -94,8 +94,10 @@ public class CommonController {
         android.put("url", appVersion.getAndroidUrl());
         json.put("iOS", ios);
         json.put("Android", android);
-        DateFormat sdf = new SimpleDateFormat(CommonUtil.DATAFORMAT_SS);   
-        json.put("versionTime", sdf.format(appVersion.getVersionTime()));
+        //DateFormat sdf = new SimpleDateFormat(CommonUtil.DATAFORMAT_SS);   
+        //json.put("versionTime", sdf.format(appVersion.getVersionTime()));
+        json.put("versionTime", appVersion.getVersionTime());
+        json.put("appVersion", appVersion);
         result.setErroCode(2000);
         result.setErroMsg("");
         result.setResult(json);

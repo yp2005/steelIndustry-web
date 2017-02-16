@@ -3355,6 +3355,7 @@ INSERT INTO `area_data` VALUES ('5066', '城区', '534', '0', '3', null);
 
 -- 系统设置表
 CREATE TABLE settings (
+    id INT (11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键id',
     share_switch TINYINT (1) NOT NULL COMMENT '是否开启分享获取联系方式',
     is_check_store TINYINT (1) NOT NULL COMMENT '是否开启店铺审核',
     is_check_project TINYINT (1) NOT NULL COMMENT '是否开启工程审核',
@@ -3364,10 +3365,11 @@ CREATE TABLE settings (
     replying_points INT (11) NOT NULL COMMENT '回帖积分',
     home_page_ad_type VARCHAR (10) NOT NULL COMMENT '首页广告位类型：alliance、loopImg、oneImg',
     list_page_ad_type VARCHAR (10) NOT NULL COMMENT '列表页广告位类型：alliance、loopImg、oneImg',
-    detail_page_ad_type VARCHAR (10) NOT NULL COMMENT '详情页广告位类型：alliance、loopImg、oneImg'
+    detail_page_ad_type VARCHAR (10) NOT NULL COMMENT '详情页广告位类型：alliance、loopImg、oneImg',
+    PRIMARY KEY (id)
 );
 
-INSERT INTO settings VALUES(1, 1, 1, 1, 1, 5, 2, 'loopImg', 'loopImg', 'alliance');
+INSERT INTO settings VALUES(1, 1, 1, 1, 1, 1, 5, 2, 'loopImg', 'loopImg', 'alliance');
 
 -- app 版本信息表
 CREATE TABLE app_version (

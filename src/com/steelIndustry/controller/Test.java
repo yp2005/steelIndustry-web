@@ -11,17 +11,44 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSONObject;
+import com.steelIndustry.bo.AjaxResult;
 import com.steelIndustry.model.AreaData;
 import com.steelIndustry.model.TestParaOb;
 import com.steelIndustry.service.AreaDataService;
+import com.steelIndustry.service.SettingsService;
 
 @Controller
 public class Test {
     @Resource(name = "areaDataService")
     private AreaDataService areaDataService;
+    
+    @Resource(name = "settingsService")
+    private SettingsService settingsService;
+    
+    @RequestMapping("/getSettings")
+    @ResponseBody
+    public AjaxResult getSettings() {
+        AjaxResult result = new AjaxResult();
+        result.setErroCode(2000);
+        result.setErroMsg("");
+        result.setResult(settingsService.getSettings());
+        return result;
+    }
+    
+    @RequestMapping(value="/updateShareSwitch")
+    @ResponseBody
+    public AjaxResult updateShareSwitch(short shareSwitch) {
+        AjaxResult result = new AjaxResult();
+        result.setErroCode(2000);
+        result.setErroMsg("");
+        System.out.println(settingsService.updateShareSwitch(shareSwitch));
+        result.setResult("");
+        return result;
+    }
     
 	@RequestMapping("/helloworld")
 	public String hello() {
