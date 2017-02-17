@@ -39,13 +39,13 @@ public class Test {
         return result;
     }
     
-    @RequestMapping(value="/updateShareSwitch")
+    @RequestMapping(value="/updateHomePageAdType")
     @ResponseBody
-    public AjaxResult updateShareSwitch(short shareSwitch) {
+    public AjaxResult updateShareSwitch(String homePageAdType) {
         AjaxResult result = new AjaxResult();
         result.setErroCode(2000);
         result.setErroMsg("");
-        System.out.println(settingsService.updateShareSwitch(shareSwitch));
+        System.out.println(settingsService.updateHomePageAdType(homePageAdType));
         result.setResult("");
         return result;
     }

@@ -34,7 +34,8 @@ public class CommonController {
     private AppVersionService appVersionService;
     
     @RequestMapping(value = "/upload_image", method = RequestMethod.POST)
-    public @ResponseBody AjaxResult uploadImage(HttpServletRequest request) {
+    @ResponseBody
+    public AjaxResult uploadImage(HttpServletRequest request) {
         AjaxResult result = new AjaxResult();
         if (request.getHeader("content-type") != null
                 && "application/x-www-form-urlencoded".equals(request.getHeader("content-type"))) {
@@ -78,7 +79,8 @@ public class CommonController {
     }
     
     @RequestMapping(value = "/appupdate", method = RequestMethod.POST)
-    public @ResponseBody AjaxResult appUpdate() {
+    @ResponseBody
+    public AjaxResult appUpdate() {
         AppVersion appVersion = appVersionService.getLatestAppVersion();
         AjaxResult result = new AjaxResult();
         JSONObject json = new JSONObject();

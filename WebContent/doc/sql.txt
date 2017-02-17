@@ -3384,11 +3384,11 @@ CREATE TABLE app_version (
 INSERT INTO app_version VALUES(1, '1.0', '第一版', NULL, NULL, NULL, 1);
 
 -- 用户表
-CREATE TABLE USER (
+CREATE TABLE `user` (
     id INT (11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键id',
     account VARCHAR (50) COMMENT '账号，现在没有，以后可能用到',
     mobile_number INT (11) NOT NULL COMMENT '手机号码',
-    PASSWORD VARCHAR (50) COMMENT '密码，现在没有，以后可能用到',
+    `password` VARCHAR (50) COMMENT '密码，现在没有，以后可能用到',
     email VARCHAR (50) COMMENT '邮箱',
     user_name VARCHAR (50) COMMENT '姓名',
     sex VARCHAR (1) COMMENT '性别',

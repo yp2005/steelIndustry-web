@@ -33,7 +33,7 @@ public class Settings implements BaseSimplePojo {
     @Column(name = "replying_points")
     private int replyingPoints; // 回帖积分
     @Column(name = "home_page_ad_type")
-    private String homeOageAdType; // 首页广告位类型：alliance、loopImg、oneImg
+    private String homePageAdType; // 首页广告位类型：alliance、loopImg、oneImg
     @Column(name = "list_page_ad_type")
     private String listPageAdType;// 列表页广告位类型：alliance、loopImg、oneImg
     @Column(name = "detail_page_ad_type")
@@ -103,12 +103,12 @@ public class Settings implements BaseSimplePojo {
         this.replyingPoints = replyingPoints;
     }
 
-    public String getHomeOageAdType() {
-        return homeOageAdType;
+    public String getHomePageAdType() {
+        return homePageAdType;
     }
 
-    public void setHomeOageAdType(String homeOageAdType) {
-        this.homeOageAdType = homeOageAdType;
+    public void setHomePageAdType(String homePageAdType) {
+        this.homePageAdType = homePageAdType;
     }
 
     public String getListPageAdType() {
