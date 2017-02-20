@@ -25,6 +25,11 @@ public class SettingsServiceImpl extends DataServiceImpl<Settings, Integer> impl
     public Settings getSettings() {
         return settingsDao.getSettings();
     }
+    
+    @Override
+    public Settings save(Settings settings) {
+        return settingsDao.save(settings);
+    }
 
     @Override
     public int updateIsCheckStore(short isCheckStore) {

@@ -23,7 +23,7 @@ public class User implements BaseSimplePojo {
     @Column(name = "account")
     private String account; // 账号，现在没有，以后可能用到
     @Column(name = "mobile_number")
-    private int mobileNumber; // 手机号码
+    private long mobileNumber; // 手机号码
     @Column(name = "password")
     private String password; // 密码，现在没有，以后可能用到
     @Column(name = "email")
@@ -38,7 +38,7 @@ public class User implements BaseSimplePojo {
     private String address; // 地址
     @Column(name = "company_name")
     private String companyName; // 公司名称
-    @Column(name = "companya-address")
+    @Column(name = "company_address")
     private String companyAddress; // 公司地址
     @Column(name = "avatar")
     private String avatar; // 头像
@@ -46,7 +46,7 @@ public class User implements BaseSimplePojo {
     private short isVip; // 是否是vip
     @Column(name = "is_admin")
     private short isAdmin; // 是否是管理员
-    @Column(name = "is-shared")
+    @Column(name = "is_shared")
     private short isShared; // 是否分享过app
     @Column(name = "real_name_authentication")
     private short realNameAuthentication; // 是否实名认证
@@ -89,11 +89,11 @@ public class User implements BaseSimplePojo {
         this.account = account;
     }
 
-    public int getMobileNumber() {
+    public long getMobileNumber() {
         return mobileNumber;
     }
 
-    public void setMobileNumber(int mobileNumber) {
+    public void setMobileNumber(long mobileNumber) {
         this.mobileNumber = mobileNumber;
     }
 

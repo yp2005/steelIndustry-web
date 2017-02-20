@@ -1,14 +1,12 @@
 package com.steelIndustry.service;
 
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
-
 import com.steelIndustry.framework.service.DataService;
 import com.steelIndustry.model.Settings;
 
 public interface SettingsService extends DataService<Settings, Integer> {
     public Settings getSettings();
+    
+    public Settings save(Settings settings);
 
     public int updateShareSwitch(short shareSwitch);
 

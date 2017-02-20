@@ -2,9 +2,11 @@ package com.steelIndustry.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Enumeration;
 import java.util.List;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Controller;
@@ -31,7 +33,12 @@ public class Test {
     
     @RequestMapping("/getSettings")
     @ResponseBody
-    public AjaxResult getSettings() {
+    public AjaxResult getSettings(HttpServletRequest request) {
+        Enumeration<String> hns = request.getHeaderNames();
+        while (hns.hasMoreElements()) {
+            String hn = (String) hns.nextElement();
+            System.out.println(hn + "=" + request.getHeader(hn));
+        }
         AjaxResult result = new AjaxResult();
         result.setErroCode(2000);
         result.setErroMsg("");

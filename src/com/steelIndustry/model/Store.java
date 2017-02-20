@@ -27,7 +27,7 @@ public class Store implements BaseSimplePojo {
     @Column(name = "contact")
     private String contact;// 联系人
     @Column(name = "mobile_number")
-    private int mobileNumber;// 联系方式
+    private long mobileNumber;// 联系方式
     @Column(name = "province_id")
     private int provinceId;// 商家地址-省份id
     @Column(name = "province_name")
@@ -95,11 +95,11 @@ public class Store implements BaseSimplePojo {
         this.contact = contact;
     }
 
-    public int getMobileNumber() {
+    public long getMobileNumber() {
         return mobileNumber;
     }
 
-    public void setMobileNumber(int mobileNumber) {
+    public void setMobileNumber(long mobileNumber) {
         this.mobileNumber = mobileNumber;
     }
 

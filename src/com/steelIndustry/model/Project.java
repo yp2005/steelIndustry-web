@@ -27,7 +27,7 @@ public class Project implements BaseSimplePojo {
     @Column(name = "contact")
     private String contact;// 联系人
     @Column(name = "mobile_number")
-    private int mobileNumber;// 联系方式
+    private long mobileNumber;// 联系方式
     @Column(name = "project_name")
     private String projectName;// 工程名称
     @Column(name = "province_id")
@@ -99,11 +99,11 @@ public class Project implements BaseSimplePojo {
         this.contact = contact;
     }
 
-    public int getMobileNumber() {
+    public long getMobileNumber() {
         return mobileNumber;
     }
 
-    public void setMobileNumber(int mobileNumber) {
+    public void setMobileNumber(long mobileNumber) {
         this.mobileNumber = mobileNumber;
     }
 
