@@ -3683,12 +3683,22 @@ CREATE TABLE system_notice (
 -- 广告表
 CREATE TABLE advertisement (
     id INT (11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键id',
-    position VARCHAR (10) NOT NULL COMMENT '广告位位置：homePage、listPage、detailPage',
-    type VARCHAR (10) NOT NULL COMMENT '广告位类型：alliance、loopImg、oneImg',
-    link_type VARCHAR (10) COMMENT '广告链接类型，如果不是广告联盟的广告有此属性：innerLink、outerLink',
-    content VARCHAR (100) NOT NULL COMMENT '广告内容，广告联盟的话为广告联盟所需信息的json字符串，内部链接为店铺id，外部链接为url',
+    title VARCHAR (50) NOT NULL COMMENT '广告标题',
+    link_type VARCHAR (10) COMMENT '广告链接类型，如果不是广告联盟的广告有此属性：innerLink、outerLink、alliance',
+    img VARCHAR (50) COMMENT '图片名称',
+    url VARCHAR (100) COMMENT '外部链的url',
+    store_id INT (11) COMMENT '内部链接店铺id',
+    content VARCHAR (100) COMMENT '广告联盟所需信息的json字符串',
     PRIMARY KEY (id),
-    KEY position (position)
+    KEY link_type (link_type)
 );
 
+-- 广告关系表
+CREATE TABLE ad_relation (
+    id INT (11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键id',
+    postion VARCHAR (50) NOT NULL COMMENT '广告位置：homePage、listPage、detailPage',
+    ad_id INT (11) NOT NULL COMMENT '广告id',
+    PRIMARY KEY (id),
+    KEY ad_id (ad_id)
+);
 

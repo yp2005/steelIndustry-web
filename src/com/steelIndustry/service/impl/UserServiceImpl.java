@@ -31,7 +31,7 @@ public class UserServiceImpl extends DataServiceImpl<User, Integer> implements U
             long currentTime = System.currentTimeMillis();
             String instanceId = request.getHeader("instance_id");
             String accessToken = request.getHeader("access_token");
-            long reqstarttime = Long.valueOf(request.getHeader("reqstarttime"));
+            String reqstarttime = request.getHeader("reqstarttime");
             String extratoken = request.getHeader("extratoken");
             if (CommonUtil.isEmpty(instanceId) || CommonUtil.isEmpty(accessToken)) {
                 result.setErroCode(4000);
@@ -43,7 +43,7 @@ public class UserServiceImpl extends DataServiceImpl<User, Integer> implements U
                 result.setErroMsg("非法访问");
                 return null;
             }
-            else if (Math.abs(currentTime - reqstarttime) > 10000 || Math.abs(currentTime - reqstarttime) < 10000) {
+            else if (Math.abs(currentTime - Long.valueOf(reqstarttime)) > 10000 || Math.abs(currentTime - Long.valueOf(reqstarttime)) < 10000) {
                 result.setErroCode(8000);
                 result.setErroMsg("本地时间异常，请校准本地时间");
                 return null;
