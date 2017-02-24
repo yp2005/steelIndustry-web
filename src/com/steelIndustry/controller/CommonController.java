@@ -2,10 +2,7 @@ package com.steelIndustry.controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Iterator;
-import java.util.UUID;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -23,7 +20,6 @@ import com.steelIndustry.bo.AjaxResult;
 import com.steelIndustry.model.AppVersion;
 import com.steelIndustry.service.AppVersionService;
 import com.steelIndustry.util.CommonProperties;
-import com.steelIndustry.util.CommonUtil;
 import com.steelIndustry.util.GeneratorUtil;
 
 @Controller
