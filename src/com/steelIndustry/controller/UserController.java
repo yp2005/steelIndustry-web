@@ -132,6 +132,21 @@ public class UserController {
         }
         return result;
     }
+    
+    @RequestMapping(value = "/updateLatestLoginTime", method = RequestMethod.POST)
+    @ResponseBody
+    public AjaxResult updateLatestLoginTime(HttpServletRequest request) {
+        AjaxResult result = new AjaxResult();
+        int isSuccess = userService.updateLatestLoginTime(request);
+        if (isSuccess == 1) {
+            result.setErroCode(2000);
+            result.setResult("success");
+        } else {
+            result.setErroCode(3000);
+            result.setErroMsg("fail");
+        }
+        return result;
+    }
 
     @RequestMapping(value = "/sendCode", method = RequestMethod.POST)
     @ResponseBody
@@ -197,7 +212,7 @@ public class UserController {
         }
         return result;
     }
-
+    
     public String sendMobilePhoneValidateCode(String mobileNumber, String validateCode) {
         TaobaoClient client = new DefaultTaobaoClient("http://gw.api.taobao.com/router/rest",
                 CommonProperties.getInstance().getProperty("appKey"),

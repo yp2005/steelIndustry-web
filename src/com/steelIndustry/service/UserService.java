@@ -12,4 +12,6 @@ public interface UserService extends DataService<User, Integer> {
     public User getUser(long mobileNumber);
     
     public User save(User user);
+    
+    public int updateLatestLoginTime(HttpServletRequest request);
 }
