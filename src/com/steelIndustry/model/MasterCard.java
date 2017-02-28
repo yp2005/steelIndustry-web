@@ -1,6 +1,7 @@
 package com.steelIndustry.model;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.steelIndustry.framework.base.BaseSimplePojo;
 
@@ -52,6 +54,8 @@ public class MasterCard implements BaseSimplePojo {
     private String description; // 自我介绍
     @Column(name = "browse_volume")
     private int browseVolume; // 浏览量
+    @Column(name = "call_times")
+    private int callTimes;//咨询次数
     @Column(name = "create_time")
     private Timestamp createTime; // 创建时间
     @Column(name = "update_time")
@@ -61,7 +65,15 @@ public class MasterCard implements BaseSimplePojo {
     @Column(name = "state")
     private short state; // 状态：0草稿，1通过审核，2审核中
     @Column(name = "sort")
-    private int sort; // 排序字段
+    private Integer sort; // 排序字段
+    @Transient
+    private List<String> pictures;
+    @Transient
+    private List<WorkerType> workerTypes;
+    @Transient
+    private List<AreaData> serviceArea;
+    @Transient
+    private short realNameAuthentication; // 是否实名认证
 
     public MasterCard() {
 
@@ -235,11 +247,51 @@ public class MasterCard implements BaseSimplePojo {
         this.state = state;
     }
 
-    public int getSort() {
+    public Integer getSort() {
         return sort;
     }
 
-    public void setSort(int sort) {
+    public void setSort(Integer sort) {
         this.sort = sort;
+    }
+
+    public List<String> getPictures() {
+        return pictures;
+    }
+
+    public void setPictures(List<String> pictures) {
+        this.pictures = pictures;
+    }
+
+    public List<WorkerType> getWorkerTypes() {
+        return workerTypes;
+    }
+
+    public void setWorkerTypes(List<WorkerType> workerTypes) {
+        this.workerTypes = workerTypes;
+    }
+
+    public List<AreaData> getServiceArea() {
+        return serviceArea;
+    }
+
+    public void setServiceArea(List<AreaData> serviceArea) {
+        this.serviceArea = serviceArea;
+    }
+
+    public short getRealNameAuthentication() {
+        return realNameAuthentication;
+    }
+
+    public void setRealNameAuthentication(short realNameAuthentication) {
+        this.realNameAuthentication = realNameAuthentication;
+    }
+
+    public int getCallTimes() {
+        return callTimes;
+    }
+
+    public void setCallTimes(int callTimes) {
+        this.callTimes = callTimes;
     }
 }

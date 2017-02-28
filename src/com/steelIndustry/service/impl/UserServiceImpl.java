@@ -91,6 +91,10 @@ public class UserServiceImpl extends DataServiceImpl<User, Integer> implements U
                     || Math.abs(currentTime - Long.valueOf(reqstarttime)) < 10000) {
                 return 0;
             } else {
+                User user = userDao.getUserByAccessToken(accessToken);
+                if (user == null || !user.getInstanceId().equals(instanceId) || user.getState() == 0) {
+                    return 0;
+                }
                 return userDao.updateLatestLoginTime(new Timestamp(currentTime));
             }
         } catch (Exception e) {
@@ -98,6 +102,11 @@ public class UserServiceImpl extends DataServiceImpl<User, Integer> implements U
         }
     }
 
+    @Override
+    public int updateUserState(short state) {
+        return userDao.updateUserState(state);
+    }
+    
     @Override
     public User getUser(long mobileNumber) {
         return userDao.getUserByMobileNumber(mobileNumber);

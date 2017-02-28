@@ -27,23 +27,10 @@ public class SettingsController {
 
     @RequestMapping(value = "/getSettings", method = RequestMethod.GET)
     @ResponseBody
-    public AjaxResult getSettings(HttpServletRequest request) {
+    public AjaxResult getSettings() {
         AjaxResult result = new AjaxResult();
-        User user = userService.getUser(request, result);
-        if (user != null) {
-            if (user.getIsAdmin() == 1) {
-                result.setErroCode(2000);
-                result.setResult(settingsService.getSettings());
-            }
-            else {
-                result.setErroCode(5000);
-                result.setErroMsg("没有权限");
-            }
-            
-        } else if (result.getErroCode() == null) {
-            result.setErroCode(1000);
-            result.setErroMsg("未知错误");
-        }
+        result.setErroCode(2000);
+        result.setResult(settingsService.getSettings());
         return result;
     }
     

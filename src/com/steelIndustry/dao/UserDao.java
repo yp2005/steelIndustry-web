@@ -21,4 +21,8 @@ public interface UserDao extends EntityJpaDao<User, Integer> {
     @Modifying
     @Query("update User set latestLoginTime=:latestLoginTime")
     public int updateLatestLoginTime(@Param("latestLoginTime") Timestamp latestLoginTime);
+    
+    @Modifying
+    @Query("update User set state=:state")
+    public int updateUserState(@Param("state") short state);
 }

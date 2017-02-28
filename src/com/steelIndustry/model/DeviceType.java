@@ -28,7 +28,7 @@ public class DeviceType implements BaseSimplePojo {
     @Column(name = "type_name")
     private String typeName; // 工种名称
     @Column(name = "parent_id")
-    private int parentId; // 父类型id
+    private Integer parentId; // 父类型id
     @ManyToOne
     @JoinColumn(name = "parent_id", insertable = false, updatable = false)
     @JsonIgnore
@@ -58,11 +58,11 @@ public class DeviceType implements BaseSimplePojo {
         this.typeName = typeName;
     }
 
-    public int getParentId() {
+    public Integer getParentId() {
         return parentId;
     }
 
-    public void setParentId(int parentId) {
+    public void setParentId(Integer parentId) {
         this.parentId = parentId;
     }
 

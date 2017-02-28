@@ -14,4 +14,6 @@ public interface UserService extends DataService<User, Integer> {
     public User save(User user);
     
     public int updateLatestLoginTime(HttpServletRequest request);
+    
+    public int updateUserState(short state);
 }

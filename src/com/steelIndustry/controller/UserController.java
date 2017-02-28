@@ -147,6 +147,33 @@ public class UserController {
         }
         return result;
     }
+    
+    @RequestMapping(value = "/updateUserState", method = RequestMethod.POST)
+    @ResponseBody
+    public AjaxResult updateUserState(short state, HttpServletRequest request) {
+        AjaxResult result = new AjaxResult();
+        User user = userService.getUser(request, result);
+        if (user != null) {
+            if (user.getIsAdmin() == 1) {
+                int isSuccess = userService.updateUserState(state);
+                if (isSuccess == 1) {
+                    result.setErroCode(2000);
+                    result.setResult("success");
+                } else {
+                    result.setErroCode(3000);
+                    result.setErroMsg("fail");
+                }
+            }
+            else {
+                result.setErroCode(5000);
+                result.setResult("权限不足！");
+            }
+        } else if (result.getErroCode() == null) {
+            result.setErroCode(1000);
+            result.setErroMsg("未知错误");
+        }
+        return result;
+    }
 
     @RequestMapping(value = "/sendCode", method = RequestMethod.POST)
     @ResponseBody

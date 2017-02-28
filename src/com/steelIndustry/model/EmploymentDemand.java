@@ -61,7 +61,7 @@ public class EmploymentDemand implements BaseSimplePojo {
     @Column(name = "state")
     private short state;// 状态：0草稿，1通过审核，2审核中
     @Column(name = "sort")
-    private int sort;// 排序字段
+    private Integer sort;// 排序字段
 
     public EmploymentDemand() {
 
@@ -236,11 +236,11 @@ public class EmploymentDemand implements BaseSimplePojo {
         this.state = state;
     }
 
-    public int getSort() {
+    public Integer getSort() {
         return sort;
     }
 
-    public void setSort(int sort) {
+    public void setSort(Integer sort) {
         this.sort = sort;
     }
 }
