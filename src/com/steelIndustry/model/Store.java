@@ -1,6 +1,7 @@
 package com.steelIndustry.model;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.steelIndustry.framework.base.BaseSimplePojo;
 
@@ -48,8 +50,14 @@ public class Store implements BaseSimplePojo {
     private float lat;// 商家地址-纬度
     @Column(name = "description")
     private String description;// 店铺信息介绍
+    @Column(name = "shop_sign_pictures")
+    private String shopSignPictures;
+    @Column(name = "license_pictures")
+    private String licensePictures;
     @Column(name = "browse_volume")
     private int browseVolume;// 浏览量
+    @Column(name = "call_times")
+    private int callTimes;// 咨询次数
     @Column(name = "create_time")
     private Timestamp createTime;// 创建时间
     @Column(name = "update_time")
@@ -58,6 +66,17 @@ public class Store implements BaseSimplePojo {
     private short state;// 状态：0草稿，1通过审核，2审核中
     @Column(name = "sort")
     private Integer sort;// 排序字段
+
+    @Transient
+    private List<String> environmentPictures;
+    @Transient
+    private List<String> productPictures;
+    @Transient
+    private List<DeviceType> deviceTypes;
+    @Transient
+    private short realNameAuthentication; // 是否实名认证
+    @Transient
+    private short enterpriseCertification; // 是否实名认证
 
     public Store() {
 
@@ -221,5 +240,69 @@ public class Store implements BaseSimplePojo {
 
     public void setSort(Integer sort) {
         this.sort = sort;
+    }
+
+    public String getShopSignPictures() {
+        return shopSignPictures;
+    }
+
+    public void setShopSignPictures(String shopSignPictures) {
+        this.shopSignPictures = shopSignPictures;
+    }
+
+    public String getLicensePictures() {
+        return licensePictures;
+    }
+
+    public void setLicensePictures(String licensePictures) {
+        this.licensePictures = licensePictures;
+    }
+
+    public int getCallTimes() {
+        return callTimes;
+    }
+
+    public void setCallTimes(int callTimes) {
+        this.callTimes = callTimes;
+    }
+
+    public List<String> getEnvironmentPictures() {
+        return environmentPictures;
+    }
+
+    public void setEnvironmentPictures(List<String> environmentPictures) {
+        this.environmentPictures = environmentPictures;
+    }
+
+    public List<String> getProductPictures() {
+        return productPictures;
+    }
+
+    public void setProductPictures(List<String> productPictures) {
+        this.productPictures = productPictures;
+    }
+
+    public List<DeviceType> getDeviceTypes() {
+        return deviceTypes;
+    }
+
+    public void setDeviceTypes(List<DeviceType> deviceTypes) {
+        this.deviceTypes = deviceTypes;
+    }
+
+    public short getRealNameAuthentication() {
+        return realNameAuthentication;
+    }
+
+    public void setRealNameAuthentication(short realNameAuthentication) {
+        this.realNameAuthentication = realNameAuthentication;
+    }
+
+    public short getEnterpriseCertification() {
+        return enterpriseCertification;
+    }
+
+    public void setEnterpriseCertification(short enterpriseCertification) {
+        this.enterpriseCertification = enterpriseCertification;
     }
 }

@@ -15,7 +15,7 @@ public interface MasterCardDao extends EntityJpaDao<MasterCard, Integer> {
     
     @Modifying
     @Query("update MasterCard set browseVolume = browseVolume + 1 where id=:id")
-    public int updateMasterCardBv(@Param("id") int userId);
+    public int updateMasterCardBv(@Param("id") int id);
     
     @Modifying
     @Query("update MasterCard set callTimes = callTimes + 1 where id=:id")
