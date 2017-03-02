@@ -3547,6 +3547,7 @@ CREATE TABLE employment_demand (
     lat FLOAT (10, 6) DEFAULT '0.000000' COMMENT '工作地点-纬度',
     description VARCHAR (200) COMMENT '用工需求介绍',
     browse_volume INT (11) NOT NULL COMMENT '浏览量',
+    call_times INT (11) NOT NULL COMMENT '咨询次数',
     create_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     update_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
     due_time TIMESTAMP NOT NULL COMMENT '到期时间',

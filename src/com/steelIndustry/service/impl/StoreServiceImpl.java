@@ -80,7 +80,7 @@ public class StoreServiceImpl extends DataServiceImpl<Store, Integer> implements
         if (conditions.getSortType() != null && conditions.getSortType() == 2) {
             sql += ",(6378.138 * 2 * asin(sqrt(pow(sin((s.lat * pi() / 180 - " + conditions.getLat() + " * pi() / 180) / 2),2) + cos(s.lat * pi() / 180) * cos(" + conditions.getLat() + " * pi() / 180) * pow(sin((s.lng * pi() / 180 - " + conditions.getLng() + " * pi() / 180) / 2),2))) * 1000) distance";
         }
-        sql += " FROM store s,`user` u WHERE    u.id = s.user_id AND u.state = 1 AND s.state = 1";
+        sql += " FROM store s LEFT JOIN relation_table typert ON typert.relation_master_id = s.id AND typert.relation_master_table = 'store' AND typert.relation_slave_table = 'device_type' LEFT JOIN device_type dt ON dt.id = typert.relation_slave_id,`user` u WHERE u.id = s.user_id AND u.state = 1 AND s.state = 1";
         Map<String, Object> params = new HashMap<String, Object>();
         if (!CommonUtil.isEmpty(conditions.getKeyword())) {
             sql += " and s.store_name like CONCAT('%',:storeName,'%')";
@@ -97,6 +97,20 @@ public class StoreServiceImpl extends DataServiceImpl<Store, Integer> implements
         if (conditions.getCountyId() != null && conditions.getCountyId() != -1) {
             sql += " and s.county_id = :countyId";
             params.put("countyId", conditions.getCountyId());
+        }
+        if(conditions.getTypeIds() != null && conditions.getTypeIds().size() > 0) {
+            List<Integer> typeIds = conditions.getTypeIds();
+            String ids = "";
+            for (Iterator iterator = typeIds.iterator(); iterator.hasNext();) {
+                Integer id = (Integer) iterator.next();
+                if (ids.equals("")) {
+                    ids = "" + id;
+                }
+                else {
+                    ids += "," + id;
+                }
+            }
+            sql += " and dt.id in (" + ids + ")";
         }
         sql += " GROUP BY s.id";
         if (conditions.getSortType() != null) {
