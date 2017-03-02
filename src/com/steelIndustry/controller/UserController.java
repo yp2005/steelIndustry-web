@@ -102,6 +102,8 @@ public class UserController {
                 user = userService.save(user);
                 result.setErroCode(2000);
                 result.setResult(user);
+                validateCodeMap.remove(instanceId);
+                mobileNumberValidateCodeMap.remove(loginInfo.getMobileNumber());
             } else if (user.getState() == 0) {
                 result.setErroCode(3000);
                 result.setErroMsg("您的账号已被禁用！");
