@@ -1,5 +1,6 @@
 package com.steelIndustry.service.impl;
 
+import java.util.HashMap;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -24,7 +25,8 @@ public class SystemNoticeServiceImpl extends DataServiceImpl<SystemNotice, Integ
     }
 
     public List<SystemNotice> getSystemNoticeList() {
-        return systemNoticeDao.getSystemNoticeList();
+        String sql = "select * from system_notice order by create_time desc limit 0,5";
+        return systemNoticeDao.executeNativeSQL(sql, new HashMap(), SystemNotice.class);
     }
 
     public SystemNotice getSystemNotice(int id) {
