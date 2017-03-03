@@ -74,7 +74,7 @@ public class CommonController {
         return result;
     }
     
-    @RequestMapping(value = "/appupdate", method = RequestMethod.POST)
+    @RequestMapping(value = "/appupdate", method = RequestMethod.GET)
     @ResponseBody
     public AjaxResult appUpdate() {
         AppVersion appVersion = appVersionService.getLatestAppVersion();
@@ -97,7 +97,6 @@ public class CommonController {
         json.put("versionTime", appVersion.getVersionTime());
         json.put("appVersion", appVersion);
         result.setErroCode(2000);
-        result.setErroMsg("");
         result.setResult(json);
         return result;
     }
