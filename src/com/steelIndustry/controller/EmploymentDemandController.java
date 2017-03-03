@@ -107,4 +107,20 @@ public class EmploymentDemandController {
         }
         return result;
     }
+    
+    @RequestMapping(value = "/delEmploymentDemand", method = RequestMethod.DELETE)
+    @ResponseBody
+    public AjaxResult delEmploymentDemand(int id, HttpServletRequest request) {
+        AjaxResult result = new AjaxResult();
+        User user = userService.getUser(request, result);
+        if (user != null) {
+            employmentDemandService.delete(id);
+            result.setErroCode(2000);
+            result.setResult("success");
+        } else if (result.getErroCode() == null) {
+            result.setErroCode(1000);
+            result.setErroMsg("未知错误");
+        }
+        return result;
+    }
 }

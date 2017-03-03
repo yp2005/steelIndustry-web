@@ -104,4 +104,20 @@ public class StoreController {
         }
         return result;
     }
+    
+    @RequestMapping(value = "/delStore", method = RequestMethod.DELETE)
+    @ResponseBody
+    public AjaxResult delStore(int id, HttpServletRequest request) {
+        AjaxResult result = new AjaxResult();
+        User user = userService.getUser(request, result);
+        if (user != null) {
+            storeService.delete(id);
+            result.setErroCode(2000);
+            result.setResult("success");
+        } else if (result.getErroCode() == null) {
+            result.setErroCode(1000);
+            result.setErroMsg("未知错误");
+        }
+        return result;
+    }
 }

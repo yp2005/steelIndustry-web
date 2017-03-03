@@ -2,7 +2,9 @@ package com.steelIndustry.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -98,6 +100,15 @@ public class CommonController {
         json.put("appVersion", appVersion);
         result.setErroCode(2000);
         result.setResult(json);
+        return result;
+    }
+    
+    @RequestMapping(value = "/homeData", method = RequestMethod.GET)
+    @ResponseBody
+    public AjaxResult homeData() {
+        AjaxResult result = new AjaxResult();
+        Map resultMap = new HashMap();
+        
         return result;
     }
 }
