@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSONObject;
 import com.steelIndustry.bo.AjaxResult;
+import com.steelIndustry.bo.Conditions;
 import com.steelIndustry.bo.LoginInfo;
 import com.steelIndustry.model.User;
 import com.steelIndustry.service.UserService;
@@ -128,6 +129,27 @@ public class UserController {
         if (user != null) {
             result.setErroCode(2000);
             result.setResult(user);
+        } else if (result.getErroCode() == null) {
+            result.setErroCode(1000);
+            result.setErroMsg("未知错误");
+        }
+        return result;
+    }
+    
+    @RequestMapping(value = "/getUserList", method = RequestMethod.POST)
+    @ResponseBody
+    public AjaxResult getUserList(Conditions conditions, HttpServletRequest request) {
+        AjaxResult result = new AjaxResult();
+        User user = userService.getUser(request, result);
+        if (user != null) {
+            if (user.getIsAdmin() == 1) {
+                result.setErroCode(2000);
+                result.setResult(userService.getUserList(conditions));
+            }
+            else {
+                result.setErroCode(5000);
+                result.setErroMsg("没有权限");
+            }
         } else if (result.getErroCode() == null) {
             result.setErroCode(1000);
             result.setErroMsg("未知错误");

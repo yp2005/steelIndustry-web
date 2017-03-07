@@ -26,6 +26,14 @@ public class RealNameAuthentication implements BaseSimplePojo {
     private String real_name; // 实名
     @Column(name = "card_id")
     private String card_id; // 身份证号码
+    @Column(name = "card_picture_obverse")
+    private String cardPictureObverse;// 身份证正面照片
+    @Column(name = "card_picture_reverse")
+    private String cardPictureReverse;// 身份证反面照片
+    @Column(name = "hand_card_picture")
+    private String handCardPicture;// 手持身份证照片
+    @Column(name = "full_face_picture")
+    private String fullFacePicture;// 正面照
     @Column(name = "state")
     private short state; // 是否通过认证
     @Column(name = "create_time")
@@ -81,6 +89,38 @@ public class RealNameAuthentication implements BaseSimplePojo {
 
     public void setCreate_time(Timestamp create_time) {
         this.create_time = create_time;
+    }
+
+    public String getCardPictureObverse() {
+        return cardPictureObverse;
+    }
+
+    public void setCardPictureObverse(String cardPictureObverse) {
+        this.cardPictureObverse = cardPictureObverse;
+    }
+
+    public String getCardPictureReverse() {
+        return cardPictureReverse;
+    }
+
+    public void setCardPictureReverse(String cardPictureReverse) {
+        this.cardPictureReverse = cardPictureReverse;
+    }
+
+    public String getHandCardPicture() {
+        return handCardPicture;
+    }
+
+    public void setHandCardPicture(String handCardPicture) {
+        this.handCardPicture = handCardPicture;
+    }
+
+    public String getFullFacePicture() {
+        return fullFacePicture;
+    }
+
+    public void setFullFacePicture(String fullFacePicture) {
+        this.fullFacePicture = fullFacePicture;
     }
 
 }

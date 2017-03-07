@@ -1,6 +1,9 @@
 package com.steelIndustry.service.impl;
 
 import java.sql.Timestamp;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -8,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Service;
 
 import com.steelIndustry.bo.AjaxResult;
+import com.steelIndustry.bo.Conditions;
 import com.steelIndustry.dao.UserDao;
 import com.steelIndustry.framework.dao.EntityJpaDao;
 import com.steelIndustry.framework.service.impl.DataServiceImpl;
@@ -77,6 +81,20 @@ public class UserServiceImpl extends DataServiceImpl<User, Integer> implements U
             result.setErroMsg("未知错误");
             return null;
         }
+    }
+    
+    public List<User> getUserList(Conditions conditions) {
+        String sql = "select * from user t where 1=1";
+        Map<String, Object> params = new HashMap<String, Object>();
+        if (!CommonUtil.isEmpty(conditions.getKeyword())) {
+            sql += " and t.user_name like CONCAT('%',:keyword,'%') or t.mobile_number like CONCAT('%',:keyword,'%')";
+            params.put("keyword", conditions.getKeyword());
+        }
+        sql += " limit " + (conditions.getRowStartNumber() == null ? 0
+                : conditions.getRowStartNumber()) + "," + (conditions.getRowCount() == null ? 10
+                        : conditions.getRowCount());
+        List<User> userList = userDao.executeNativeSQL(sql, params, User.class);
+        return userList;
     }
 
     public int updateLatestLoginTime(HttpServletRequest request) {
