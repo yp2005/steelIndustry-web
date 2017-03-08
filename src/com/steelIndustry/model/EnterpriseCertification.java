@@ -29,7 +29,7 @@ public class EnterpriseCertification implements BaseSimplePojo {
     @Column(name = "license")
     private String license; // 营业执照照片
     @Column(name = "state")
-    private short state; // 是否通过认证
+    private short state; // 是否通过认证  0审核中，1审核通过，2审核不通过
     @Column(name = "create_time")
     private Timestamp createTime; // 创建时间
 

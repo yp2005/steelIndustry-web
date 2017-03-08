@@ -63,7 +63,7 @@ public class MasterCard implements BaseSimplePojo {
     @Column(name = "is_working")
     private short isWorking; // 是否找到工作
     @Column(name = "state")
-    private short state; // 状态：0草稿，1通过审核，2审核中
+    private short state; // 状态：0草稿，1通过审核，2审核中，3审核不通过
     @Column(name = "sort")
     private Integer sort; // 排序字段
     @Transient

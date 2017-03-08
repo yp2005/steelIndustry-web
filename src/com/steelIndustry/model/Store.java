@@ -63,7 +63,7 @@ public class Store implements BaseSimplePojo {
     @Column(name = "update_time")
     private Timestamp updateTime;// 更新时间
     @Column(name = "state")
-    private short state;// 状态：0草稿，1通过审核，2审核中
+    private short state;// 状态：0草稿，1通过审核，2审核中，3审核不通过
     @Column(name = "sort")
     private Integer sort;// 排序字段
 

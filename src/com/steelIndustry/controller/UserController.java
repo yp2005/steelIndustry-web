@@ -44,7 +44,7 @@ public class UserController {
 
     private static Map<String, HashMap> mobileNumberValidateCodeMap = new HashMap<String, HashMap>();
 
-    @RequestMapping("/getImage")
+    @RequestMapping(value = "/getImage", method = RequestMethod.GET)
     public void getImage(String instanceId, HttpServletResponse response) {
         try {
             if (CommonUtil.isEmpty(instanceId)) {
@@ -136,9 +136,30 @@ public class UserController {
         return result;
     }
     
+    @RequestMapping(value = "/getUserById", method = RequestMethod.GET)
+    @ResponseBody
+    public AjaxResult getUserById(int id, HttpServletRequest request) {
+        AjaxResult result = new AjaxResult();
+        User user = userService.getUser(request, result);
+        if (user != null) {
+            if (user.getIsAdmin() == 1) {
+                result.setErroCode(2000);
+                result.setResult(userService.findOne(id));
+            }
+            else {
+                result.setErroCode(5000);
+                result.setErroMsg("没有权限");
+            }
+        } else if (result.getErroCode() == null) {
+            result.setErroCode(1000);
+            result.setErroMsg("未知错误");
+        }
+        return result;
+    }
+    
     @RequestMapping(value = "/getUserList", method = RequestMethod.POST)
     @ResponseBody
-    public AjaxResult getUserList(Conditions conditions, HttpServletRequest request) {
+    public AjaxResult getUserList(@RequestBody Conditions conditions, HttpServletRequest request) {
         AjaxResult result = new AjaxResult();
         User user = userService.getUser(request, result);
         if (user != null) {
@@ -179,7 +200,7 @@ public class UserController {
         User user = userService.getUser(request, result);
         if (user != null) {
             if (user.getIsAdmin() == 1) {
-                int isSuccess = userService.updateUserState(state);
+                int isSuccess = userService.updateUserState(user.getId(), state);
                 if (isSuccess == 1) {
                     result.setErroCode(2000);
                     result.setResult("success");

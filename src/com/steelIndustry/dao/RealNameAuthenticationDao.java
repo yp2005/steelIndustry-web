@@ -14,6 +14,6 @@ public interface RealNameAuthenticationDao extends EntityJpaDao<RealNameAuthenti
 	public RealNameAuthentication getRealNameAuthentication(@Param("userId") int userId);
 	
 	@Modifying
-	@Query("update RealNameAuthentication set state=:state")
-	public int updateRealNameAuthenticationState(@Param("state") short state);
+	@Query("update RealNameAuthentication set state=:state where userId=:userId")
+	public int updateRealNameAuthenticationState( @Param("userId") int userId, @Param("state") short state);
 }

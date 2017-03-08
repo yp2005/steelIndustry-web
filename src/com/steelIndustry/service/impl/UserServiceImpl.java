@@ -73,7 +73,7 @@ public class UserServiceImpl extends DataServiceImpl<User, Integer> implements U
                     result.setErroMsg("您的账号已被禁用！");
                     return null;
                 }
-                userDao.updateLatestLoginTime(new Timestamp(currentTime));
+                userDao.updateLatestLoginTime(user.getId(), new Timestamp(currentTime));
                 return user;
             }
         } catch (Exception e) {
@@ -82,7 +82,7 @@ public class UserServiceImpl extends DataServiceImpl<User, Integer> implements U
             return null;
         }
     }
-    
+
     public List<User> getUserList(Conditions conditions) {
         String sql = "select * from user t where 1=1";
         Map<String, Object> params = new HashMap<String, Object>();
@@ -90,9 +90,8 @@ public class UserServiceImpl extends DataServiceImpl<User, Integer> implements U
             sql += " and t.user_name like CONCAT('%',:keyword,'%') or t.mobile_number like CONCAT('%',:keyword,'%')";
             params.put("keyword", conditions.getKeyword());
         }
-        sql += " limit " + (conditions.getRowStartNumber() == null ? 0
-                : conditions.getRowStartNumber()) + "," + (conditions.getRowCount() == null ? 10
-                        : conditions.getRowCount());
+        sql += " limit " + (conditions.getRowStartNumber() == null ? 0 : conditions.getRowStartNumber()) + ","
+                + (conditions.getRowCount() == null ? 10 : conditions.getRowCount());
         List<User> userList = userDao.executeNativeSQL(sql, params, User.class);
         return userList;
     }
@@ -113,7 +112,7 @@ public class UserServiceImpl extends DataServiceImpl<User, Integer> implements U
                 if (user == null || !user.getInstanceId().equals(instanceId) || user.getState() == 0) {
                     return 0;
                 }
-                return userDao.updateLatestLoginTime(new Timestamp(currentTime));
+                return userDao.updateLatestLoginTime(user.getId(), new Timestamp(currentTime));
             }
         } catch (Exception e) {
             return 0;
@@ -121,10 +120,10 @@ public class UserServiceImpl extends DataServiceImpl<User, Integer> implements U
     }
 
     @Override
-    public int updateUserState(short state) {
-        return userDao.updateUserState(state);
+    public int updateUserState(int id, short state) {
+        return userDao.updateUserState(id, state);
     }
-    
+
     @Override
     public User getUser(long mobileNumber) {
         return userDao.getUserByMobileNumber(mobileNumber);

@@ -63,7 +63,7 @@ public class EmploymentDemand implements BaseSimplePojo {
     @Column(name = "due_time")
     private Timestamp dueTime;// 到期时间
     @Column(name = "state")
-    private short state;// 状态：0草稿，1通过审核，2审核中
+    private short state;// 状态：0草稿，1通过审核，2审核中，3审核不通过
     @Column(name = "sort")
     private Integer sort;// 排序字段
 

@@ -35,7 +35,7 @@ public class RealNameAuthentication implements BaseSimplePojo {
     @Column(name = "full_face_picture")
     private String fullFacePicture;// 正面照
     @Column(name = "state")
-    private short state; // 是否通过认证
+    private short state; // 是否通过认证  0审核中，1审核通过，2审核不通过
     @Column(name = "create_time")
     private Timestamp create_time; // 创建时间
 

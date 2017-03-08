@@ -3481,7 +3481,7 @@ INSERT INTO device_type VALUES (29, '其他', 2, NULL);
 -- 关联关系表
 CREATE TABLE relation_table (
     id INT (11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键id',
-    relation_master_table VARCHAR (20) NOT NULL COMMENT '主表：master_card、project、store、employment_demand、real_name_authentication',
+    relation_master_table VARCHAR (20) NOT NULL COMMENT '主表：master_card、project、store、employment_demand',
     relation_slave_table VARCHAR (20) NOT NULL COMMENT '从表：worker_type、device_type、area_data、img_xxx(图片没有表表示图片类型)',
     relation_master_id INT (11) UNSIGNED NOT NULL COMMENT '关联主表id',
     relation_slave_id INT (11) UNSIGNED COMMENT '关联从表id',
@@ -3657,6 +3657,10 @@ CREATE TABLE real_name_authentication (
     user_id INT (11) UNSIGNED NOT NULL COMMENT '用户id',
     real_name VARCHAR (20) NOT NULL COMMENT '实名',
     card_id VARCHAR (18) NOT NULL COMMENT '身份证号码',
+    card_picture_obverse VARCHAR (50) NOT NULL COMMENT '身份证正面照片',
+    card_picture_reverse VARCHAR (50) NOT NULL COMMENT '身份证反面照片',
+    hand_card_picture VARCHAR (50) NOT NULL COMMENT '手持身份证照片',
+    full_face_picture VARCHAR (50) NOT NULL COMMENT '正面照',
     state TINYINT (1) NOT NULL COMMENT '是否通过认证',
     create_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间',
     PRIMARY KEY (id),

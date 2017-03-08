@@ -19,10 +19,18 @@ public interface UserDao extends EntityJpaDao<User, Integer> {
     public User getUserByMobileNumber(@Param("mobileNumber") long mobileNumber);
     
     @Modifying
-    @Query("update User set latestLoginTime=:latestLoginTime")
-    public int updateLatestLoginTime(@Param("latestLoginTime") Timestamp latestLoginTime);
+    @Query("update User set latestLoginTime=:latestLoginTime where id=:id ")
+    public int updateLatestLoginTime(@Param("id") int id, @Param("latestLoginTime") Timestamp latestLoginTime);
     
     @Modifying
-    @Query("update User set state=:state")
-    public int updateUserState(@Param("state") short state);
+    @Query("update User set state=:state where id=:id")
+    public int updateUserState(@Param("id") int id, @Param("state") short state);
+    
+    @Modifying
+    @Query("update User set realNameAuthentication=:state where id=:id")
+    public int updateUserRnaState(@Param("id") int id, @Param("state") short state);
+    
+    @Modifying
+    @Query("update User set enterpriseCertification=:state where id=:id")
+    public int updateUserEcState(@Param("id") int id, @Param("state") short state);
 }
