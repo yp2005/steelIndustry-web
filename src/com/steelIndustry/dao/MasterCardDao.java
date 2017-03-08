@@ -22,6 +22,10 @@ public interface MasterCardDao extends EntityJpaDao<MasterCard, Integer> {
     public int updateMasterCardCt(@Param("id") int id);
     
     @Modifying
-    @Query("update MasterCard set isWorking = :isWorking where id=:id")
-    public int updateMasterCardWorkState(@Param("id") int id, @Param("isWorking") short isWorking);
+    @Query("update MasterCard set isWorking = :isWorking where userId=:userId")
+    public int updateMasterCardWorkState(@Param("userId") int userId, @Param("isWorking") short isWorking);
+    
+    @Modifying
+    @Query("update MasterCard set state = :state where id=:id")
+    public int updateMasterCardState(@Param("id") int id, @Param("state") short state);
 }

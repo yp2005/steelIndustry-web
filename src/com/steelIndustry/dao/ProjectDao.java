@@ -23,6 +23,10 @@ public interface ProjectDao extends EntityJpaDao<Project, Integer> {
     @Query("update Project set callTimes = callTimes + 1 where id=:id")
     public int updateProjectCt(@Param("id") int id);
     
+    @Modifying
+    @Query("update Project set state = :state where id=:id")
+    public int updateProjectState(@Param("id") int id,@Param("state") short state);
+    
     @Query("select t from Project t where t.userId=:userId")
     public List<Project> getUserProject(@Param("userId") int userId);
 }

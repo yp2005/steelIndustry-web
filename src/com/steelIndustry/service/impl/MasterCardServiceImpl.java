@@ -182,8 +182,13 @@ public class MasterCardServiceImpl extends DataServiceImpl<MasterCard, Integer> 
         return masterCardDao.updateMasterCardCt(id);
     }
     
-    public int updateMasterCardWorkState(int id, short isWorking) {
-        return masterCardDao.updateMasterCardWorkState(id, isWorking);
+    public int updateMasterCardWorkState(int userId, short isWorking) {
+        return masterCardDao.updateMasterCardWorkState(userId, isWorking);
+    }
+
+    @Override
+    public int updateMasterCardState(int id, short state) {
+        return masterCardDao.updateMasterCardState(id, state);
     }
 
 }

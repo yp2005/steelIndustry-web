@@ -21,4 +21,6 @@ public interface ProjectService extends DataService<Project, Integer> {
     public int updateProjectBv(int id);
     
     public int updateProjectCt(int id);
+    
+    public int updateProjectState(int id, short state);
 }

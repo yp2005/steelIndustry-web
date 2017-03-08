@@ -25,4 +25,8 @@ public interface EmploymentDemandDao extends EntityJpaDao<EmploymentDemand, Inte
     @Modifying
     @Query("update EmploymentDemand set callTimes = callTimes + 1 where id=:id")
     public int updateEmploymentDemandCt(@Param("id") int id);
+    
+    @Modifying
+    @Query("update EmploymentDemand set state=:state where id=:id")
+    public int updateEmploymentDemandState(@Param("id") int id, @Param("state") short state);
 }

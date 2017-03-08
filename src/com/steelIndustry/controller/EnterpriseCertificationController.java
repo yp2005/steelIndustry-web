@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.alibaba.fastjson.JSONObject;
 import com.steelIndustry.bo.AjaxResult;
 import com.steelIndustry.bo.Conditions;
 import com.steelIndustry.model.EnterpriseCertification;
@@ -26,9 +27,9 @@ public class EnterpriseCertificationController {
     @Resource(name = "userService")
     private UserService userService;
 
-    @RequestMapping(value = "/addEnterpriseCertification", method = RequestMethod.POST)
+    @RequestMapping(value = "/saveEnterpriseCertification", method = RequestMethod.POST)
     @ResponseBody
-    public AjaxResult addEnterpriseCertification(@RequestBody EnterpriseCertification enterpriseCertification,
+    public AjaxResult saveEnterpriseCertification(@RequestBody EnterpriseCertification enterpriseCertification,
             HttpServletRequest request) {
         AjaxResult result = new AjaxResult();
         User user = userService.getUser(request, result);
@@ -51,17 +52,23 @@ public class EnterpriseCertificationController {
 
     @RequestMapping(value = "/updateEnterpriseCertificationState", method = RequestMethod.POST)
     @ResponseBody
-    public AjaxResult updateEnterpriseCertificationState(short state, HttpServletRequest request) {
+    public AjaxResult updateEnterpriseCertificationState(@RequestBody JSONObject updateCd, HttpServletRequest request) {
         AjaxResult result = new AjaxResult();
         User user = userService.getUser(request, result);
         if (user != null) {
-            int isSuccess = enterpriseCertificationService.updateEnterpriseCertificationState(user.getId(), state);
-            if (isSuccess == 1) {
-                result.setErroCode(2000);
-                result.setResult("success");
-            } else {
-                result.setErroCode(3000);
-                result.setErroMsg("fail");
+            if (user.getIsAdmin() == 1) {
+                int isSuccess = enterpriseCertificationService.updateEnterpriseCertificationState(updateCd.getIntValue("userId"), updateCd.getShortValue("state"));
+                if (isSuccess == 1) {
+                    result.setErroCode(2000);
+                    result.setResult("success");
+                } else {
+                    result.setErroCode(3000);
+                    result.setErroMsg("fail");
+                }
+            }
+            else {
+                result.setErroCode(5000);
+                result.setResult("权限不足！");
             }
         } else if (result.getErroCode() == null) {
             result.setErroCode(1000);

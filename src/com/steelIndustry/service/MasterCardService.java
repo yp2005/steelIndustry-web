@@ -20,5 +20,7 @@ public interface MasterCardService extends DataService<MasterCard, Integer> {
     
     public int updateMasterCardCt(int id);
     
-    public int updateMasterCardWorkState(int id, short isWorking);
+    public int updateMasterCardWorkState(int userId, short isWorking);
+    
+    public int updateMasterCardState(int id, short state);
 }

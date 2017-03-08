@@ -185,4 +185,9 @@ public class StoreServiceImpl extends DataServiceImpl<Store, Integer> implements
         return storeDao.updateStoreCt(id);
     }
 
+    @Override
+    public int updateStoreState(int id, short state) {
+        return storeDao.updateStoreState(id, state);
+    }
+
 }

@@ -20,4 +20,6 @@ public interface EmploymentDemandService extends DataService<EmploymentDemand, I
     public int updateEmploymentDemandBv(int id);
     
     public int updateEmploymentDemandCt(int id);
+    
+    public int updateEmploymentDemandState(int id, short state);
 }

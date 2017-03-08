@@ -193,5 +193,10 @@ public class EmploymentDemandServiceImpl extends DataServiceImpl<EmploymentDeman
     public int updateEmploymentDemandCt(int id) {
         return employmentDemandDao.updateEmploymentDemandCt(id);
     }
+    
+    @Override
+    public int updateEmploymentDemandState(int id, short state) {
+        return employmentDemandDao.updateEmploymentDemandState(id, state);
+    }
 
 }

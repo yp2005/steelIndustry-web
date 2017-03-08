@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.alibaba.fastjson.JSONObject;
 import com.steelIndustry.bo.AjaxResult;
 import com.steelIndustry.bo.Conditions;
 import com.steelIndustry.model.Store;
@@ -101,6 +102,33 @@ public class StoreController {
         } else {
             result.setErroCode(3000);
             result.setErroMsg("fail");
+        }
+        return result;
+    }
+    
+    @RequestMapping(value = "/updateStoreState", method = RequestMethod.POST)
+    @ResponseBody
+    public AjaxResult updateStoreState(@RequestBody JSONObject updateCd, HttpServletRequest request) {
+        AjaxResult result = new AjaxResult();
+        User user = userService.getUser(request, result);
+        if (user != null) {
+            if (user.getIsAdmin() == 1) {
+                int isSuccess = storeService.updateStoreState(updateCd.getIntValue("id"), updateCd.getShortValue("state"));
+                if (isSuccess == 1) {
+                    result.setErroCode(2000);
+                    result.setResult("success");
+                } else {
+                    result.setErroCode(3000);
+                    result.setErroMsg("fail");
+                }
+            }
+            else {
+                result.setErroCode(5000);
+                result.setResult("权限不足！");
+            }
+        } else if (result.getErroCode() == null) {
+            result.setErroCode(1000);
+            result.setErroMsg("未知错误");
         }
         return result;
     }

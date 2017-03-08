@@ -155,4 +155,9 @@ public class ProjectServiceImpl extends DataServiceImpl<Project, Integer> implem
         return projectDao.updateProjectCt(id);
     }
 
+    @Override
+    public int updateProjectState(int id, short state) {
+        return projectDao.updateProjectState(id, state);
+    }
+
 }

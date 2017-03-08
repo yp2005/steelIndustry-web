@@ -17,4 +17,6 @@ public interface StoreService extends DataService<Store, Integer> {
     public int updateStoreBv(int id);
     
     public int updateStoreCt(int id);
+    
+    public int updateStoreState(int id, short state);
 }

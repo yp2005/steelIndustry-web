@@ -195,12 +195,12 @@ public class UserController {
     
     @RequestMapping(value = "/updateUserState", method = RequestMethod.POST)
     @ResponseBody
-    public AjaxResult updateUserState(short state, HttpServletRequest request) {
+    public AjaxResult updateUserState(@RequestBody JSONObject updateCd, HttpServletRequest request) {
         AjaxResult result = new AjaxResult();
         User user = userService.getUser(request, result);
         if (user != null) {
             if (user.getIsAdmin() == 1) {
-                int isSuccess = userService.updateUserState(user.getId(), state);
+                int isSuccess = userService.updateUserState(updateCd.getIntValue("id"), updateCd.getShortValue("state"));
                 if (isSuccess == 1) {
                     result.setErroCode(2000);
                     result.setResult("success");
