@@ -16,7 +16,7 @@ public interface UserService extends DataService<User, Integer> {
     
     public List<User> getUserList(Conditions conditions);
     
-    public User save(User user);
+    public User saveUser(User user);
     
     public int updateLatestLoginTime(HttpServletRequest request);
     

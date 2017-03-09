@@ -27,7 +27,7 @@ public class SettingsServiceImpl extends DataServiceImpl<Settings, Integer> impl
     }
     
     @Override
-    public Settings save(Settings settings) {
+    public Settings saveSettings(Settings settings) {
         return settingsDao.save(settings);
     }
 

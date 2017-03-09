@@ -100,7 +100,7 @@ public class UserController {
                 user.setInstanceId(instanceId);
                 user.setAccessToken(GeneratorUtil.createUUID());
                 user.setState((short) 1);
-                user = userService.save(user);
+                user = userService.saveUser(user);
                 result.setErroCode(2000);
                 result.setResult(user);
                 validateCodeMap.remove(instanceId);
@@ -111,7 +111,7 @@ public class UserController {
             } else {
                 user.setInstanceId(instanceId);
                 user.setAccessToken(GeneratorUtil.createUUID());
-                user = userService.save(user);
+                user = userService.saveUser(user);
                 result.setErroCode(2000);
                 result.setResult(user);
                 validateCodeMap.remove(instanceId);

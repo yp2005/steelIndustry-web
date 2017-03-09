@@ -58,4 +58,9 @@ public class EnterpriseCertificationServiceImpl extends DataServiceImpl<Enterpri
         return enterpriseCertificationDao;
     }
 
+    @Override
+    public EnterpriseCertification saveEnterpriseCertification(EnterpriseCertification enterpriseCertification) {
+        return enterpriseCertificationDao.save(enterpriseCertification);
+    }
+
 }

@@ -35,7 +35,7 @@ public class EnterpriseCertificationController {
         User user = userService.getUser(request, result);
         if (user != null) {
             enterpriseCertification.setUserId(user.getId());
-            enterpriseCertification = enterpriseCertificationService.save(enterpriseCertification);
+            enterpriseCertification = enterpriseCertificationService.saveEnterpriseCertification(enterpriseCertification);
             if (enterpriseCertification != null) {
                 result.setErroCode(2000);
                 result.setResult("success");

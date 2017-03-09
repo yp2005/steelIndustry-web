@@ -13,4 +13,6 @@ public interface EnterpriseCertificationService extends DataService<EnterpriseCe
     public int updateEnterpriseCertificationState(int userId, short state);
     
     public List<EnterpriseCertification> getEnterpriseCertificationList(Conditions conditions);
+    
+    public EnterpriseCertification saveEnterpriseCertification(EnterpriseCertification enterpriseCertification);
 }

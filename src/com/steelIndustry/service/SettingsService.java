@@ -6,7 +6,7 @@ import com.steelIndustry.model.Settings;
 public interface SettingsService extends DataService<Settings, Integer> {
     public Settings getSettings();
     
-    public Settings save(Settings settings);
+    public Settings saveSettings(Settings settings);
 
     public int updateShareSwitch(short shareSwitch);
 

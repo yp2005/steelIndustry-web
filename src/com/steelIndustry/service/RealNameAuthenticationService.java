@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.steelIndustry.bo.Conditions;
 import com.steelIndustry.framework.service.DataService;
+import com.steelIndustry.model.EnterpriseCertification;
 import com.steelIndustry.model.RealNameAuthentication;
 
 
@@ -13,4 +14,6 @@ public interface RealNameAuthenticationService extends DataService<RealNameAuthe
     public int updateRealNameAuthenticationState(int userId, short state);
     
     public List<RealNameAuthentication> getRealNameAuthenticationList(Conditions conditions);
+    
+    public RealNameAuthentication saveRealNameAuthentication(RealNameAuthentication realNameAuthentication);
 }

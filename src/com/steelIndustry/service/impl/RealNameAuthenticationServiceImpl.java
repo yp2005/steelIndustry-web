@@ -58,4 +58,9 @@ public class RealNameAuthenticationServiceImpl extends DataServiceImpl<RealNameA
         return realNameAuthenticationDao;
     }
 
+    @Override
+    public RealNameAuthentication saveRealNameAuthentication(RealNameAuthentication realNameAuthentication) {
+        return realNameAuthenticationDao.save(realNameAuthentication);
+    }
+
 }

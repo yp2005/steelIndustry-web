@@ -42,7 +42,7 @@ public class SettingsController {
         if (user != null) {
             if (user.getIsAdmin() == 1) {
                 settings.setId(1);
-                settings = settingsService.save(settings);
+                settings = settingsService.saveSettings(settings);
                 if (settings != null && settings.getId() == 1) {
                     result.setErroCode(2000);
                     result.setResult("success");

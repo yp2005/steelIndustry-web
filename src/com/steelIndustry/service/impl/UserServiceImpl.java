@@ -27,7 +27,7 @@ public class UserServiceImpl extends DataServiceImpl<User, Integer> implements U
     private UserDao userDao;
 
     @Override
-    public User save(User user) {
+    public User saveUser(User user) {
         return userDao.save(user);
     }
 

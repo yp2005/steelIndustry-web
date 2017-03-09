@@ -35,7 +35,7 @@ public class RealNameAuthenticationController {
         User user = userService.getUser(request, result);
         if (user != null) {
             realNameAuthentication.setUserId(user.getId());
-            realNameAuthentication = realNameAuthenticationService.save(realNameAuthentication);
+            realNameAuthentication = realNameAuthenticationService.saveRealNameAuthentication(realNameAuthentication);
             if (realNameAuthentication != null) {
                 result.setErroCode(2000);
                 result.setResult("success");
