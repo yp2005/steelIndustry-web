@@ -20,7 +20,12 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import com.alibaba.fastjson.JSONObject;
 import com.steelIndustry.bo.AjaxResult;
 import com.steelIndustry.model.AppVersion;
+import com.steelIndustry.service.AdRelationService;
+import com.steelIndustry.service.AdvertisementService;
 import com.steelIndustry.service.AppVersionService;
+import com.steelIndustry.service.EmploymentDemandService;
+import com.steelIndustry.service.StoreService;
+import com.steelIndustry.service.SystemNoticeService;
 import com.steelIndustry.util.CommonProperties;
 import com.steelIndustry.util.GeneratorUtil;
 
@@ -30,6 +35,18 @@ public class CommonController {
     
     @Resource(name = "appVersionService")
     private AppVersionService appVersionService;
+    
+    @Resource(name = "adRelationService")
+    private AdRelationService adRelationService;
+    
+    @Resource(name = "systemNoticeService")
+    private SystemNoticeService systemNoticeService;
+    
+    @Resource(name = "storeService")
+    private StoreService storeService;
+    
+    @Resource(name = "employmentDemandService")
+    private EmploymentDemandService employmentDemandService;
     
     @RequestMapping(value = "/upload_image", method = RequestMethod.POST)
     @ResponseBody
@@ -108,7 +125,10 @@ public class CommonController {
     public AjaxResult homeData() {
         AjaxResult result = new AjaxResult();
         Map resultMap = new HashMap();
-        
+        resultMap.put("advertisement", adRelationService.getPositionAdList("homePage"));
+        resultMap.put("systemNotice", systemNoticeService.getSystemNoticeList());
+        resultMap.put("hotStore", storeService.getHotStore());
+        resultMap.put("hotWork", employmentDemandService.getHotWork());
         return result;
     }
 }

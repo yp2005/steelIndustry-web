@@ -21,7 +21,7 @@ public class Advertisement implements BaseSimplePojo {
     @Column(name = "title")
     private String title; // 广告标题
     @Column(name = "link_type")
-    private String linkType; // 广告链接类型，如果不是广告联盟的广告有此属性：innerLink、outerLink
+    private String linkType; // 广告链接类型：innerLink、outerLink、alliance
     @Column(name = "img")
     private String img; // 图片名称
     @Column(name = "url")
@@ -29,7 +29,7 @@ public class Advertisement implements BaseSimplePojo {
     @Column(name = "store_id")
     private String storeId; // 内部链接店铺id
     @Column(name = "content")
-    private String content; // 广告内容，广告联盟的话为广告联盟所需信息的json字符串，内部链接为店铺id，外部链接为url
+    private String content; // 广告联盟设置
 
     public Advertisement() {
 

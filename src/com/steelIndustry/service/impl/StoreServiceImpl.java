@@ -129,6 +129,19 @@ public class StoreServiceImpl extends DataServiceImpl<Store, Integer> implements
         return list;
     }
     
+    public List<Map<String, Object>> getHotStore() {
+
+        String sql = "SELECT s.id id,s.user_id userId,s.store_name storeName,CONCAT_WS(' ',s.province_name,s.city_name,s.county_name) address,s.lng,s.lat,u.real_name_authentication realNameAuthentication,u.enterprise_certification enterpriseCertification,s.shop_sign_pictures shopSignPictures";
+        sql += " FROM store s LEFT JOIN relation_table typert ON typert.relation_master_id = s.id AND typert.relation_master_table = 'store' AND typert.relation_slave_table = 'device_type' LEFT JOIN device_type dt ON dt.id = typert.relation_slave_id,`user` u WHERE u.id = s.user_id AND u.state = 1 AND s.state = 1";
+        Map<String, Object> params = new HashMap<String, Object>();
+        sql += " GROUP BY s.id";
+        sql += " order by s.browse_volume desc";
+        sql += " limit 0,5";
+        List<Map<String, Object>> list = storeDao.findAllMapBySQL(sql, params);
+        return list;
+    
+    }
+    
     public int saveStore(Store store) {
         List<String> environmentPictures = store.getEnvironmentPictures();
         List<String> productPictures = store.getProductPictures();

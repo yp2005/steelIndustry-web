@@ -17,6 +17,8 @@ public interface EmploymentDemandService extends DataService<EmploymentDemand, I
     
     public List<Map<String, Object>> getEmploymentDemandList(Conditions conditions);
     
+    public List<Map<String, Object>> getHotWork();
+    
     public int updateEmploymentDemandBv(int id);
     
     public int updateEmploymentDemandCt(int id);

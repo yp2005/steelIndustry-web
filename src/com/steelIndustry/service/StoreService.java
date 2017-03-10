@@ -14,6 +14,8 @@ public interface StoreService extends DataService<Store, Integer> {
     
     public List<Map<String, Object>> getStoreList(Conditions conditions);
     
+    public List<Map<String, Object>> getHotStore();
+    
     public int updateStoreBv(int id);
     
     public int updateStoreCt(int id);

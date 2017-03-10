@@ -23,8 +23,6 @@ public class AdRelation implements BaseSimplePojo {
     private String postion; // 广告位置：homePage、listPage、detailPage
     @Column(name = "ad_id")
     private Integer adId; // 广告id
-    @JoinColumn(name = "ad_id", insertable = false, updatable = false)
-    private Advertisement Advertisement;
 
     public AdRelation() {
 
@@ -53,13 +51,4 @@ public class AdRelation implements BaseSimplePojo {
     public void setAdId(Integer adId) {
         this.adId = adId;
     }
-
-    public Advertisement getAdvertisement() {
-        return Advertisement;
-    }
-
-    public void setAdvertisement(Advertisement advertisement) {
-        Advertisement = advertisement;
-    }
-
 }
