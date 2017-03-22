@@ -84,12 +84,15 @@ public class UserController {
                 .equals((String) (validateCodeMap.get(instanceId).get("code")))) {
             result.setErroCode(4001);
             result.setErroMsg("验证码错误，请重新输入！");
-        } else if ((System.currentTimeMillis()
-                - (long) (mobileNumberValidateCodeMap.get(loginInfo.getMobileNumber()).get("time"))) > 2 * 60 * 1000) {
+        } else if(mobileNumberValidateCodeMap.get(loginInfo.getMobileNumber() + "") == null) {
+            result.setErroCode(3000);
+            result.setErroMsg("未发送手机验证码！");
+        }else if ((System.currentTimeMillis()
+                - (long) (mobileNumberValidateCodeMap.get(loginInfo.getMobileNumber() + "").get("time"))) > 2 * 60 * 1000) {
             result.setErroCode(4004);
             result.setErroMsg("手机验证码过期，请重新发送！");
         } else if (!loginInfo.getMobilePhoneValidateCode()
-                .equals((String) (mobileNumberValidateCodeMap.get(loginInfo.getMobileNumber()).get("code")))) {
+                .equals((String) (mobileNumberValidateCodeMap.get(loginInfo.getMobileNumber() + "").get("code")))) {
             result.setErroCode(4003);
             result.setErroMsg("手机验证码错误，请重新输入！");
         } else {
@@ -104,7 +107,7 @@ public class UserController {
                 result.setErroCode(2000);
                 result.setResult(user);
                 validateCodeMap.remove(instanceId);
-                mobileNumberValidateCodeMap.remove(loginInfo.getMobileNumber());
+                mobileNumberValidateCodeMap.remove(loginInfo.getMobileNumber() + "");
             } else if (user.getState() == 0) {
                 result.setErroCode(3000);
                 result.setErroMsg("您的账号已被禁用！");
@@ -115,7 +118,7 @@ public class UserController {
                 result.setErroCode(2000);
                 result.setResult(user);
                 validateCodeMap.remove(instanceId);
-                mobileNumberValidateCodeMap.remove(loginInfo.getMobileNumber());
+                mobileNumberValidateCodeMap.remove(loginInfo.getMobileNumber() + "");
             }
         }
         return result;

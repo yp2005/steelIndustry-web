@@ -47,8 +47,7 @@ public class UserServiceImpl extends DataServiceImpl<User, Integer> implements U
                 result.setErroCode(7000);
                 result.setErroMsg("非法访问");
                 return null;
-            } else if (Math.abs(currentTime - Long.valueOf(reqstarttime)) > 10000
-                    || Math.abs(currentTime - Long.valueOf(reqstarttime)) < 10000) {
+            } else if (Math.abs(currentTime - Long.valueOf(reqstarttime)) > 10000) {
                 result.setErroCode(8000);
                 result.setErroMsg("本地时间异常，请校准本地时间");
                 return null;
@@ -103,9 +102,10 @@ public class UserServiceImpl extends DataServiceImpl<User, Integer> implements U
             String accessToken = request.getHeader("access_token");
             String reqstarttime = request.getHeader("reqstarttime");
             String extratoken = request.getHeader("extratoken");
+            System.out.println(Math.abs(currentTime - Long.valueOf(reqstarttime)));
+            System.out.println(Math.abs(currentTime - Long.valueOf(reqstarttime)));
             if (CommonUtil.isEmpty(instanceId) || CommonUtil.isEmpty(accessToken) || CommonUtil.isEmpty(reqstarttime)
-                    || CommonUtil.isEmpty(extratoken) || Math.abs(currentTime - Long.valueOf(reqstarttime)) > 10000
-                    || Math.abs(currentTime - Long.valueOf(reqstarttime)) < 10000) {
+                    || CommonUtil.isEmpty(extratoken) || Math.abs(currentTime - Long.valueOf(reqstarttime)) > 10000) {
                 return 0;
             } else {
                 User user = userDao.getUserByAccessToken(accessToken);
