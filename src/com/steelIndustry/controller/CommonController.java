@@ -48,7 +48,7 @@ public class CommonController {
     @Resource(name = "employmentDemandService")
     private EmploymentDemandService employmentDemandService;
     
-    @RequestMapping(value = "/upload_image", method = RequestMethod.POST)
+    @RequestMapping(value = "/uploadImage", method = RequestMethod.POST)
     @ResponseBody
     public AjaxResult uploadImage(HttpServletRequest request) {
         AjaxResult result = new AjaxResult();
@@ -93,7 +93,7 @@ public class CommonController {
         return result;
     }
     
-    @RequestMapping(value = "/appupdate", method = RequestMethod.GET)
+    @RequestMapping(value = "/appUpdate", method = RequestMethod.GET)
     @ResponseBody
     public AjaxResult appUpdate() {
         AppVersion appVersion = appVersionService.getLatestAppVersion();

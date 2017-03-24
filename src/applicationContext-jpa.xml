@@ -33,7 +33,8 @@
 			<tx:method name="update*" propagation="REQUIRED" />
 			<tx:method name="edit*" propagation="REQUIRED" />
 			<tx:method name="modify*" propagation="REQUIRED" />
-			<tx:method name="*" read-only="true" />
+			<tx:method name="get*" propagation="REQUIRED" />
+			<!-- <tx:method name="*" read-only="true" /> -->
 		</tx:attributes>
 	</tx:advice>
 </beans>

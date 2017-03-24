@@ -52,7 +52,7 @@ public class UserServiceImpl extends DataServiceImpl<User, Integer> implements U
                 result.setErroMsg("本地时间异常，请校准本地时间");
                 return null;
             } else {
-                int md5Times = Integer.valueOf((reqstarttime + "").substring((reqstarttime + "").length() + 1));
+                int md5Times = Integer.valueOf((reqstarttime + "").substring((reqstarttime + "").length() - 1));
                 String extratokenComp = reqstarttime + "";
                 for (int i = 0; i < md5Times; i++) {
                     extratokenComp = GeneratorUtil.md5(extratokenComp);
@@ -76,6 +76,7 @@ public class UserServiceImpl extends DataServiceImpl<User, Integer> implements U
                 return user;
             }
         } catch (Exception e) {
+            e.printStackTrace();
             result.setErroCode(1000);
             result.setErroMsg("未知错误");
             return null;
