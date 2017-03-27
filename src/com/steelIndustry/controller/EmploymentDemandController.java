@@ -75,11 +75,12 @@ public class EmploymentDemandController {
 
     @RequestMapping(value = "/saveEmploymentDemand", method = RequestMethod.POST)
     @ResponseBody
-    public AjaxResult saveEmploymentDemand(@RequestBody EmploymentDemand EmploymentDemand, HttpServletRequest request) {
+    public AjaxResult saveEmploymentDemand(@RequestBody EmploymentDemand employmentDemand, HttpServletRequest request) {
         AjaxResult result = new AjaxResult();
         User user = userService.getUser(request, result);
         if (user != null) {
-            int isSuccess = employmentDemandService.saveEmploymentDemand(EmploymentDemand);
+            employmentDemand.setUserId(user.getId());
+            int isSuccess = employmentDemandService.saveEmploymentDemand(employmentDemand);
             if (isSuccess == 1) {
                 result.setErroCode(2000);
                 result.setResult("success");

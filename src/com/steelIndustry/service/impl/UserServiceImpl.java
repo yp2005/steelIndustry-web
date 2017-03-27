@@ -53,6 +53,9 @@ public class UserServiceImpl extends DataServiceImpl<User, Integer> implements U
                 return null;
             } else {
                 int md5Times = Integer.valueOf((reqstarttime + "").substring((reqstarttime + "").length() - 1));
+                if(md5Times == 0) {
+                    md5Times = 1;
+                }
                 String extratokenComp = reqstarttime + "";
                 for (int i = 0; i < md5Times; i++) {
                     extratokenComp = GeneratorUtil.md5(extratokenComp);

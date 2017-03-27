@@ -72,11 +72,12 @@ public class StoreController {
 
     @RequestMapping(value = "/saveStore", method = RequestMethod.POST)
     @ResponseBody
-    public AjaxResult saveStore(@RequestBody Store Store, HttpServletRequest request) {
+    public AjaxResult saveStore(@RequestBody Store store, HttpServletRequest request) {
         AjaxResult result = new AjaxResult();
         User user = userService.getUser(request, result);
         if (user != null) {
-            int isSuccess = storeService.saveStore(Store);
+            store.setUserId(user.getId());
+            int isSuccess = storeService.saveStore(store);
             if (isSuccess == 1) {
                 result.setErroCode(2000);
                 result.setResult("success");

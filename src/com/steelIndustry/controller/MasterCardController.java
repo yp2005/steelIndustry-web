@@ -20,6 +20,7 @@ import com.steelIndustry.model.User;
 import com.steelIndustry.service.MasterCardService;
 import com.steelIndustry.service.UserService;
 import com.steelIndustry.util.CommonProperties;
+import com.taobao.api.internal.toplink.remoting.NettyRemotingDecoder.State;
 
 @Controller
 @RequestMapping("/masterCard")
@@ -76,6 +77,7 @@ public class MasterCardController {
         AjaxResult result = new AjaxResult();
         User user = userService.getUser(request, result);
         if (user != null) {
+            masterCard.setUserId(user.getId());
             int isSuccess = masterCardService.saveMasterCard(masterCard);
             if (isSuccess == 1) {
                 result.setErroCode(2000);
@@ -133,14 +135,33 @@ public class MasterCardController {
         AjaxResult result = new AjaxResult();
         User user = userService.getUser(request, result);
         if (user != null) {
+            int id = updateCd.getIntValue("id");
+            short state = updateCd.getShortValue("state");
             if (user.getIsAdmin() == 1) {
-                int isSuccess = masterCardService.updateMasterCardState(updateCd.getIntValue("id"), updateCd.getShortValue("state"));
+                int isSuccess = masterCardService.updateMasterCardState(id, state);
                 if (isSuccess == 1) {
                     result.setErroCode(2000);
                     result.setResult("success");
                 } else {
                     result.setErroCode(3000);
                     result.setErroMsg("fail");
+                }
+            }
+            else if(state == 0 || state == 2) {
+                MasterCard masterCard = masterCardService.findOne(id);
+                if (masterCard.getUserId() == user.getId()) {
+                    int isSuccess = masterCardService.updateMasterCardState(id, state);
+                    if (isSuccess == 1) {
+                        result.setErroCode(2000);
+                        result.setResult("success");
+                    } else {
+                        result.setErroCode(3000);
+                        result.setErroMsg("fail");
+                    }
+                }
+                else {
+                    result.setErroCode(5000);
+                    result.setResult("权限不足！");
                 }
             }
             else {
@@ -154,15 +175,22 @@ public class MasterCardController {
         return result;
     }
     
-    @RequestMapping(value = "/delMasterCard", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/deleteMasterCard", method = RequestMethod.DELETE)
     @ResponseBody
-    public AjaxResult delMasterCard(int id, HttpServletRequest request) {
+    public AjaxResult deleteMasterCard(int id, HttpServletRequest request) {
         AjaxResult result = new AjaxResult();
         User user = userService.getUser(request, result);
         if (user != null) {
-            masterCardService.delete(id);;
-            result.setErroCode(2000);
-            result.setResult("success");
+            MasterCard masterCard = masterCardService.findOne(id);
+            if (masterCard.getUserId() == user.getId()) {
+                masterCardService.delete(id);;
+                result.setErroCode(2000);
+                result.setResult("success");
+            }
+            else {
+                result.setErroCode(5000);
+                result.setResult("权限不足！");
+            }
         } else if (result.getErroCode() == null) {
             result.setErroCode(1000);
             result.setErroMsg("未知错误");

@@ -66,6 +66,19 @@ public class MasterCardServiceImpl extends DataServiceImpl<MasterCard, Integer> 
             masterCard.setPictures(pictures);
             masterCard.setWorkerTypes(workerTypeDao.getWorkerTypesByRelation(masterCard.getId(), "master_card")); 
             masterCard.setServiceArea(areaDataDao.getAreaDatasByRelation(masterCard.getId(), "master_card"));
+            for (int i = 0; i < masterCard.getServiceArea().size(); i++) {
+                AreaData area  = masterCard.getServiceArea().get(i);
+                AreaData pArea = area.getParentArea();
+                AreaData pAreaNew = new AreaData();
+                pAreaNew.setAreaId(pArea.getAreaId());
+                pAreaNew.setAreaNname(pArea.getAreaNname());
+                AreaData ppArea = pArea.getParentArea();
+                AreaData ppAreaNew = new AreaData();
+                ppAreaNew.setAreaId(ppArea.getAreaId());
+                ppAreaNew.setAreaNname(ppArea.getAreaNname());
+                pAreaNew.setParentAreaPageUse(ppAreaNew);
+                area.setParentAreaPageUse(pAreaNew);
+            }
             User user = userDao.getOne(userId);
             masterCard.setRealNameAuthentication(user.getRealNameAuthentication());
         }

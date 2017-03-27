@@ -12,6 +12,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.steelIndustry.framework.base.BaseSimplePojo;
@@ -49,6 +50,17 @@ public class AreaData implements BaseSimplePojo {
 
     @Column(name = "area_region")
     private String areaRegion;
+    
+    public AreaData getParentAreaPageUse() {
+        return parentAreaPageUse;
+    }
+
+    public void setParentAreaPageUse(AreaData parentAreaPageUse) {
+        this.parentAreaPageUse = parentAreaPageUse;
+    }
+
+    @Transient
+    private AreaData parentAreaPageUse;
 
     public AreaData() {
     }

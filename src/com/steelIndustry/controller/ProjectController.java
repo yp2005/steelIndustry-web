@@ -75,11 +75,12 @@ public class ProjectController {
 
     @RequestMapping(value = "/saveProject", method = RequestMethod.POST)
     @ResponseBody
-    public AjaxResult saveProject(@RequestBody Project Project, HttpServletRequest request) {
+    public AjaxResult saveProject(@RequestBody Project project, HttpServletRequest request) {
         AjaxResult result = new AjaxResult();
         User user = userService.getUser(request, result);
         if (user != null) {
-            int isSuccess = projectService.saveProject(Project);
+            project.setUserId(user.getId());
+            int isSuccess = projectService.saveProject(project);
             if (isSuccess == 1) {
                 result.setErroCode(2000);
                 result.setResult("success");
