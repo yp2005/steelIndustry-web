@@ -28,13 +28,13 @@ public class WorkerType implements BaseSimplePojo {
     @Column(name = "type_name")
     private String typeName; // 工种名称
     @Column(name = "parent_id")
-    private int parentId; // 父类型id
+    private Integer parentId; // 父类型id
     @ManyToOne
     @JoinColumn(name = "parent_id", insertable = false, updatable = false)
     @JsonIgnore
-    private DeviceType parentType;
+    private WorkerType parentType;
     @OneToMany(mappedBy = "parentType", fetch = FetchType.EAGER)
-    private List<DeviceType> children;
+    private List<WorkerType> children;
     @Column(name = "description")
     private String description; // 描述
 
@@ -58,27 +58,27 @@ public class WorkerType implements BaseSimplePojo {
         this.typeName = typeName;
     }
 
-    public int getParentId() {
+    public Integer getParentId() {
         return parentId;
     }
 
-    public void setParentId(int parentId) {
+    public void setParentId(Integer parentId) {
         this.parentId = parentId;
     }
 
-    public DeviceType getParentType() {
+    public WorkerType getParentType() {
         return parentType;
     }
 
-    public void setParentType(DeviceType parentType) {
+    public void setParentType(WorkerType parentType) {
         this.parentType = parentType;
     }
 
-    public List<DeviceType> getChildren() {
+    public List<WorkerType> getChildren() {
         return children;
     }
 
-    public void setChildren(List<DeviceType> children) {
+    public void setChildren(List<WorkerType> children) {
         this.children = children;
     }
 
