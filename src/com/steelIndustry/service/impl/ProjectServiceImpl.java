@@ -1,5 +1,6 @@
 package com.steelIndustry.service.impl;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -128,6 +129,7 @@ public class ProjectServiceImpl extends DataServiceImpl<Project, Integer> implem
         if (project.getSort() == null) {
             project.setSort(99);
         }
+        project.setUpdateTime(new Timestamp(System.currentTimeMillis()));
         project = projectDao.save(project);
         if (project == null) {
             return 0;

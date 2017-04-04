@@ -17,6 +17,7 @@ import com.steelIndustry.framework.dao.EntityJpaDao;
 import com.steelIndustry.framework.service.impl.DataServiceImpl;
 import com.steelIndustry.model.User;
 import com.steelIndustry.service.UserService;
+import com.steelIndustry.util.CommonProperties;
 import com.steelIndustry.util.CommonUtil;
 import com.steelIndustry.util.GeneratorUtil;
 
@@ -47,7 +48,7 @@ public class UserServiceImpl extends DataServiceImpl<User, Integer> implements U
                 result.setErroCode(7000);
                 result.setErroMsg("非法访问");
                 return null;
-            } else if (Math.abs(currentTime - Long.valueOf(reqstarttime)) > 10000) {
+            } else if (Math.abs(currentTime - Long.valueOf(reqstarttime)) > CommonProperties.getInstance().getPropertyForInt("timeDifference") * 1000) {
                 result.setErroCode(8000);
                 result.setErroMsg("本地时间异常，请校准本地时间");
                 return null;

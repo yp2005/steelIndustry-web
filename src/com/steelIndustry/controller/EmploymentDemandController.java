@@ -137,7 +137,7 @@ public class EmploymentDemandController {
         return result;
     }
     
-    @RequestMapping(value = "/delEmploymentDemand", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/deleteEmploymentDemand", method = RequestMethod.DELETE)
     @ResponseBody
     public AjaxResult delEmploymentDemand(int id, HttpServletRequest request) {
         AjaxResult result = new AjaxResult();

@@ -1,5 +1,6 @@
 package com.steelIndustry.service.impl;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -59,9 +60,10 @@ public class MasterCardServiceImpl extends DataServiceImpl<MasterCard, Integer> 
             params.put("relationMasterId", masterCard.getId());
             List<Map<String, Object>> pictureList = masterCardDao.findAllMapBySQL(sql, params);
             List<String> pictures = new ArrayList();
+            String imgServer = CommonProperties.getInstance().getProperty("imgServer");
             for (Iterator iterator = pictureList.iterator(); iterator.hasNext();) {
                 Map<String, Object> map = (Map<String, Object>) iterator.next();
-                pictures.add(CommonProperties.getInstance().getProperty("imgServer") + (String) map.get("imgName"));
+                pictures.add(imgServer + (String) map.get("imgName"));
             }
             masterCard.setPictures(pictures);
             masterCard.setWorkerTypes(workerTypeDao.getWorkerTypesByRelation(masterCard.getId(), "master_card")); 
@@ -146,6 +148,7 @@ public class MasterCardServiceImpl extends DataServiceImpl<MasterCard, Integer> 
         if (masterCard.getSort() == null) {
             masterCard.setSort(99);
         }
+        masterCard.setUpdateTime(new Timestamp(System.currentTimeMillis()));
         masterCard = masterCardDao.save(masterCard);
         if (masterCard == null) {
             return 0;

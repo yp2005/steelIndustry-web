@@ -1,5 +1,6 @@
 package com.steelIndustry.service.impl;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -169,6 +170,7 @@ public class EmploymentDemandServiceImpl extends DataServiceImpl<EmploymentDeman
         if (employmentDemand.getSort() == null) {
             employmentDemand.setSort(99);
         }
+        employmentDemand.setUpdateTime(new Timestamp(System.currentTimeMillis()));
         employmentDemand = employmentDemandDao.save(employmentDemand);
         if (employmentDemand == null) {
             return 0;

@@ -1,5 +1,6 @@
 package com.steelIndustry.service.impl;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -149,6 +150,7 @@ public class StoreServiceImpl extends DataServiceImpl<Store, Integer> implements
         if (store.getSort() == null) {
             store.setSort(99);
         }
+        store.setUpdateTime(new Timestamp(System.currentTimeMillis()));
         store = storeDao.save(store);
         if (store == null) {
             return 0;
