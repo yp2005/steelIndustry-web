@@ -77,6 +77,16 @@ public class Store implements BaseSimplePojo {
     private short realNameAuthentication; // 是否实名认证
     @Transient
     private short enterpriseCertification; // 是否实名认证
+    @Transient
+    private String imgServer; // 图片服务器url
+
+    public String getImgServer() {
+        return imgServer;
+    }
+
+    public void setImgServer(String imgServer) {
+        this.imgServer = imgServer;
+    }
 
     public Store() {
 

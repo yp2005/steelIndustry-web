@@ -16,6 +16,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.steelIndustry.bo.AjaxResult;
 import com.steelIndustry.bo.Conditions;
 import com.steelIndustry.model.EmploymentDemand;
+import com.steelIndustry.model.Project;
 import com.steelIndustry.model.User;
 import com.steelIndustry.service.EmploymentDemandService;
 import com.steelIndustry.service.UserService;
@@ -48,7 +49,7 @@ public class EmploymentDemandController {
         }
         return result;
     }
-    
+
     @RequestMapping(value = "/getEmploymentDemandById", method = RequestMethod.GET)
     @ResponseBody
     public AjaxResult getEmploymentDemandById(int id) {
@@ -59,7 +60,7 @@ public class EmploymentDemandController {
         employmentDemandService.updateEmploymentDemandBv(employmentDemand.getId());
         return result;
     }
-    
+
     @RequestMapping(value = "/getEmploymentDemandList", method = RequestMethod.POST)
     @ResponseBody
     public AjaxResult getEmploymentDemandList(@RequestBody Conditions conditions) {
@@ -94,7 +95,7 @@ public class EmploymentDemandController {
         }
         return result;
     }
-    
+
     @RequestMapping(value = "/updateEmploymentDemandCt", method = RequestMethod.POST)
     @ResponseBody
     public AjaxResult updateEmploymentDemandCt(int id) {
@@ -109,15 +110,17 @@ public class EmploymentDemandController {
         }
         return result;
     }
-    
+
     @RequestMapping(value = "/updateEmploymentDemandState", method = RequestMethod.POST)
     @ResponseBody
     public AjaxResult updateEmploymentDemandState(@RequestBody JSONObject updateCd, HttpServletRequest request) {
         AjaxResult result = new AjaxResult();
         User user = userService.getUser(request, result);
         if (user != null) {
+            int id = updateCd.getIntValue("id");
+            short state = updateCd.getShortValue("state");
             if (user.getIsAdmin() == 1) {
-                int isSuccess = employmentDemandService.updateEmploymentDemandState(updateCd.getIntValue("id"), updateCd.getShortValue("state"));
+                int isSuccess = employmentDemandService.updateEmploymentDemandState(id, state);
                 if (isSuccess == 1) {
                     result.setErroCode(2000);
                     result.setResult("success");
@@ -125,10 +128,24 @@ public class EmploymentDemandController {
                     result.setErroCode(3000);
                     result.setErroMsg("fail");
                 }
-            }
-            else {
+            } else if (state == 0 || state == 2) {
+                EmploymentDemand employmentDemand = employmentDemandService.findOne(id);
+                if (employmentDemand.getUserId() == user.getId()) {
+                    int isSuccess = employmentDemandService.updateEmploymentDemandState(id, state);
+                    if (isSuccess == 1) {
+                        result.setErroCode(2000);
+                        result.setResult("success");
+                    } else {
+                        result.setErroCode(3000);
+                        result.setErroMsg("fail");
+                    }
+                } else {
+                    result.setErroCode(5000);
+                    result.setErroMsg("权限不足！");
+                }
+            } else {
                 result.setErroCode(5000);
-                result.setResult("权限不足！");
+                result.setErroMsg("权限不足！");
             }
         } else if (result.getErroCode() == null) {
             result.setErroCode(1000);
@@ -136,10 +153,10 @@ public class EmploymentDemandController {
         }
         return result;
     }
-    
+
     @RequestMapping(value = "/deleteEmploymentDemand", method = RequestMethod.DELETE)
     @ResponseBody
-    public AjaxResult delEmploymentDemand(int id, HttpServletRequest request) {
+    public AjaxResult deleteEmploymentDemand(int id, HttpServletRequest request) {
         AjaxResult result = new AjaxResult();
         User user = userService.getUser(request, result);
         if (user != null) {

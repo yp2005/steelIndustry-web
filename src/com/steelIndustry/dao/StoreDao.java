@@ -22,6 +22,6 @@ public interface StoreDao extends EntityJpaDao<Store, Integer> {
     public int updateStoreCt(@Param("id") int id);
     
     @Modifying
-    @Query("update Store set callTimes = :state where id=:id")
+    @Query("update Store set state=:state where id=:id")
     public int updateStoreState(@Param("id") int id,@Param("state") short state);
 }

@@ -46,7 +46,7 @@ public class MasterCardController {
         }
         return result;
     }
-    
+
     @RequestMapping(value = "/getMasterCardByUserId", method = RequestMethod.GET)
     @ResponseBody
     public AjaxResult getMasterCardByUserId(int userId) {
@@ -57,7 +57,7 @@ public class MasterCardController {
         masterCardService.updateMasterCardBv(masterCard.getId());
         return result;
     }
-    
+
     @RequestMapping(value = "/getMasterCardList", method = RequestMethod.POST)
     @ResponseBody
     public AjaxResult getMasterCardList(@RequestBody Conditions conditions) {
@@ -92,7 +92,7 @@ public class MasterCardController {
         }
         return result;
     }
-    
+
     @RequestMapping(value = "/updateMasterCardCt", method = RequestMethod.POST)
     @ResponseBody
     public AjaxResult updateMasterCardCt(int id) {
@@ -107,7 +107,7 @@ public class MasterCardController {
         }
         return result;
     }
-    
+
     @RequestMapping(value = "/updateMasterCardWorkState", method = RequestMethod.POST)
     @ResponseBody
     public AjaxResult updateMasterCardWorkState(short isWorking, HttpServletRequest request) {
@@ -128,7 +128,7 @@ public class MasterCardController {
         }
         return result;
     }
-    
+
     @RequestMapping(value = "/updateMasterCardState", method = RequestMethod.POST)
     @ResponseBody
     public AjaxResult updateMasterCardState(@RequestBody JSONObject updateCd, HttpServletRequest request) {
@@ -146,8 +146,7 @@ public class MasterCardController {
                     result.setErroCode(3000);
                     result.setErroMsg("fail");
                 }
-            }
-            else if(state == 0 || state == 2) {
+            } else if (state == 0 || state == 2) {
                 MasterCard masterCard = masterCardService.findOne(id);
                 if (masterCard.getUserId() == user.getId()) {
                     int isSuccess = masterCardService.updateMasterCardState(id, state);
@@ -158,15 +157,13 @@ public class MasterCardController {
                         result.setErroCode(3000);
                         result.setErroMsg("fail");
                     }
-                }
-                else {
+                } else {
                     result.setErroCode(5000);
-                    result.setResult("权限不足！");
+                    result.setErroMsg("权限不足！");
                 }
-            }
-            else {
+            } else {
                 result.setErroCode(5000);
-                result.setResult("权限不足！");
+                result.setErroMsg("权限不足！");
             }
         } else if (result.getErroCode() == null) {
             result.setErroCode(1000);
@@ -174,7 +171,7 @@ public class MasterCardController {
         }
         return result;
     }
-    
+
     @RequestMapping(value = "/deleteMasterCard", method = RequestMethod.DELETE)
     @ResponseBody
     public AjaxResult deleteMasterCard(int id, HttpServletRequest request) {
@@ -183,11 +180,11 @@ public class MasterCardController {
         if (user != null) {
             MasterCard masterCard = masterCardService.findOne(id);
             if (masterCard.getUserId() == user.getId()) {
-                masterCardService.delete(id);;
+                masterCardService.delete(id);
+                ;
                 result.setErroCode(2000);
                 result.setResult("success");
-            }
-            else {
+            } else {
                 result.setErroCode(5000);
                 result.setResult("权限不足！");
             }

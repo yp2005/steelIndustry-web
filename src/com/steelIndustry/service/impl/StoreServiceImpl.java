@@ -67,6 +67,7 @@ public class StoreServiceImpl extends DataServiceImpl<Store, Integer> implements
                 Map<String, Object> map = (Map<String, Object>) iterator.next();
                 productPictures.add(CommonProperties.getInstance().getProperty("imgServer") + (String) map.get("imgName"));
             }
+            store.setImgServer(CommonProperties.getInstance().getProperty("imgServer"));
             store.setProductPictures(productPictures);
             store.setDeviceTypes(deviceTypeDao.getDeviceTypesByStoreId(store.getId())); 
             User user = userDao.getOne(store.getUserId());

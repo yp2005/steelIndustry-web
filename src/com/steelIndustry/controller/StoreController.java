@@ -45,7 +45,7 @@ public class StoreController {
         }
         return result;
     }
-    
+
     @RequestMapping(value = "/getStoreByUserId", method = RequestMethod.GET)
     @ResponseBody
     public AjaxResult getStoreByUserId(int userId) {
@@ -56,7 +56,7 @@ public class StoreController {
         storeService.updateStoreBv(store.getId());
         return result;
     }
-    
+
     @RequestMapping(value = "/getStoreList", method = RequestMethod.POST)
     @ResponseBody
     public AjaxResult getStoreList(@RequestBody Conditions conditions) {
@@ -91,7 +91,7 @@ public class StoreController {
         }
         return result;
     }
-    
+
     @RequestMapping(value = "/updateStoreCt", method = RequestMethod.POST)
     @ResponseBody
     public AjaxResult updateStoreCt(int id) {
@@ -106,15 +106,17 @@ public class StoreController {
         }
         return result;
     }
-    
+
     @RequestMapping(value = "/updateStoreState", method = RequestMethod.POST)
     @ResponseBody
     public AjaxResult updateStoreState(@RequestBody JSONObject updateCd, HttpServletRequest request) {
         AjaxResult result = new AjaxResult();
         User user = userService.getUser(request, result);
         if (user != null) {
+            int id = updateCd.getIntValue("id");
+            short state = updateCd.getShortValue("state");
             if (user.getIsAdmin() == 1) {
-                int isSuccess = storeService.updateStoreState(updateCd.getIntValue("id"), updateCd.getShortValue("state"));
+                int isSuccess = storeService.updateStoreState(id, state);
                 if (isSuccess == 1) {
                     result.setErroCode(2000);
                     result.setResult("success");
@@ -122,10 +124,24 @@ public class StoreController {
                     result.setErroCode(3000);
                     result.setErroMsg("fail");
                 }
-            }
-            else {
+            } else if (state == 0 || state == 2) {
+                Store store = storeService.findOne(id);
+                if (store.getUserId() == user.getId()) {
+                    int isSuccess = storeService.updateStoreState(id, state);
+                    if (isSuccess == 1) {
+                        result.setErroCode(2000);
+                        result.setResult("success");
+                    } else {
+                        result.setErroCode(3000);
+                        result.setErroMsg("fail");
+                    }
+                } else {
+                    result.setErroCode(5000);
+                    result.setErroMsg("权限不足！");
+                }
+            } else {
                 result.setErroCode(5000);
-                result.setResult("权限不足！");
+                result.setErroMsg("权限不足！");
             }
         } else if (result.getErroCode() == null) {
             result.setErroCode(1000);
@@ -133,10 +149,10 @@ public class StoreController {
         }
         return result;
     }
-    
-    @RequestMapping(value = "/delStore", method = RequestMethod.DELETE)
+
+    @RequestMapping(value = "/deleteStore", method = RequestMethod.DELETE)
     @ResponseBody
-    public AjaxResult delStore(int id, HttpServletRequest request) {
+    public AjaxResult deleteStore(int id, HttpServletRequest request) {
         AjaxResult result = new AjaxResult();
         User user = userService.getUser(request, result);
         if (user != null) {

@@ -84,11 +84,12 @@ public class UserController {
                 .equals((String) (validateCodeMap.get(instanceId).get("code")))) {
             result.setErroCode(4001);
             result.setErroMsg("验证码错误，请重新输入！");
-        } else if(mobileNumberValidateCodeMap.get(loginInfo.getMobileNumber() + "") == null) {
+        } else if (mobileNumberValidateCodeMap.get(loginInfo.getMobileNumber() + "") == null) {
             result.setErroCode(3000);
             result.setErroMsg("未发送手机验证码！");
-        }else if ((System.currentTimeMillis()
-                - (long) (mobileNumberValidateCodeMap.get(loginInfo.getMobileNumber() + "").get("time"))) > 2 * 60 * 1000) {
+        } else if ((System.currentTimeMillis()
+                - (long) (mobileNumberValidateCodeMap.get(loginInfo.getMobileNumber() + "").get("time"))) > 2 * 60
+                        * 1000) {
             result.setErroCode(4004);
             result.setErroMsg("手机验证码过期，请重新发送！");
         } else if (!loginInfo.getMobilePhoneValidateCode()
@@ -138,7 +139,7 @@ public class UserController {
         }
         return result;
     }
-    
+
     @RequestMapping(value = "/getUserById", method = RequestMethod.GET)
     @ResponseBody
     public AjaxResult getUserById(int id, HttpServletRequest request) {
@@ -148,8 +149,7 @@ public class UserController {
             if (user.getIsAdmin() == 1) {
                 result.setErroCode(2000);
                 result.setResult(userService.findOne(id));
-            }
-            else {
+            } else {
                 result.setErroCode(5000);
                 result.setErroMsg("没有权限");
             }
@@ -159,7 +159,7 @@ public class UserController {
         }
         return result;
     }
-    
+
     @RequestMapping(value = "/getUserList", method = RequestMethod.POST)
     @ResponseBody
     public AjaxResult getUserList(@RequestBody Conditions conditions, HttpServletRequest request) {
@@ -169,8 +169,7 @@ public class UserController {
             if (user.getIsAdmin() == 1) {
                 result.setErroCode(2000);
                 result.setResult(userService.getUserList(conditions));
-            }
-            else {
+            } else {
                 result.setErroCode(5000);
                 result.setErroMsg("没有权限");
             }
@@ -180,7 +179,7 @@ public class UserController {
         }
         return result;
     }
-    
+
     @RequestMapping(value = "/updateLatestLoginTime", method = RequestMethod.POST)
     @ResponseBody
     public AjaxResult updateLatestLoginTime(HttpServletRequest request) {
@@ -195,7 +194,7 @@ public class UserController {
         }
         return result;
     }
-    
+
     @RequestMapping(value = "/updateUserState", method = RequestMethod.POST)
     @ResponseBody
     public AjaxResult updateUserState(@RequestBody JSONObject updateCd, HttpServletRequest request) {
@@ -203,7 +202,8 @@ public class UserController {
         User user = userService.getUser(request, result);
         if (user != null) {
             if (user.getIsAdmin() == 1) {
-                int isSuccess = userService.updateUserState(updateCd.getIntValue("id"), updateCd.getShortValue("state"));
+                int isSuccess = userService.updateUserState(updateCd.getIntValue("id"),
+                        updateCd.getShortValue("state"));
                 if (isSuccess == 1) {
                     result.setErroCode(2000);
                     result.setResult("success");
@@ -211,8 +211,7 @@ public class UserController {
                     result.setErroCode(3000);
                     result.setErroMsg("fail");
                 }
-            }
-            else {
+            } else {
                 result.setErroCode(5000);
                 result.setResult("权限不足！");
             }
@@ -287,7 +286,7 @@ public class UserController {
         }
         return result;
     }
-    
+
     public String sendMobilePhoneValidateCode(String mobileNumber, String validateCode) {
         TaobaoClient client = new DefaultTaobaoClient("http://gw.api.taobao.com/router/rest",
                 CommonProperties.getInstance().getProperty("appKey"),

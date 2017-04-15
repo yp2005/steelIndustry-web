@@ -16,6 +16,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.steelIndustry.bo.AjaxResult;
 import com.steelIndustry.bo.Conditions;
 import com.steelIndustry.model.Project;
+import com.steelIndustry.model.Store;
 import com.steelIndustry.model.User;
 import com.steelIndustry.service.ProjectService;
 import com.steelIndustry.service.UserService;
@@ -48,7 +49,7 @@ public class ProjectController {
         }
         return result;
     }
-    
+
     @RequestMapping(value = "/getProjectById", method = RequestMethod.GET)
     @ResponseBody
     public AjaxResult getProjectById(int id) {
@@ -59,7 +60,7 @@ public class ProjectController {
         projectService.updateProjectBv(project.getId());
         return result;
     }
-    
+
     @RequestMapping(value = "/getProjectList", method = RequestMethod.POST)
     @ResponseBody
     public AjaxResult getProjectList(@RequestBody Conditions conditions) {
@@ -94,7 +95,7 @@ public class ProjectController {
         }
         return result;
     }
-    
+
     @RequestMapping(value = "/updateProjectCt", method = RequestMethod.POST)
     @ResponseBody
     public AjaxResult updateProjectCt(int id) {
@@ -109,15 +110,17 @@ public class ProjectController {
         }
         return result;
     }
-    
+
     @RequestMapping(value = "/updateProjectState", method = RequestMethod.POST)
     @ResponseBody
     public AjaxResult updateProjectState(@RequestBody JSONObject updateCd, HttpServletRequest request) {
         AjaxResult result = new AjaxResult();
         User user = userService.getUser(request, result);
         if (user != null) {
+            int id = updateCd.getIntValue("id");
+            short state = updateCd.getShortValue("state");
             if (user.getIsAdmin() == 1) {
-                int isSuccess = projectService.updateProjectState(updateCd.getIntValue("id"), updateCd.getShortValue("state"));
+                int isSuccess = projectService.updateProjectState(id, state);
                 if (isSuccess == 1) {
                     result.setErroCode(2000);
                     result.setResult("success");
@@ -125,10 +128,24 @@ public class ProjectController {
                     result.setErroCode(3000);
                     result.setErroMsg("fail");
                 }
-            }
-            else {
+            } else if (state == 0 || state == 2) {
+                Project project = projectService.findOne(id);
+                if (project.getUserId() == user.getId()) {
+                    int isSuccess = projectService.updateProjectState(id, state);
+                    if (isSuccess == 1) {
+                        result.setErroCode(2000);
+                        result.setResult("success");
+                    } else {
+                        result.setErroCode(3000);
+                        result.setErroMsg("fail");
+                    }
+                } else {
+                    result.setErroCode(5000);
+                    result.setErroMsg("权限不足！");
+                }
+            } else {
                 result.setErroCode(5000);
-                result.setResult("权限不足！");
+                result.setErroMsg("权限不足！");
             }
         } else if (result.getErroCode() == null) {
             result.setErroCode(1000);
@@ -136,14 +153,15 @@ public class ProjectController {
         }
         return result;
     }
-    
-    @RequestMapping(value = "/delProject", method = RequestMethod.DELETE)
+
+    @RequestMapping(value = "/deleteProject", method = RequestMethod.DELETE)
     @ResponseBody
-    public AjaxResult delProject(int id, HttpServletRequest request) {
+    public AjaxResult deleteProject(int id, HttpServletRequest request) {
         AjaxResult result = new AjaxResult();
         User user = userService.getUser(request, result);
         if (user != null) {
-            projectService.delete(id);;
+            projectService.delete(id);
+            ;
             result.setErroCode(2000);
             result.setResult("success");
         } else if (result.getErroCode() == null) {

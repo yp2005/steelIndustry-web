@@ -16,7 +16,7 @@ public interface EmploymentDemandDao extends EntityJpaDao<EmploymentDemand, Inte
     public EmploymentDemand getEmploymentDemandById(@Param("id") int id);
     
     @Query("select t from EmploymentDemand t where t.userId=:userId")
-    public List<EmploymentDemand> getUserEmploymentDemand(int userId);
+    public List<EmploymentDemand> getUserEmploymentDemand(@Param("userId") int userId);
     
     @Modifying
     @Query("update EmploymentDemand set browseVolume = browseVolume + 1 where id=:id")
