@@ -125,6 +125,10 @@ public class EmploymentDemandServiceImpl extends DataServiceImpl<EmploymentDeman
                 : conditions.getRowStartNumber()) + "," + (conditions.getRowCount() == null ? 10
                         : conditions.getRowCount());
         List<Map<String, Object>> list = employmentDemandDao.findAllMapBySQL(sql, params);
+        for (int i = 0; i < list.size(); i++) {
+            Map<String, Object> map = list.get(i);
+            map.put("distance", CommonUtil.getDistance(conditions.getLat(), conditions.getLng(), (float)map.get("lat"), (float)map.get("lng")));
+        }
         return list;
     }
     
