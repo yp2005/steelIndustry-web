@@ -38,8 +38,8 @@ public class UserServiceImpl extends DataServiceImpl<User, Integer> implements U
             long currentTime = System.currentTimeMillis();
             String instanceId = request.getHeader("instance_id");
             String accessToken = request.getHeader("access_token");
-            String reqstarttime = request.getHeader("reqstarttime");
-            String extratoken = request.getHeader("extratoken");
+            String reqstarttime = request.getHeader("req_start_time");
+            String extratoken = request.getHeader("extra_token");
             if (CommonUtil.isEmpty(instanceId) || CommonUtil.isEmpty(accessToken)) {
                 result.setErroCode(4000);
                 result.setErroMsg("未登录或者登陆超时");
@@ -105,8 +105,8 @@ public class UserServiceImpl extends DataServiceImpl<User, Integer> implements U
             long currentTime = System.currentTimeMillis();
             String instanceId = request.getHeader("instance_id");
             String accessToken = request.getHeader("access_token");
-            String reqstarttime = request.getHeader("reqstarttime");
-            String extratoken = request.getHeader("extratoken");
+            String reqstarttime = request.getHeader("req_start_time");
+            String extratoken = request.getHeader("extra_token");
             System.out.println(Math.abs(currentTime - Long.valueOf(reqstarttime)));
             System.out.println(Math.abs(currentTime - Long.valueOf(reqstarttime)));
             if (CommonUtil.isEmpty(instanceId) || CommonUtil.isEmpty(accessToken) || CommonUtil.isEmpty(reqstarttime)
