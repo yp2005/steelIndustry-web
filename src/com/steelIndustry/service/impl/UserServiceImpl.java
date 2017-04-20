@@ -128,6 +128,11 @@ public class UserServiceImpl extends DataServiceImpl<User, Integer> implements U
     public int updateUserState(int id, short state) {
         return userDao.updateUserState(id, state);
     }
+    
+    @Override
+    public int updateShareState(int userId, short shareState) {
+        return userDao.updateShareState(userId, shareState);
+    }
 
     @Override
     public User getUser(long mobileNumber) {

@@ -222,6 +222,27 @@ public class UserController {
         return result;
     }
 
+    @RequestMapping(value = "/updateShareState", method = RequestMethod.POST)
+    @ResponseBody
+    public AjaxResult updateShareState(@RequestBody JSONObject updateCd, HttpServletRequest request) {
+        AjaxResult result = new AjaxResult();
+        User user = userService.getUser(request, result);
+        if (user != null) {
+            int isSuccess = userService.updateShareState(user.getId(), updateCd.getShortValue("shareState"));
+            if (isSuccess == 1) {
+                result.setErroCode(2000);
+                result.setResult("success");
+            } else {
+                result.setErroCode(3000);
+                result.setErroMsg("fail");
+            }
+        } else if (result.getErroCode() == null) {
+            result.setErroCode(1000);
+            result.setErroMsg("未知错误");
+        }
+        return result;
+    }
+
     @RequestMapping(value = "/sendCode", method = RequestMethod.POST)
     @ResponseBody
     public AjaxResult sendCode(String mobileNumber, HttpServletRequest request) {

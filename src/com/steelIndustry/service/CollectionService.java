@@ -18,7 +18,9 @@ public interface CollectionService extends DataService<Collection, Integer> {
 
     public List<Store> getStores(int userId);
 
+    //取消收藏type：card、project、work、store
     public int delCollection(int userId, String type, int collectId);
     
+    //添加收藏type：card、project、work、store
     public Collection addCollection(int userId, String type, int collectId);
 }

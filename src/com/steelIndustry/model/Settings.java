@@ -47,11 +47,11 @@ public class Settings implements BaseSimplePojo {
         this.id = id;
     }
 
-    public short getShareWwitch() {
+    public short getShareSwitch() {
         return shareSwitch;
     }
 
-    public void setShareWwitch(short shareSwitch) {
+    public void setShareSwitch(short shareSwitch) {
         this.shareSwitch = shareSwitch;
     }
 

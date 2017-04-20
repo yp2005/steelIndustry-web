@@ -27,6 +27,10 @@ public interface UserDao extends EntityJpaDao<User, Integer> {
     public int updateUserState(@Param("id") int id, @Param("state") short state);
     
     @Modifying
+    @Query("update User set isShared=:shareState where id=:userId")
+    public int updateShareState(@Param("userId") int userId, @Param("shareState") short shareState);
+    
+    @Modifying
     @Query("update User set realNameAuthentication=:state where id=:id")
     public int updateUserRnaState(@Param("id") int id, @Param("state") short state);
     
