@@ -129,6 +129,9 @@ public class CommonController {
         resultMap.put("systemNotice", systemNoticeService.getSystemNoticeList());
         resultMap.put("hotStore", storeService.getHotStore());
         resultMap.put("hotWork", employmentDemandService.getHotWork());
+        resultMap.put("imgServer", CommonProperties.getInstance().get("imgServer"));
+        result.setErroCode(2000);
+        result.setResult(resultMap);
         return result;
     }
 }

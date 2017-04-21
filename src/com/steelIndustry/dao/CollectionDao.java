@@ -30,5 +30,5 @@ public interface CollectionDao extends EntityJpaDao<Collection, Integer> {
 	
 	@Modifying
 	@Query("delete from Collection where userId=:userId and type=:type and collectId=:collectId")
-	public int delCollection(int userId, String type, int collectId);
+	public int deleteCollection(@Param("userId") int userId, @Param("type") String type, @Param("collectId") int collectId);
 }

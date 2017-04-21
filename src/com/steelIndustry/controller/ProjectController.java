@@ -18,6 +18,7 @@ import com.steelIndustry.bo.Conditions;
 import com.steelIndustry.model.Project;
 import com.steelIndustry.model.Store;
 import com.steelIndustry.model.User;
+import com.steelIndustry.service.CollectionService;
 import com.steelIndustry.service.ProjectService;
 import com.steelIndustry.service.UserService;
 import com.steelIndustry.util.CommonProperties;
@@ -31,6 +32,9 @@ public class ProjectController {
 
     @Resource(name = "userService")
     private UserService userService;
+    
+    @Resource(name = "collectionService")
+    private CollectionService collectionService;
 
     @RequestMapping(value = "/getUserProject", method = RequestMethod.GET)
     @ResponseBody
@@ -52,12 +56,18 @@ public class ProjectController {
 
     @RequestMapping(value = "/getProjectById", method = RequestMethod.GET)
     @ResponseBody
-    public AjaxResult getProjectById(int id) {
+    public AjaxResult getProjectById(int id, HttpServletRequest request) {
         AjaxResult result = new AjaxResult();
         result.setErroCode(2000);
         Project project = projectService.getProjectById(id);
+        User user = userService.getUser(request, result);
+        if (user != null && user.getId() != project.getUserId()) {
+            project.setIsCollected(collectionService.isCollected(user.getId(), "project", project.getId()));
+        }
+        if (user == null || user.getId() != project.getUserId()) {
+            projectService.updateProjectBv(project.getId());
+        }
         result.setResult(project);
-        projectService.updateProjectBv(project.getId());
         return result;
     }
 

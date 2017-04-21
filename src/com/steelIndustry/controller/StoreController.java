@@ -17,6 +17,7 @@ import com.steelIndustry.bo.AjaxResult;
 import com.steelIndustry.bo.Conditions;
 import com.steelIndustry.model.Store;
 import com.steelIndustry.model.User;
+import com.steelIndustry.service.CollectionService;
 import com.steelIndustry.service.StoreService;
 import com.steelIndustry.service.UserService;
 import com.steelIndustry.util.CommonProperties;
@@ -30,6 +31,9 @@ public class StoreController {
 
     @Resource(name = "userService")
     private UserService userService;
+    
+    @Resource(name = "collectionService")
+    private CollectionService collectionService;
 
     @RequestMapping(value = "/getStore", method = RequestMethod.GET)
     @ResponseBody
@@ -48,12 +52,18 @@ public class StoreController {
 
     @RequestMapping(value = "/getStoreByUserId", method = RequestMethod.GET)
     @ResponseBody
-    public AjaxResult getStoreByUserId(int userId) {
+    public AjaxResult getStoreByUserId(int userId, HttpServletRequest request) {
         AjaxResult result = new AjaxResult();
         result.setErroCode(2000);
         Store store = storeService.getStoreByUserId(userId);
+        User user = userService.getUser(request, result);
+        if (user != null && user.getId() != userId) {
+            store.setIsCollected(collectionService.isCollected(user.getId(), "store", store.getId()));
+        }
+        if (user == null || user.getId() != store.getUserId()) {
+            storeService.updateStoreBv(store.getId());
+        }
         result.setResult(store);
-        storeService.updateStoreBv(store.getId());
         return result;
     }
 

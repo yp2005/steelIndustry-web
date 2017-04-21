@@ -18,6 +18,7 @@ import com.steelIndustry.bo.Conditions;
 import com.steelIndustry.model.EmploymentDemand;
 import com.steelIndustry.model.Project;
 import com.steelIndustry.model.User;
+import com.steelIndustry.service.CollectionService;
 import com.steelIndustry.service.EmploymentDemandService;
 import com.steelIndustry.service.UserService;
 import com.steelIndustry.util.CommonProperties;
@@ -31,6 +32,9 @@ public class EmploymentDemandController {
 
     @Resource(name = "userService")
     private UserService userService;
+    
+    @Resource(name = "collectionService")
+    private CollectionService collectionService;
 
     @RequestMapping(value = "/getUserEmploymentDemand", method = RequestMethod.GET)
     @ResponseBody
@@ -52,12 +56,18 @@ public class EmploymentDemandController {
 
     @RequestMapping(value = "/getEmploymentDemandById", method = RequestMethod.GET)
     @ResponseBody
-    public AjaxResult getEmploymentDemandById(int id) {
+    public AjaxResult getEmploymentDemandById(int id, HttpServletRequest request) {
         AjaxResult result = new AjaxResult();
         result.setErroCode(2000);
         EmploymentDemand employmentDemand = employmentDemandService.getEmploymentDemandById(id);
+        User user = userService.getUser(request, result);
+        if (user != null && user.getId() != employmentDemand.getUserId()) {
+            employmentDemand.setIsCollected(collectionService.isCollected(user.getId(), "work", employmentDemand.getId()));
+        }
+        if (user == null || user.getId() != employmentDemand.getUserId()) {
+            employmentDemandService.updateEmploymentDemandBv(employmentDemand.getId());
+        }
         result.setResult(employmentDemand);
-        employmentDemandService.updateEmploymentDemandBv(employmentDemand.getId());
         return result;
     }
 

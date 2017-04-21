@@ -74,6 +74,16 @@ public class MasterCard implements BaseSimplePojo {
     private List<AreaData> serviceArea;
     @Transient
     private short realNameAuthentication; // 是否实名认证
+    @Transient
+    private short isCollected;//是否收藏
+
+    public short getIsCollected() {
+        return isCollected;
+    }
+
+    public void setIsCollected(short isCollected) {
+        this.isCollected = isCollected;
+    }
 
     public MasterCard() {
 

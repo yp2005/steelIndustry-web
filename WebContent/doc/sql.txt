@@ -3694,7 +3694,7 @@ CREATE TABLE system_notice (
 CREATE TABLE advertisement (
     id INT (11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键id',
     title VARCHAR (50) NOT NULL COMMENT '广告标题',
-    link_type VARCHAR (10) COMMENT '广告链接类型，如果不是广告联盟的广告有此属性：innerLink、outerLink、alliance',
+    link_type VARCHAR (10) COMMENT '广告链接类型：innerLink、outerLink、alliance',
     img VARCHAR (50) COMMENT '图片名称',
     url VARCHAR (100) COMMENT '外部链的url',
     store_id INT (11) COMMENT '内部链接店铺id',

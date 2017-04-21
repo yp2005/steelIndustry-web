@@ -23,4 +23,6 @@ public interface UserService extends DataService<User, Integer> {
     public int updateUserState(int id, short state);
     
     public int updateShareState(int userId, short shareState);
+    
+    public int updateUserAvatar(int id, String avatar);
 }

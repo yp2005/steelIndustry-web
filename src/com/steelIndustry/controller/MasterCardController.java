@@ -17,6 +17,7 @@ import com.steelIndustry.bo.AjaxResult;
 import com.steelIndustry.bo.Conditions;
 import com.steelIndustry.model.MasterCard;
 import com.steelIndustry.model.User;
+import com.steelIndustry.service.CollectionService;
 import com.steelIndustry.service.MasterCardService;
 import com.steelIndustry.service.UserService;
 import com.steelIndustry.util.CommonProperties;
@@ -31,6 +32,9 @@ public class MasterCardController {
 
     @Resource(name = "userService")
     private UserService userService;
+    
+    @Resource(name = "collectionService")
+    private CollectionService collectionService;
 
     @RequestMapping(value = "/getMasterCard", method = RequestMethod.GET)
     @ResponseBody
@@ -49,12 +53,18 @@ public class MasterCardController {
 
     @RequestMapping(value = "/getMasterCardByUserId", method = RequestMethod.GET)
     @ResponseBody
-    public AjaxResult getMasterCardByUserId(int userId) {
+    public AjaxResult getMasterCardByUserId(int userId, HttpServletRequest request) {
         AjaxResult result = new AjaxResult();
         result.setErroCode(2000);
         MasterCard masterCard = masterCardService.getMasterCardByUserId(userId);
+        User user = userService.getUser(request, result);
+        if (user != null && user.getId() != masterCard.getUserId()) {
+            masterCard.setIsCollected(collectionService.isCollected(user.getId(), "card", masterCard.getId()));
+        }
+        if (user == null || user.getId() != masterCard.getUserId()) {
+            masterCardService.updateMasterCardBv(masterCard.getId());
+        }
         result.setResult(masterCard);
-        masterCardService.updateMasterCardBv(masterCard.getId());
         return result;
     }
 

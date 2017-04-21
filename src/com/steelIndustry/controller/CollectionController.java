@@ -1,5 +1,8 @@
 package com.steelIndustry.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
@@ -13,6 +16,7 @@ import com.steelIndustry.model.Collection;
 import com.steelIndustry.model.User;
 import com.steelIndustry.service.CollectionService;
 import com.steelIndustry.service.UserService;
+import com.steelIndustry.util.CommonProperties;
 
 @Controller
 @RequestMapping("/collection")
@@ -31,7 +35,10 @@ public class CollectionController {
         User user = userService.getUser(request, result);
         if (user != null) {
             result.setErroCode(2000);
-            result.setResult(collectionService.getMasterCards(user.getId()));
+            Map resultMap = new HashMap();
+            resultMap.put("masterCardList", collectionService.getMasterCards(user.getId()));
+            resultMap.put("imgServer", CommonProperties.getInstance().get("imgServer"));
+            result.setResult(resultMap);
         } else if (result.getErroCode() == null) {
             result.setErroCode(1000);
             result.setErroMsg("未知错误");
@@ -46,7 +53,10 @@ public class CollectionController {
         User user = userService.getUser(request, result);
         if (user != null) {
             result.setErroCode(2000);
-            result.setResult(collectionService.getEmploymentDemands(user.getId()));
+            Map resultMap = new HashMap();
+            resultMap.put("workList", collectionService.getEmploymentDemands(user.getId()));
+            resultMap.put("imgServer", CommonProperties.getInstance().get("imgServer"));
+            result.setResult(resultMap);
         } else if (result.getErroCode() == null) {
             result.setErroCode(1000);
             result.setErroMsg("未知错误");
@@ -61,7 +71,10 @@ public class CollectionController {
         User user = userService.getUser(request, result);
         if (user != null) {
             result.setErroCode(2000);
-            result.setResult(collectionService.getProjects(user.getId()));
+            Map resultMap = new HashMap();
+            resultMap.put("projectList", collectionService.getProjects(user.getId()));
+            resultMap.put("imgServer", CommonProperties.getInstance().get("imgServer"));
+            result.setResult(resultMap);
         } else if (result.getErroCode() == null) {
             result.setErroCode(1000);
             result.setErroMsg("未知错误");
@@ -76,7 +89,10 @@ public class CollectionController {
         User user = userService.getUser(request, result);
         if (user != null) {
             result.setErroCode(2000);
-            result.setResult(collectionService.getStores(user.getId()));
+            Map resultMap = new HashMap();
+            resultMap.put("storeList", collectionService.getStores(user.getId()));
+            resultMap.put("imgServer", CommonProperties.getInstance().get("imgServer"));
+            result.setResult(resultMap);
         } else if (result.getErroCode() == null) {
             result.setErroCode(1000);
             result.setErroMsg("未知错误");
@@ -84,13 +100,13 @@ public class CollectionController {
         return result;
     }
     
-    @RequestMapping(value = "/delCollection", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/deleteCollection", method = RequestMethod.POST)
     @ResponseBody
-    public AjaxResult delCollection(String type, int collectId, HttpServletRequest request) {
+    public AjaxResult deleteCollection(String type, int collectId, HttpServletRequest request) {
         AjaxResult result = new AjaxResult();
         User user = userService.getUser(request, result);
         if (user != null) {
-            int isSuccess = collectionService.delCollection(user.getId(), type, collectId);
+            int isSuccess = collectionService.deleteCollection(user.getId(), type, collectId);
             if (isSuccess == 1) {
                 result.setErroCode(2000);
                 result.setResult("success");

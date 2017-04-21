@@ -79,6 +79,16 @@ public class Store implements BaseSimplePojo {
     private short enterpriseCertification; // 是否实名认证
     @Transient
     private String imgServer; // 图片服务器url
+    @Transient
+    private short isCollected;//是否收藏
+
+    public short getIsCollected() {
+        return isCollected;
+    }
+
+    public void setIsCollected(short isCollected) {
+        this.isCollected = isCollected;
+    }
 
     public String getImgServer() {
         return imgServer;

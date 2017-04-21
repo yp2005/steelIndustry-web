@@ -37,4 +37,8 @@ public interface UserDao extends EntityJpaDao<User, Integer> {
     @Modifying
     @Query("update User set enterpriseCertification=:state where id=:id")
     public int updateUserEcState(@Param("id") int id, @Param("state") short state);
+    
+    @Modifying
+    @Query("update User set avatar=:avatar where id=:id")
+    public int updateUserAvatar(@Param("id") int id, @Param("avatar") String avatar);
 }

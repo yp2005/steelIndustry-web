@@ -116,6 +116,9 @@ public class UserController {
                 user.setInstanceId(instanceId);
                 user.setAccessToken(GeneratorUtil.createUUID());
                 user = userService.saveUser(user);
+                if (CommonUtil.isNotEmpty(user.getAvatar())) {
+                    user.setAvatar(CommonProperties.getInstance().get("imgServer") + user.getAvatar());
+                }
                 result.setErroCode(2000);
                 result.setResult(user);
                 validateCodeMap.remove(instanceId);
@@ -232,6 +235,27 @@ public class UserController {
             if (isSuccess == 1) {
                 result.setErroCode(2000);
                 result.setResult("success");
+            } else {
+                result.setErroCode(3000);
+                result.setErroMsg("fail");
+            }
+        } else if (result.getErroCode() == null) {
+            result.setErroCode(1000);
+            result.setErroMsg("未知错误");
+        }
+        return result;
+    }
+    
+    @RequestMapping(value = "/updateUserAvatar", method = RequestMethod.POST)
+    @ResponseBody
+    public AjaxResult updateUserAvatar(String avatar, HttpServletRequest request) {
+        AjaxResult result = new AjaxResult();
+        User user = userService.getUser(request, result);
+        if (user != null) {
+            int isSuccess = userService.updateUserAvatar(user.getId(), avatar);
+            if (isSuccess == 1) {
+                result.setErroCode(2000);
+                result.setResult(CommonProperties.getInstance().get("imgServer") + avatar);
             } else {
                 result.setErroCode(3000);
                 result.setErroMsg("fail");
