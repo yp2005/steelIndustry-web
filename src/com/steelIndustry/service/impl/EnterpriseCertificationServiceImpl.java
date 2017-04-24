@@ -1,6 +1,7 @@
 package com.steelIndustry.service.impl;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -15,6 +16,7 @@ import com.steelIndustry.framework.dao.EntityJpaDao;
 import com.steelIndustry.framework.service.impl.DataServiceImpl;
 import com.steelIndustry.model.EnterpriseCertification;
 import com.steelIndustry.service.EnterpriseCertificationService;
+import com.steelIndustry.util.CommonProperties;
 
 @Service("enterpriseCertificationService")
 public class EnterpriseCertificationServiceImpl extends DataServiceImpl<EnterpriseCertification, Integer>
@@ -49,8 +51,11 @@ public class EnterpriseCertificationServiceImpl extends DataServiceImpl<Enterpri
                 : conditions.getRowStartNumber()) + "," + (conditions.getRowCount() == null ? 10
                         : conditions.getRowCount());
         List<EnterpriseCertification> enterpriseCertificationList = enterpriseCertificationDao.executeNativeSQL(sql, params, EnterpriseCertification.class);
+        for (Iterator iterator = enterpriseCertificationList.iterator(); iterator.hasNext();) {
+            EnterpriseCertification enterpriseCertification = (EnterpriseCertification) iterator.next();
+            enterpriseCertification.setImgServer(CommonProperties.getInstance().getProperty("imgServer"));
+        }
         return enterpriseCertificationList;
-    
     }
 
     @Override
@@ -60,7 +65,11 @@ public class EnterpriseCertificationServiceImpl extends DataServiceImpl<Enterpri
 
     @Override
     public EnterpriseCertification saveEnterpriseCertification(EnterpriseCertification enterpriseCertification) {
-        return enterpriseCertificationDao.save(enterpriseCertification);
+        enterpriseCertification = enterpriseCertificationDao.save(enterpriseCertification);
+        if(enterpriseCertification != null) {
+            userDao.updateUserEcState(enterpriseCertification.getUserId(), enterpriseCertification.getState());
+        }
+        return enterpriseCertification;
     }
 
 }

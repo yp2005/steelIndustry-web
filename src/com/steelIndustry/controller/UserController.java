@@ -128,12 +128,72 @@ public class UserController {
         return result;
     }
 
+    @RequestMapping(value = "/updateMobileNumber", method = RequestMethod.POST)
+    @ResponseBody
+    public AjaxResult updateMobileNumber(@RequestBody LoginInfo loginInfo, HttpServletRequest request) {
+        String instanceId = request.getHeader("instance_id");
+        AjaxResult result = new AjaxResult();
+        if (CommonUtil.isEmpty(instanceId)) {
+            result.setErroCode(7000);
+            result.setErroMsg("非法访问！");
+        } else if ((System.currentTimeMillis() - (long) (validateCodeMap.get(instanceId).get("time"))) > 2 * 60
+                * 1000) {
+            result.setErroCode(4002);
+            result.setErroMsg("验证码过期，请重新输入！");
+        } else if (!loginInfo.getValidateCode().toUpperCase()
+                .equals((String) (validateCodeMap.get(instanceId).get("code")))) {
+            result.setErroCode(4001);
+            result.setErroMsg("验证码错误，请重新输入！");
+        } else if (mobileNumberValidateCodeMap.get(loginInfo.getMobileNumber() + "") == null) {
+            result.setErroCode(3000);
+            result.setErroMsg("未发送手机验证码！");
+        } else if ((System.currentTimeMillis()
+                - (long) (mobileNumberValidateCodeMap.get(loginInfo.getMobileNumber() + "").get("time"))) > 2 * 60
+                        * 1000) {
+            result.setErroCode(4004);
+            result.setErroMsg("手机验证码过期，请重新发送！");
+        } else if (!loginInfo.getMobilePhoneValidateCode()
+                .equals((String) (mobileNumberValidateCodeMap.get(loginInfo.getMobileNumber() + "").get("code")))) {
+            result.setErroCode(4003);
+            result.setErroMsg("手机验证码错误，请重新输入！");
+        } else {
+            User user = userService.getUser(loginInfo.getMobileNumber());
+            if (user != null) {
+                result.setErroCode(3000);
+                result.setErroMsg("手机号已被注册，请重新输入！");
+            } 
+            else {
+                user = userService.getUser(loginInfo.getOldMobileNumber());
+                if (user.getState() == 0) {
+                    result.setErroCode(3000);
+                    result.setErroMsg("您的账号已被禁用！");
+                } else {
+                    user.setInstanceId(instanceId);
+                    user.setAccessToken(GeneratorUtil.createUUID());
+                    user.setMobileNumber(loginInfo.getMobileNumber());
+                    user = userService.saveUser(user);
+                    if (CommonUtil.isNotEmpty(user.getAvatar())) {
+                        user.setAvatar(CommonProperties.getInstance().get("imgServer") + user.getAvatar());
+                    }
+                    result.setErroCode(2000);
+                    result.setResult(user);
+                    validateCodeMap.remove(instanceId);
+                    mobileNumberValidateCodeMap.remove(loginInfo.getMobileNumber() + "");
+                }
+            }
+        }
+        return result;
+    }
+
     @RequestMapping(value = "/getUser", method = RequestMethod.GET)
     @ResponseBody
     public AjaxResult getUser(HttpServletRequest request) {
         AjaxResult result = new AjaxResult();
         User user = userService.getUser(request, result);
         if (user != null) {
+            if (CommonUtil.isNotEmpty(user.getAvatar())) {
+                user.setAvatar(CommonProperties.getInstance().get("imgServer") + user.getAvatar());
+            }
             result.setErroCode(2000);
             result.setResult(user);
         } else if (result.getErroCode() == null) {
@@ -245,7 +305,7 @@ public class UserController {
         }
         return result;
     }
-    
+
     @RequestMapping(value = "/updateUserAvatar", method = RequestMethod.POST)
     @ResponseBody
     public AjaxResult updateUserAvatar(String avatar, HttpServletRequest request) {
@@ -266,11 +326,125 @@ public class UserController {
         }
         return result;
     }
+    
+    @RequestMapping(value = "/updateUserInfo", method = RequestMethod.POST)
+    @ResponseBody
+    public AjaxResult updateUserInfo(@RequestBody User userInfo, HttpServletRequest request) {
+        AjaxResult result = new AjaxResult();
+        User user = userService.getUser(request, result);
+        if (user != null) {
+            user.setUserName(userInfo.getUserName());
+            user.setSex(userInfo.getSex());
+            user.setBirthday(userInfo.getBirthday());
+            user.setAddress(userInfo.getAddress());
+            user = userService.saveUser(user);
+            if (CommonUtil.isNotEmpty(user.getAvatar())) {
+                user.setAvatar(CommonProperties.getInstance().get("imgServer") + user.getAvatar());
+            }
+            result.setErroCode(2000);
+            result.setResult(user);
+        } else if (result.getErroCode() == null) {
+            result.setErroCode(1000);
+            result.setErroMsg("未知错误");
+        }
+        return result;
+    }
+    
+    @RequestMapping(value = "/updateCompanyInfo", method = RequestMethod.POST)
+    @ResponseBody
+    public AjaxResult updateCompanyInfo(@RequestBody User companyInfo, HttpServletRequest request) {
+        AjaxResult result = new AjaxResult();
+        User user = userService.getUser(request, result);
+        if (user != null) {
+            user.setCompanyName(companyInfo.getCompanyName());
+            user.setCompanyAddress(companyInfo.getCompanyAddress());
+            user = userService.saveUser(user);
+            if (CommonUtil.isNotEmpty(user.getAvatar())) {
+                user.setAvatar(CommonProperties.getInstance().get("imgServer") + user.getAvatar());
+            }
+            result.setErroCode(2000);
+            result.setResult(user);
+        } else if (result.getErroCode() == null) {
+            result.setErroCode(1000);
+            result.setErroMsg("未知错误");
+        }
+        return result;
+    }
 
     @RequestMapping(value = "/sendCode", method = RequestMethod.POST)
     @ResponseBody
     public AjaxResult sendCode(String mobileNumber, HttpServletRequest request) {
         AjaxResult result = new AjaxResult();
+        String instanceId = request.getHeader("instance_id");
+        if (CommonUtil.isEmpty(instanceId)) {
+            result.setErroCode(7000);
+            result.setErroMsg("非法访问！");
+        } else if (mobileNumberValidateCodeMap.get(mobileNumber) != null
+                && mobileNumberValidateCodeMap.get(mobileNumber).get("sendTimes") != null
+                && (int) (mobileNumberValidateCodeMap.get(mobileNumber).get("sendTimes")) >= 3
+                && (System.currentTimeMillis()
+                        - (long) (mobileNumberValidateCodeMap.get(mobileNumber).get("beginTime"))) < 5 * 60 * 1000) {
+            result.setErroCode(3000);
+            result.setErroMsg("您发送短信太过频繁，请稍后重试！");
+        } else if (mobileNumberValidateCodeMap.get(mobileNumber) != null
+                && mobileNumberValidateCodeMap.get(mobileNumber).get("time") != null && (System.currentTimeMillis()
+                        - (long) (mobileNumberValidateCodeMap.get(mobileNumber).get("time"))) < 60 * 1000) {
+            result.setErroCode(3000);
+            result.setErroMsg("短信发送间隔小于60秒！");
+        } else if (CommonUtil.isEmpty(mobileNumber)) {
+            result.setErroCode(3000);
+            result.setErroMsg("电话号码为空！");
+        } else {
+            Random random = new Random();
+            String code = "";
+            for (int i = 0; i < 4; i++) {
+                code += random.nextInt(10);
+            }
+            JSONObject re = JSONObject.parseObject(sendMobilePhoneValidateCode(mobileNumber, code));
+
+            if (re != null && re.getJSONObject("alibaba_aliqin_fc_sms_num_send_response") != null
+                    && re.getJSONObject("alibaba_aliqin_fc_sms_num_send_response").getJSONObject("result") != null
+                    && re.getJSONObject("alibaba_aliqin_fc_sms_num_send_response").getJSONObject("result")
+                            .getBooleanValue("success")) {
+                HashMap map = (HashMap) mobileNumberValidateCodeMap.get(mobileNumber);
+                if (map == null) {
+                    map = new HashMap<String, String>();
+                }
+                map.put("code", code);
+                long cTime = System.currentTimeMillis();
+                map.put("time", cTime);
+                if (map.get("beginTime") == null) {
+                    map.put("beginTime", cTime);
+                }
+                if (map.get("sendTimes") == null || (int) map.get("sendTimes") >= 3) {
+                    map.put("sendTimes", 1);
+                    map.put("beginTime", cTime);
+                } else {
+                    map.put("sendTimes", (int) map.get("sendTimes") + 1);
+                }
+                mobileNumberValidateCodeMap.put(mobileNumber, map);
+                result.setErroCode(2000);
+                result.setResult("success");
+            } else if (re != null && re.getJSONObject("error_response") != null) {
+                result.setErroCode(3000);
+                result.setErroMsg(re.getJSONObject("error_response").getString("msg"));
+            } else {
+                result.setErroCode(3000);
+                result.setErroMsg("短信发送失败！");
+            }
+        }
+        return result;
+    }
+
+    @RequestMapping(value = "/sendCodeForUpdate", method = RequestMethod.POST)
+    @ResponseBody
+    public AjaxResult sendCodeForUpdate(String mobileNumber, HttpServletRequest request) {
+        AjaxResult result = new AjaxResult();
+        if (userService.getUser(Long.parseLong(mobileNumber)) != null) {
+            result.setErroCode(3000);
+            result.setErroMsg("手机号已被注册，请重新输入！");
+            return result;
+        }
         String instanceId = request.getHeader("instance_id");
         if (CommonUtil.isEmpty(instanceId)) {
             result.setErroCode(7000);

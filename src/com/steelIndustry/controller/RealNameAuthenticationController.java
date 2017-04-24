@@ -16,6 +16,7 @@ import com.steelIndustry.model.RealNameAuthentication;
 import com.steelIndustry.model.User;
 import com.steelIndustry.service.RealNameAuthenticationService;
 import com.steelIndustry.service.UserService;
+import com.steelIndustry.util.CommonProperties;
 
 @Controller
 @RequestMapping("/realNameAuthentication")
@@ -84,7 +85,11 @@ public class RealNameAuthenticationController {
         User user = userService.getUser(request, result);
         if (user != null) {
             result.setErroCode(2000);
-            result.setResult(realNameAuthenticationService.getRealNameAuthentication(user.getId()));
+            RealNameAuthentication realNameAuthentication = realNameAuthenticationService.getRealNameAuthentication(user.getId());
+            if (realNameAuthentication != null) {
+                realNameAuthentication.setImgServer(CommonProperties.getInstance().getProperty("imgServer"));
+            }
+            result.setResult(realNameAuthentication);
         } else if (result.getErroCode() == null) {
             result.setErroCode(1000);
             result.setErroMsg("未知错误");
@@ -100,7 +105,11 @@ public class RealNameAuthenticationController {
         if (user != null) {
             if (user.getIsAdmin() == 1) {
                 result.setErroCode(2000);
-                result.setResult(realNameAuthenticationService.findOne(id));
+                RealNameAuthentication realNameAuthentication = realNameAuthenticationService.findOne(id);
+                if (realNameAuthentication != null) {
+                    realNameAuthentication.setImgServer(CommonProperties.getInstance().getProperty("imgServer"));
+                }
+                result.setResult(realNameAuthentication);
             } else {
                 result.setErroCode(5000);
                 result.setErroMsg("没有权限");

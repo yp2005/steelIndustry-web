@@ -1,6 +1,7 @@
 package com.steelIndustry.service.impl;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -15,6 +16,7 @@ import com.steelIndustry.framework.dao.EntityJpaDao;
 import com.steelIndustry.framework.service.impl.DataServiceImpl;
 import com.steelIndustry.model.RealNameAuthentication;
 import com.steelIndustry.service.RealNameAuthenticationService;
+import com.steelIndustry.util.CommonProperties;
 
 @Service("realNameAuthenticationService")
 public class RealNameAuthenticationServiceImpl extends DataServiceImpl<RealNameAuthentication, Integer>
@@ -49,6 +51,10 @@ public class RealNameAuthenticationServiceImpl extends DataServiceImpl<RealNameA
                 : conditions.getRowStartNumber()) + "," + (conditions.getRowCount() == null ? 10
                         : conditions.getRowCount());
         List<RealNameAuthentication> realNameAuthenticationList = realNameAuthenticationDao.executeNativeSQL(sql, params, RealNameAuthentication.class);
+        for (Iterator iterator = realNameAuthenticationList.iterator(); iterator.hasNext();) {
+            RealNameAuthentication realNameAuthentication = (RealNameAuthentication) iterator.next();
+            realNameAuthentication.setImgServer(CommonProperties.getInstance().getProperty("imgServer"));
+        }
         return realNameAuthenticationList;
     
     }
@@ -60,7 +66,11 @@ public class RealNameAuthenticationServiceImpl extends DataServiceImpl<RealNameA
 
     @Override
     public RealNameAuthentication saveRealNameAuthentication(RealNameAuthentication realNameAuthentication) {
-        return realNameAuthenticationDao.save(realNameAuthentication);
+        realNameAuthentication = realNameAuthenticationDao.save(realNameAuthentication);
+        if (realNameAuthentication != null) {
+            userDao.updateUserRnaState(realNameAuthentication.getUserId(), realNameAuthentication.getState());
+        }
+        return realNameAuthentication;
     }
 
 }

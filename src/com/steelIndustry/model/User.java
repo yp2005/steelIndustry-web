@@ -49,9 +49,9 @@ public class User implements BaseSimplePojo {
     @Column(name = "is_shared")
     private short isShared; // 是否分享过app
     @Column(name = "real_name_authentication")
-    private short realNameAuthentication; // 是否实名认证
+    private short realNameAuthentication; // 是否实名认证 0：为认证，1：通过认证，2：认证中，3：未通过认证
     @Column(name = "enterprise_certification")
-    private short enterpriseCertification; // 是否企业认证
+    private short enterpriseCertification; // 是否企业认证 0：为认证，1：通过认证，2：认证中，3：未通过认证
     @Column(name = "state")
     private short state; // 用户状态，管理员封号用
     @Column(name = "points")

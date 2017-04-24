@@ -16,6 +16,7 @@ import com.steelIndustry.model.EnterpriseCertification;
 import com.steelIndustry.model.User;
 import com.steelIndustry.service.EnterpriseCertificationService;
 import com.steelIndustry.service.UserService;
+import com.steelIndustry.util.CommonProperties;
 
 @Controller
 @RequestMapping("/enterpriseCertification")
@@ -84,7 +85,11 @@ public class EnterpriseCertificationController {
         User user = userService.getUser(request, result);
         if (user != null) {
             result.setErroCode(2000);
-            result.setResult(enterpriseCertificationService.getEnterpriseCertification(user.getId()));
+            EnterpriseCertification enterpriseCertification = enterpriseCertificationService.getEnterpriseCertification(user.getId());
+            if (enterpriseCertification != null) {
+                enterpriseCertification.setImgServer(CommonProperties.getInstance().getProperty("imgServer"));
+            }
+            result.setResult(enterpriseCertification);
         } else if (result.getErroCode() == null) {
             result.setErroCode(1000);
             result.setErroMsg("未知错误");
@@ -100,7 +105,11 @@ public class EnterpriseCertificationController {
         if (user != null) {
             if (user.getIsAdmin() == 1) {
                 result.setErroCode(2000);
-                result.setResult(enterpriseCertificationService.findOne(id));
+                EnterpriseCertification enterpriseCertification = enterpriseCertificationService.findOne(id);
+                if (enterpriseCertification != null) {
+                    enterpriseCertification.setImgServer(CommonProperties.getInstance().getProperty("imgServer"));
+                }
+                result.setResult(enterpriseCertification);
             } else {
                 result.setErroCode(5000);
                 result.setErroMsg("没有权限");

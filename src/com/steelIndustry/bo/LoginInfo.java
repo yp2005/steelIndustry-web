@@ -4,6 +4,15 @@ public class LoginInfo {
     private long mobileNumber;//手机号码
     private String validateCode;//验证码
     private String mobilePhoneValidateCode;//手机验证码
+    private long oldMobileNumber; //旧的手机号，修改手机号时使用
+
+    public long getOldMobileNumber() {
+        return oldMobileNumber;
+    }
+
+    public void setOldMobileNumber(long oldMobileNumber) {
+        this.oldMobileNumber = oldMobileNumber;
+    }
 
     public long getMobileNumber() {
         return mobileNumber;

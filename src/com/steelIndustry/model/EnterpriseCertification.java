@@ -9,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.steelIndustry.framework.base.BaseSimplePojo;
 
@@ -29,9 +30,19 @@ public class EnterpriseCertification implements BaseSimplePojo {
     @Column(name = "license")
     private String license; // 营业执照照片
     @Column(name = "state")
-    private short state; // 是否通过认证  0审核中，1审核通过，2审核不通过
+    private short state; // 是否通过认证 0审核中，1审核通过，2审核中，3审核不通过
     @Column(name = "create_time")
     private Timestamp createTime; // 创建时间
+    @Transient
+    private String imgServer; // 图片服务器url
+
+    public String getImgServer() {
+        return imgServer;
+    }
+
+    public void setImgServer(String imgServer) {
+        this.imgServer = imgServer;
+    }
 
     public EnterpriseCertification() {
 
