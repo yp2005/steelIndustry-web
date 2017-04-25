@@ -28,12 +28,17 @@ public class SystemNoticeServiceImpl extends DataServiceImpl<SystemNotice, Integ
         String sql = "select * from system_notice order by create_time desc limit 0,5";
         return systemNoticeDao.executeNativeSQL(sql, new HashMap(), SystemNotice.class);
     }
+    
+    public List<SystemNotice> getSystemNoticeListAll() {
+        String sql = "select * from system_notice order by create_time desc";
+        return systemNoticeDao.executeNativeSQL(sql, new HashMap(), SystemNotice.class);
+    }
 
     public SystemNotice getSystemNotice(int id) {
         return systemNoticeDao.getSystemNotice(id);
     }
 
-    public SystemNotice releaseSystemNotice(SystemNotice systemNotice) {
+    public SystemNotice saveSystemNotice(SystemNotice systemNotice) {
         return systemNoticeDao.save(systemNotice);
     }
 

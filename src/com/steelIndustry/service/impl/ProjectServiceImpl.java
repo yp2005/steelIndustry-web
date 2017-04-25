@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import com.steelIndustry.bo.Conditions;
 import com.steelIndustry.dao.ProjectDao;
 import com.steelIndustry.dao.RelationTableDao;
+import com.steelIndustry.dao.SettingsDao;
 import com.steelIndustry.dao.UserDao;
 import com.steelIndustry.framework.dao.EntityJpaDao;
 import com.steelIndustry.framework.service.impl.DataServiceImpl;
@@ -32,6 +33,9 @@ public class ProjectServiceImpl extends DataServiceImpl<Project, Integer> implem
 
     @Resource
     private RelationTableDao relationTableDao;
+    
+    @Resource
+    private SettingsDao settingsDao;
     
     @Resource
     private UserDao userDao;
@@ -133,6 +137,9 @@ public class ProjectServiceImpl extends DataServiceImpl<Project, Integer> implem
         if (project.getSort() == null) {
             project.setSort(99);
         }
+        if (project.getState() == (short)2 && settingsDao.getSettings().getIsCheckWork() == (short)0) {
+            project.setState((short)1);
+        }
         project.setUpdateTime(new Timestamp(System.currentTimeMillis()));
         project = projectDao.save(project);
         if (project == null) {
@@ -163,6 +170,9 @@ public class ProjectServiceImpl extends DataServiceImpl<Project, Integer> implem
 
     @Override
     public int updateProjectState(int id, short state) {
+        if (state == (short)2 && settingsDao.getSettings().getIsCheckWork() == (short)0) {
+            state = 1;
+        }
         return projectDao.updateProjectState(id, state);
     }
 

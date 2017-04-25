@@ -1,6 +1,7 @@
 package com.steelIndustry.service;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -14,7 +15,7 @@ public interface UserService extends DataService<User, Integer> {
     
     public User getUser(long mobileNumber);
     
-    public List<User> getUserList(Conditions conditions);
+    public Map<String, Object> getUserList(Conditions conditions);
     
     public User saveUser(User user);
     

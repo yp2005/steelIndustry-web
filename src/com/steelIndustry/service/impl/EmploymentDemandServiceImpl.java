@@ -15,6 +15,7 @@ import com.steelIndustry.bo.Conditions;
 import com.steelIndustry.dao.AreaDataDao;
 import com.steelIndustry.dao.EmploymentDemandDao;
 import com.steelIndustry.dao.RelationTableDao;
+import com.steelIndustry.dao.SettingsDao;
 import com.steelIndustry.dao.UserDao;
 import com.steelIndustry.dao.WorkerTypeDao;
 import com.steelIndustry.framework.dao.EntityJpaDao;
@@ -43,6 +44,9 @@ public class EmploymentDemandServiceImpl extends DataServiceImpl<EmploymentDeman
     
     @Resource
     private AreaDataDao areaDataDao;
+    
+    @Resource
+    private SettingsDao settingsDao;
     
     @Resource
     private UserDao userDao;
@@ -173,6 +177,9 @@ public class EmploymentDemandServiceImpl extends DataServiceImpl<EmploymentDeman
         if (employmentDemand.getSort() == null) {
             employmentDemand.setSort(99);
         }
+        if (employmentDemand.getState() == (short)2 && settingsDao.getSettings().getIsCheckWork() == (short)0) {
+            employmentDemand.setState((short)1);
+        }
         employmentDemand.setUpdateTime(new Timestamp(System.currentTimeMillis()));
         employmentDemand = employmentDemandDao.save(employmentDemand);
         if (employmentDemand == null) {
@@ -214,6 +221,9 @@ public class EmploymentDemandServiceImpl extends DataServiceImpl<EmploymentDeman
     
     @Override
     public int updateEmploymentDemandState(int id, short state) {
+        if (state == (short)2 && settingsDao.getSettings().getIsCheckWork() == (short)0) {
+            state = 1;
+        }
         return employmentDemandDao.updateEmploymentDemandState(id, state);
     }
 

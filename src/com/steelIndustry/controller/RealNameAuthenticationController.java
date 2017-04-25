@@ -36,6 +36,7 @@ public class RealNameAuthenticationController {
         User user = userService.getUser(request, result);
         if (user != null) {
             realNameAuthentication.setUserId(user.getId());
+            realNameAuthentication.setState((short)2);
             realNameAuthentication = realNameAuthenticationService.saveRealNameAuthentication(realNameAuthentication);
             if (realNameAuthentication != null) {
                 result.setErroCode(2000);
@@ -97,15 +98,15 @@ public class RealNameAuthenticationController {
         return result;
     }
 
-    @RequestMapping(value = "/getRealNameAuthenticationById", method = RequestMethod.GET)
+    @RequestMapping(value = "/getRealNameAuthenticationByUserId", method = RequestMethod.GET)
     @ResponseBody
-    public AjaxResult getRealNameAuthenticationById(int id, HttpServletRequest request) {
+    public AjaxResult getRealNameAuthenticationById(int userId, HttpServletRequest request) {
         AjaxResult result = new AjaxResult();
         User user = userService.getUser(request, result);
         if (user != null) {
             if (user.getIsAdmin() == 1) {
                 result.setErroCode(2000);
-                RealNameAuthentication realNameAuthentication = realNameAuthenticationService.findOne(id);
+                RealNameAuthentication realNameAuthentication = realNameAuthenticationService.getRealNameAuthentication(userId);
                 if (realNameAuthentication != null) {
                     realNameAuthentication.setImgServer(CommonProperties.getInstance().getProperty("imgServer"));
                 }

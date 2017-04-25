@@ -4,6 +4,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -29,7 +30,7 @@ public class SystemNoticeController {
     public AjaxResult getSystemNoticeList() {
         AjaxResult result = new AjaxResult();
         result.setErroCode(2000);
-        result.setResult(systemNoticeService.getSystemNoticeList());
+        result.setResult(systemNoticeService.getSystemNoticeListAll());
         return result;
     }
     
@@ -42,14 +43,14 @@ public class SystemNoticeController {
         return result;
     }
     
-    @RequestMapping(value = "/releaseSystemNotice", method = RequestMethod.POST)
+    @RequestMapping(value = "/saveSystemNotice", method = RequestMethod.POST)
     @ResponseBody
-    public AjaxResult releaseSystemNotice(SystemNotice systemNotice, HttpServletRequest request) {
+    public AjaxResult saveSystemNotice(@RequestBody SystemNotice systemNotice, HttpServletRequest request) {
         AjaxResult result = new AjaxResult();
         User user = userService.getUser(request, result);
         if (user != null) {
             if (user.getIsAdmin() == 1) {
-                systemNotice = systemNoticeService.releaseSystemNotice(systemNotice);
+                systemNotice = systemNoticeService.saveSystemNotice(systemNotice);
                 if (systemNotice != null) {
                     result.setErroCode(2000);
                     result.setResult("success");
@@ -69,14 +70,14 @@ public class SystemNoticeController {
         return result;
     }
     
-    @RequestMapping(value = "/delSystemNotice", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/deleteSystemNotice", method = RequestMethod.DELETE)
     @ResponseBody
-    public AjaxResult delSystemNotice(int id, HttpServletRequest request) {
+    public AjaxResult deleteSystemNotice(int id, HttpServletRequest request) {
         AjaxResult result = new AjaxResult();
         User user = userService.getUser(request, result);
         if (user != null) {
             if (user.getIsAdmin() == 1) {
-                systemNoticeService.delete(id);;
+                systemNoticeService.delete(id);
                 result.setErroCode(2000);
                 result.setResult("success");
             }

@@ -36,6 +36,7 @@ public class EnterpriseCertificationController {
         User user = userService.getUser(request, result);
         if (user != null) {
             enterpriseCertification.setUserId(user.getId());
+            enterpriseCertification.setState((short)2);
             enterpriseCertification = enterpriseCertificationService.saveEnterpriseCertification(enterpriseCertification);
             if (enterpriseCertification != null) {
                 result.setErroCode(2000);
@@ -97,15 +98,15 @@ public class EnterpriseCertificationController {
         return result;
     }
 
-    @RequestMapping(value = "/getEnterpriseCertificationById", method = RequestMethod.GET)
+    @RequestMapping(value = "/getEnterpriseCertificationByUserId", method = RequestMethod.GET)
     @ResponseBody
-    public AjaxResult getEnterpriseCertificationById(int id, HttpServletRequest request) {
+    public AjaxResult getEnterpriseCertificationById(int userId, HttpServletRequest request) {
         AjaxResult result = new AjaxResult();
         User user = userService.getUser(request, result);
         if (user != null) {
             if (user.getIsAdmin() == 1) {
                 result.setErroCode(2000);
-                EnterpriseCertification enterpriseCertification = enterpriseCertificationService.findOne(id);
+                EnterpriseCertification enterpriseCertification = enterpriseCertificationService.getEnterpriseCertification(userId);
                 if (enterpriseCertification != null) {
                     enterpriseCertification.setImgServer(CommonProperties.getInstance().getProperty("imgServer"));
                 }

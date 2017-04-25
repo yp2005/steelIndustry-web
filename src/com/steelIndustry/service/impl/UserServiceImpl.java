@@ -87,17 +87,38 @@ public class UserServiceImpl extends DataServiceImpl<User, Integer> implements U
         }
     }
 
-    public List<User> getUserList(Conditions conditions) {
+    public Map<String, Object> getUserList(Conditions conditions) {
+        Map<String, Object> resultMap = new HashMap<>();
         String sql = "select * from user t where 1=1";
         Map<String, Object> params = new HashMap<String, Object>();
-        if (!CommonUtil.isEmpty(conditions.getKeyword())) {
+        if (CommonUtil.isNotEmpty(conditions.getKeyword())) {
             sql += " and t.user_name like CONCAT('%',:keyword,'%') or t.mobile_number like CONCAT('%',:keyword,'%')";
             params.put("keyword", conditions.getKeyword());
+        }
+        if (CommonUtil.isNotEmpty(conditions.getRealNameAuthentication())) {
+            sql += " and t.real_name_authentication=:realNameAuthentication";
+            params.put("realNameAuthentication", conditions.getRealNameAuthentication());
+        }
+        if (CommonUtil.isNotEmpty(conditions.getEnterpriseCertification())) {
+            sql += " and t.enterprise_certification=:enterpriseCertification";
+            params.put("enterpriseCertification", conditions.getEnterpriseCertification());
+        }
+        if (conditions.getSortType() != null) {
+            if (conditions.getSortType() == 0) {
+                sql += " order by t.latest_login_time desc";
+            } else if (conditions.getSortType() == 1) {
+                sql += " order by t.create_time desc";
+            } else if (conditions.getSortType() == 2) {
+                sql += " order by t.update_time desc";
+            }
         }
         sql += " limit " + (conditions.getRowStartNumber() == null ? 0 : conditions.getRowStartNumber()) + ","
                 + (conditions.getRowCount() == null ? 10 : conditions.getRowCount());
         List<User> userList = userDao.executeNativeSQL(sql, params, User.class);
-        return userList;
+        resultMap.put("userList", userList);
+        resultMap.put("userNumber", userDao.count());
+        resultMap.put("activeUserNumber",  userDao.getActiveUserNumber(new Timestamp(System.currentTimeMillis() - 1000 * 60 * 60 * 24 * 7)));
+        return resultMap;
     }
 
     public int updateLatestLoginTime(HttpServletRequest request) {

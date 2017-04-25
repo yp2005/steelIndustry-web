@@ -11,5 +11,7 @@ public interface SystemNoticeService extends DataService<SystemNotice, Integer> 
     
     public SystemNotice getSystemNotice(int id);
     
-    public SystemNotice releaseSystemNotice(SystemNotice systemNotice);
+    public SystemNotice saveSystemNotice(SystemNotice systemNotice);
+    
+    public List<SystemNotice> getSystemNoticeListAll();
 }

@@ -211,7 +211,11 @@ public class UserController {
         if (user != null) {
             if (user.getIsAdmin() == 1) {
                 result.setErroCode(2000);
-                result.setResult(userService.findOne(id));
+                User user2 = userService.findOne(id);
+                if (CommonUtil.isNotEmpty(user2.getAvatar())) {
+                    user2.setAvatar(CommonProperties.getInstance().get("imgServer") + user2.getAvatar());
+                }
+                result.setResult(user2);
             } else {
                 result.setErroCode(5000);
                 result.setErroMsg("没有权限");
@@ -231,7 +235,9 @@ public class UserController {
         if (user != null) {
             if (user.getIsAdmin() == 1) {
                 result.setErroCode(2000);
-                result.setResult(userService.getUserList(conditions));
+                Map<String, Object> resultMap = userService.getUserList(conditions);
+                resultMap.put("imgServer", CommonProperties.getInstance().get("imgServer") + user.getAvatar());
+                result.setResult(resultMap);
             } else {
                 result.setErroCode(5000);
                 result.setErroMsg("没有权限");

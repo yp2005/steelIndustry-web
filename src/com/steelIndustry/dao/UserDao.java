@@ -18,6 +18,9 @@ public interface UserDao extends EntityJpaDao<User, Integer> {
     @Query("select t from User t where t.mobileNumber=:mobileNumber")
     public User getUserByMobileNumber(@Param("mobileNumber") long mobileNumber);
     
+    @Query("select count(1) from User t where t.latestLoginTime>:time")
+    public long getActiveUserNumber(@Param("time")Timestamp time);
+    
     @Modifying
     @Query("update User set latestLoginTime=:latestLoginTime where id=:id ")
     public int updateLatestLoginTime(@Param("id") int id, @Param("latestLoginTime") Timestamp latestLoginTime);

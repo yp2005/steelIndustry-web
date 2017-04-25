@@ -15,6 +15,7 @@ import com.steelIndustry.bo.Conditions;
 import com.steelIndustry.dao.AreaDataDao;
 import com.steelIndustry.dao.MasterCardDao;
 import com.steelIndustry.dao.RelationTableDao;
+import com.steelIndustry.dao.SettingsDao;
 import com.steelIndustry.dao.UserDao;
 import com.steelIndustry.dao.WorkerTypeDao;
 import com.steelIndustry.framework.dao.EntityJpaDao;
@@ -42,6 +43,9 @@ public class MasterCardServiceImpl extends DataServiceImpl<MasterCard, Integer> 
     
     @Resource
     private AreaDataDao areaDataDao;
+    
+    @Resource
+    private SettingsDao settingsDao;
     
     @Resource
     private UserDao userDao;
@@ -152,6 +156,9 @@ public class MasterCardServiceImpl extends DataServiceImpl<MasterCard, Integer> 
         if (masterCard.getSort() == null) {
             masterCard.setSort(99);
         }
+        if (masterCard.getState() == (short)2 && settingsDao.getSettings().getIsCheckWork() == (short)0) {
+            masterCard.setState((short)1);
+        }
         masterCard.setUpdateTime(new Timestamp(System.currentTimeMillis()));
         masterCard = masterCardDao.save(masterCard);
         if (masterCard == null) {
@@ -208,6 +215,9 @@ public class MasterCardServiceImpl extends DataServiceImpl<MasterCard, Integer> 
 
     @Override
     public int updateMasterCardState(int id, short state) {
+        if (state == (short)2 && settingsDao.getSettings().getIsCheckWork() == (short)0) {
+            state = 1;
+        }
         return masterCardDao.updateMasterCardState(id, state);
     }
 

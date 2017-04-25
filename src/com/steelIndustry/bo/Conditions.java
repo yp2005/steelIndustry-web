@@ -10,9 +10,11 @@ public class Conditions {
     private Integer cityId;
     private Integer countyId;
     private List<Integer> typeIds;
-    private short sortType;
-    private float lng;
-    private float lat;
+    private Short sortType;
+    private Float lng;
+    private Float lat;
+    private Short realNameAuthentication;
+    private Short enterpriseCertification;
 
     public Integer getRowStartNumber() {
         return rowStartNumber;
@@ -74,24 +76,40 @@ public class Conditions {
         return sortType;
     }
 
-    public void setSortType(short sortType) {
+    public void setSortType(Short sortType) {
         this.sortType = sortType;
     }
 
-    public float getLng() {
+    public Float getLng() {
         return lng;
     }
 
-    public void setLng(float lng) {
+    public void setLng(Float lng) {
         this.lng = lng;
     }
 
-    public float getLat() {
+    public Float getLat() {
         return lat;
     }
 
-    public void setLat(float lat) {
+    public void setLat(Float lat) {
         this.lat = lat;
+    }
+
+    public Short getRealNameAuthentication() {
+        return realNameAuthentication;
+    }
+
+    public void setRealNameAuthentication(Short realNameAuthentication) {
+        this.realNameAuthentication = realNameAuthentication;
+    }
+
+    public Short getEnterpriseCertification() {
+        return enterpriseCertification;
+    }
+
+    public void setEnterpriseCertification(Short enterpriseCertification) {
+        this.enterpriseCertification = enterpriseCertification;
     }
 
 }
