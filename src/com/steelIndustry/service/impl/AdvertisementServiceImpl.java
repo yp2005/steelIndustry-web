@@ -28,11 +28,9 @@ public class AdvertisementServiceImpl extends DataServiceImpl<Advertisement, Int
         return advertisementDao;
     }
 
-    
     public Advertisement saveAdvertisement(Advertisement advertisement) {
         return advertisementDao.save(advertisement);
     }
-
 
     @Override
     public List<Advertisement> getAdvertisementList(Conditions conditions) {
@@ -42,13 +40,11 @@ public class AdvertisementServiceImpl extends DataServiceImpl<Advertisement, Int
             sql += " and title like CONCAT('%',:title,'%')";
             params.put("title", conditions.getKeyword());
         }
-        sql += " limit " + (conditions.getRowStartNumber() == null ? 0
-                : conditions.getRowStartNumber()) + "," + (conditions.getRowCount() == null ? 10
-                        : conditions.getRowCount());
+        sql += " limit " + (conditions.getRowStartNumber() == null ? 0 : conditions.getRowStartNumber()) + ","
+                + (conditions.getRowCount() == null ? 10 : conditions.getRowCount());
         List<Advertisement> list = advertisementDao.executeNativeSQL(sql, params, Advertisement.class);
         return list;
     }
-
 
     @Override
     public int deleteAdvertisement(int id) {
@@ -61,18 +57,16 @@ public class AdvertisementServiceImpl extends DataServiceImpl<Advertisement, Int
         }
     }
 
-
     @Override
     public Advertisement getAdvertisement(int id) {
         return advertisementDao.getOne(id);
     }
 
-
     @Override
-    public String getAllianceAd() {
+    public Advertisement getAllianceAd() {
         return advertisementDao.getAllianceAd();
     }
-    
+
     public int updateAllianceAd(String content) {
         return advertisementDao.updateAllianceAd(content);
     }

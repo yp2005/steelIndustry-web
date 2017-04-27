@@ -71,8 +71,15 @@ public class ProjectServiceImpl extends DataServiceImpl<Project, Integer> implem
         if (conditions.getSortType() != null && conditions.getSortType() == 2) {
             sql += ",(6378.138 * 2 * asin(sqrt(pow(sin((p.lat * pi() / 180 - " + conditions.getLat() + " * pi() / 180) / 2),2) + cos(p.lat * pi() / 180) * cos(" + conditions.getLat() + " * pi() / 180) * pow(sin((p.lng * pi() / 180 - " + conditions.getLng() + " * pi() / 180) / 2),2))) * 1000) distance";
         }
-        sql += " FROM project p LEFT JOIN relation_table imgrt ON imgrt.relation_master_id = p.id AND imgrt.relation_master_table = 'project' AND imgrt.relation_slave_table = 'img_name',`user` u WHERE u.id = p.user_id AND u.state = 1 AND p.state = 1 AND p.due_time > CURRENT_TIMESTAMP";
+        sql += " FROM project p LEFT JOIN relation_table imgrt ON imgrt.relation_master_id = p.id AND imgrt.relation_master_table = 'project' AND imgrt.relation_slave_table = 'img_name',`user` u WHERE u.id = p.user_id AND u.state = 1 AND p.due_time > CURRENT_TIMESTAMP";
         Map<String, Object> params = new HashMap<String, Object>();
+        if (!CommonUtil.isEmpty(conditions.getState())) {
+            sql += " AND p.state=:state";
+            params.put("state", conditions.getState());
+        }
+        else {
+            sql += " AND p.state = 1";
+        }
         if (!CommonUtil.isEmpty(conditions.getKeyword())) {
             sql += " and p.project_name like CONCAT('%',:projectName,'%')";
             params.put("projectName", conditions.getKeyword());
@@ -103,9 +110,11 @@ public class ProjectServiceImpl extends DataServiceImpl<Project, Integer> implem
                 : conditions.getRowStartNumber()) + "," + (conditions.getRowCount() == null ? 10
                         : conditions.getRowCount());
         List<Map<String, Object>> list = projectDao.findAllMapBySQL(sql, params);
-        for (int i = 0; i < list.size(); i++) {
-            Map<String, Object> map = list.get(i);
-            map.put("distance", CommonUtil.getDistance(conditions.getLat(), conditions.getLng(), (float)map.get("lat"), (float)map.get("lng")));
+        if (CommonUtil.isNotEmpty(conditions.getLat()) && CommonUtil.isNotEmpty(conditions.getLng())) {
+            for (int i = 0; i < list.size(); i++) {
+                Map<String, Object> map = list.get(i);
+                map.put("distance", CommonUtil.getDistance(conditions.getLat(), conditions.getLng(), (float)map.get("lat"), (float)map.get("lng")));
+            }
         }
         return list;
     }

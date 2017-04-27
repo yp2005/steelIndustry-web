@@ -27,7 +27,7 @@ public class Advertisement implements BaseSimplePojo {
     @Column(name = "url")
     private String url; // 外部链的url
     @Column(name = "store_id")
-    private String storeId; // 内部链接店铺id
+    private String storeId; // 内部链接店铺用户ID
     @Column(name = "content")
     private String content; // 广告联盟设置
 

@@ -22,6 +22,7 @@ import com.steelIndustry.service.AdRelationService;
 import com.steelIndustry.service.AdvertisementService;
 import com.steelIndustry.service.SettingsService;
 import com.steelIndustry.service.UserService;
+import com.steelIndustry.util.CommonProperties;
 
 @Controller
 @RequestMapping("/adRelation")
@@ -48,6 +49,33 @@ public class AdRelationController {
             if (user.getIsAdmin() == 1) {
                 adRelation = adRelationService.saveAdRelation(adRelation);
                 if (adRelation != null) {
+                    result.setErroCode(2000);
+                    result.setResult("success");
+                } else {
+                    result.setErroCode(3000);
+                    result.setErroMsg("fail");
+                }
+            } else {
+                result.setErroCode(5000);
+                result.setErroMsg("没有权限");
+            }
+
+        } else if (result.getErroCode() == null) {
+            result.setErroCode(1000);
+            result.setErroMsg("未知错误");
+        }
+        return result;
+    }
+    
+    @RequestMapping(value = "/saveAppAdvertisement", method = RequestMethod.POST)
+    @ResponseBody
+    public AjaxResult saveAppAdvertisement(@RequestBody JSONObject adSetting, HttpServletRequest request) {
+        AjaxResult result = new AjaxResult();
+        User user = userService.getUser(request, result);
+        if (user != null) {
+            if (user.getIsAdmin() == 1) {
+                int isSuccess = adRelationService.saveAppAdvertisement(adSetting);
+                if (isSuccess == 1) {
                     result.setErroCode(2000);
                     result.setResult("success");
                 } else {
@@ -103,28 +131,10 @@ public class AdRelationController {
                 result.setErroCode(2000);
                 Map resultMap = new HashMap();
                 resultMap.put("homePage", adRelationService.getPositionAdList("homePage"));
-                if (!settings.getListPageAdType().equals("alliance")) {
-                    resultMap.put("listPage", adRelationService.getPositionAdList("listPage"));
-                } else {
-                    String content = advertisementService.getAllianceAd();
-                    if (content != null) {
-                        resultMap.put("listPage", JSONObject.parse(content));
-                    }
-                    else {
-                        resultMap.put("listPage", content);
-                    }
-                }
-                if (!settings.getDetailPageAdType().equals("alliance")) {
-                    resultMap.put("detailPage", adRelationService.getPositionAdList("detailPage"));
-                } else {
-                    String content = advertisementService.getAllianceAd();
-                    if (content != null) {
-                        resultMap.put("detailPage", JSONObject.parse(content));
-                    }
-                    else {
-                        resultMap.put("detailPage", content);
-                    }
-                }
+                resultMap.put("listPage", adRelationService.getPositionAdList("listPage"));
+                resultMap.put("detailPage", adRelationService.getPositionAdList("detailPage"));
+                resultMap.put("alliance", advertisementService.getAllianceAd());
+                resultMap.put("imgServer", CommonProperties.getInstance().get("imgServer"));
                 result.setResult(resultMap);
             } else {
                 result.setErroCode(5000);

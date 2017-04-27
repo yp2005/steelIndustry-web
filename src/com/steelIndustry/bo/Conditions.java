@@ -15,6 +15,15 @@ public class Conditions {
     private Float lat;
     private Short realNameAuthentication;
     private Short enterpriseCertification;
+    private Short state;
+
+    public Short getState() {
+        return state;
+    }
+
+    public void setState(Short state) {
+        this.state = state;
+    }
 
     public Integer getRowStartNumber() {
         return rowStartNumber;

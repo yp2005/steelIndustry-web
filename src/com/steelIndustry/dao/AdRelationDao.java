@@ -12,5 +12,9 @@ import com.steelIndustry.model.AdRelation;
 public interface AdRelationDao extends EntityJpaDao<AdRelation, Integer> {
     @Modifying
     @Query("delete from AdRelation where position=:position and adId=:adId")
-    public int delAdRelation(@Param("position") String position, @Param("adId") int adId);
+    public int deleteAdRelation(@Param("position") String position, @Param("adId") int adId);
+    
+    @Modifying
+    @Query("delete from AdRelation")
+    public void deleteAll();
 }

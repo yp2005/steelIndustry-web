@@ -83,8 +83,15 @@ public class EmploymentDemandServiceImpl extends DataServiceImpl<EmploymentDeman
         if (conditions.getSortType() != null && conditions.getSortType() == 2) {
             sql += ",(6378.138 * 2 * asin(sqrt(pow(sin((ed.lat * pi() / 180 - " + conditions.getLat() + " * pi() / 180) / 2),2) + cos(ed.lat * pi() / 180) * cos(" + conditions.getLat() + " * pi() / 180) * pow(sin((ed.lng * pi() / 180 - " + conditions.getLng() + " * pi() / 180) / 2),2))) * 1000) distance";
         }
-        sql += " FROM employment_demand ed LEFT JOIN relation_table typert ON typert.relation_master_id = ed.id AND typert.relation_master_table = 'employment_demand' AND typert.relation_slave_table = 'worker_type' LEFT JOIN worker_type wt ON wt.id = typert.relation_slave_id LEFT JOIN relation_table imgrt ON imgrt.relation_master_id = ed.id AND imgrt.relation_master_table = 'employment_demand' AND imgrt.relation_slave_table = 'img_name',`user` u WHERE u.id = ed.user_id AND u.state = 1 AND ed.state = 1 AND ed.due_time > CURRENT_TIMESTAMP";
+        sql += " FROM employment_demand ed LEFT JOIN relation_table typert ON typert.relation_master_id = ed.id AND typert.relation_master_table = 'employment_demand' AND typert.relation_slave_table = 'worker_type' LEFT JOIN worker_type wt ON wt.id = typert.relation_slave_id LEFT JOIN relation_table imgrt ON imgrt.relation_master_id = ed.id AND imgrt.relation_master_table = 'employment_demand' AND imgrt.relation_slave_table = 'img_name',`user` u WHERE u.id = ed.user_id AND u.state = 1 AND ed.due_time > CURRENT_TIMESTAMP";
         Map<String, Object> params = new HashMap<String, Object>();
+        if (!CommonUtil.isEmpty(conditions.getState())) {
+            sql += " AND ed.state=:state";
+            params.put("state", conditions.getState());
+        }
+        else {
+            sql += " AND ed.state = 1";
+        }
         if (!CommonUtil.isEmpty(conditions.getKeyword())) {
             sql += " and ed.demand_title like CONCAT('%',:demandTitle,'%')";
             params.put("demandTitle", conditions.getKeyword());
@@ -129,9 +136,11 @@ public class EmploymentDemandServiceImpl extends DataServiceImpl<EmploymentDeman
                 : conditions.getRowStartNumber()) + "," + (conditions.getRowCount() == null ? 10
                         : conditions.getRowCount());
         List<Map<String, Object>> list = employmentDemandDao.findAllMapBySQL(sql, params);
-        for (int i = 0; i < list.size(); i++) {
-            Map<String, Object> map = list.get(i);
-            map.put("distance", CommonUtil.getDistance(conditions.getLat(), conditions.getLng(), (float)map.get("lat"), (float)map.get("lng")));
+        if (CommonUtil.isNotEmpty(conditions.getLat()) && CommonUtil.isNotEmpty(conditions.getLng())) {
+            for (int i = 0; i < list.size(); i++) {
+                Map<String, Object> map = list.get(i);
+                map.put("distance", CommonUtil.getDistance(conditions.getLat(), conditions.getLng(), (float)map.get("lat"), (float)map.get("lng")));
+            }
         }
         return list;
     }

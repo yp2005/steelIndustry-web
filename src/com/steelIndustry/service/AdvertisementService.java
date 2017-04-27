@@ -16,7 +16,7 @@ public interface AdvertisementService extends DataService<Advertisement, Integer
     
     public Advertisement getAdvertisement(int id);
     
-    public String getAllianceAd();
+    public Advertisement getAllianceAd();
     
     public int updateAllianceAd(String content);
 }

@@ -96,8 +96,15 @@ public class MasterCardServiceImpl extends DataServiceImpl<MasterCard, Integer> 
         if (conditions.getSortType() != null && conditions.getSortType() == 2) {
             sql += ",(6378.138 * 2 * asin(sqrt(pow(sin((mc.lat * pi() / 180 - " + conditions.getLat() + " * pi() / 180) / 2),2) + cos(mc.lat * pi() / 180) * cos(" + conditions.getLat() + " * pi() / 180) * pow(sin((mc.lng * pi() / 180 - " + conditions.getLng() + " * pi() / 180) / 2),2))) * 1000) distance";
         }
-        sql += " FROM master_card mc LEFT JOIN relation_table typert ON typert.relation_master_id = mc.id AND typert.relation_master_table = 'master_card' AND typert.relation_slave_table = 'worker_type' LEFT JOIN worker_type wt ON wt.id = typert.relation_slave_id LEFT JOIN relation_table adrt ON adrt.relation_master_id = mc.id AND adrt.relation_master_table = 'master_card' AND adrt.relation_slave_table = 'area_data' LEFT JOIN area_data ad ON ad.area_id = adrt.relation_slave_id LEFT JOIN relation_table imgrt ON imgrt.relation_master_id = mc.id AND imgrt.relation_master_table = 'master_card' AND imgrt.relation_slave_table = 'img_name', `user` u WHERE u.id = mc.user_id AND u.state = 1 AND mc.state=1 AND mc.is_working=0";
+        sql += " FROM master_card mc LEFT JOIN relation_table typert ON typert.relation_master_id = mc.id AND typert.relation_master_table = 'master_card' AND typert.relation_slave_table = 'worker_type' LEFT JOIN worker_type wt ON wt.id = typert.relation_slave_id LEFT JOIN relation_table adrt ON adrt.relation_master_id = mc.id AND adrt.relation_master_table = 'master_card' AND adrt.relation_slave_table = 'area_data' LEFT JOIN area_data ad ON ad.area_id = adrt.relation_slave_id LEFT JOIN relation_table imgrt ON imgrt.relation_master_id = mc.id AND imgrt.relation_master_table = 'master_card' AND imgrt.relation_slave_table = 'img_name', `user` u WHERE u.id = mc.user_id AND u.state = 1 AND mc.is_working=0";
         Map<String, Object> params = new HashMap<String, Object>();
+        if (!CommonUtil.isEmpty(conditions.getState())) {
+            sql += " AND mc.state=:state";
+            params.put("state", conditions.getState());
+        }
+        else {
+            sql += " AND mc.state = 1";
+        }
         if (!CommonUtil.isEmpty(conditions.getKeyword())) {
             sql += " and mc.card_title like CONCAT('%',:cardTitle,'%')";
             params.put("cardTitle", conditions.getKeyword());
@@ -142,9 +149,11 @@ public class MasterCardServiceImpl extends DataServiceImpl<MasterCard, Integer> 
                 : conditions.getRowStartNumber()) + "," + (conditions.getRowCount() == null ? 10
                         : conditions.getRowCount());
         List<Map<String, Object>> list = masterCardDao.findAllMapBySQL(sql, params);
-        for (int i = 0; i < list.size(); i++) {
-            Map<String, Object> map = list.get(i);
-            map.put("distance", CommonUtil.getDistance(conditions.getLat(), conditions.getLng(), (float)map.get("lat"), (float)map.get("lng")));
+        if (CommonUtil.isNotEmpty(conditions.getLat()) && CommonUtil.isNotEmpty(conditions.getLng())) {
+            for (int i = 0; i < list.size(); i++) {
+                Map<String, Object> map = list.get(i);
+                map.put("distance", CommonUtil.getDistance(conditions.getLat(), conditions.getLng(), (float)map.get("lat"), (float)map.get("lng")));
+            }
         }
         return list;
     }

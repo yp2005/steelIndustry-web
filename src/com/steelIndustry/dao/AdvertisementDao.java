@@ -9,8 +9,8 @@ import com.steelIndustry.model.Advertisement;
 
 @Repository
 public interface AdvertisementDao extends EntityJpaDao<Advertisement, Integer> {
-    @Query("select content from Advertisement where link_type = 'alliance'")
-    public String getAllianceAd();
+    @Query("select ad from Advertisement ad where link_type = 'alliance'")
+    public Advertisement getAllianceAd();
     
     @Modifying
     @Query("update Advertisement set content=:content where link_type = 'alliance'")

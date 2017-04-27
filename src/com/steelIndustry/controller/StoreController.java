@@ -56,12 +56,14 @@ public class StoreController {
         AjaxResult result = new AjaxResult();
         result.setErroCode(2000);
         Store store = storeService.getStoreByUserId(userId);
-        User user = userService.getUser(request, result);
-        if (user != null && user.getId() != userId) {
-            store.setIsCollected(collectionService.isCollected(user.getId(), "store", store.getId()));
-        }
-        if (user == null || user.getId() != store.getUserId()) {
-            storeService.updateStoreBv(store.getId());
+        if (store != null) {
+            User user = userService.getUser(request, result);
+            if (user != null && user.getId() != userId) {
+                store.setIsCollected(collectionService.isCollected(user.getId(), "store", store.getId()));
+            }
+            if (user == null || user.getId() != store.getUserId()) {
+                storeService.updateStoreBv(store.getId());
+            }
         }
         result.setResult(store);
         return result;

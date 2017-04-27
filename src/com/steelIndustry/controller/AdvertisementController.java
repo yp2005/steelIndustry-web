@@ -1,6 +1,8 @@
 package com.steelIndustry.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -15,8 +17,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.alibaba.fastjson.JSONObject;
 import com.steelIndustry.bo.AjaxResult;
 import com.steelIndustry.bo.Conditions;
-import com.steelIndustry.dao.AdRelationDao;
-import com.steelIndustry.dao.SettingsDao;
 import com.steelIndustry.model.Advertisement;
 import com.steelIndustry.model.Settings;
 import com.steelIndustry.model.User;
@@ -24,6 +24,7 @@ import com.steelIndustry.service.AdRelationService;
 import com.steelIndustry.service.AdvertisementService;
 import com.steelIndustry.service.SettingsService;
 import com.steelIndustry.service.UserService;
+import com.steelIndustry.util.CommonProperties;
 
 @Controller
 @RequestMapping("/advertisement")
@@ -51,7 +52,7 @@ public class AdvertisementController {
                 advertisement = advertisementService.saveAdvertisement(advertisement);
                 if (advertisement != null) {
                     result.setErroCode(2000);
-                    result.setResult("success");
+                    result.setResult(advertisement.getId());
                 } else {
                     result.setErroCode(3000);
                     result.setErroMsg("fail");
@@ -149,34 +150,33 @@ public class AdvertisementController {
         AjaxResult result = new AjaxResult();
         Settings settings = settingsService.getSettings();
         result.setErroCode(2000);
+        Map resultMap = new HashMap();
         if (position.equals("homePage")) {
-            result.setResult(adRelationService.getPositionAdList(position));
+            resultMap.put("adData", adRelationService.getPositionAdList(position));
         } else {
             String adType = position.equals("listPage") ? settings.getListPageAdType() : settings.getDetailPageAdType();
             switch (adType) {
             case "alliance":
-                String content = advertisementService.getAllianceAd();
-                if (content != null) {
-                    result.setResult(JSONObject.parse(content));
-                } else {
-                    result.setResult(content);
-                }
+                String content = advertisementService.getAllianceAd().getContent();
+                resultMap.put("adData", content);
                 break;
             case "loopImg":
-                result.setResult(adRelationService.getPositionAdList(position));
+                resultMap.put("adData", adRelationService.getPositionAdList(position));
                 break;
             case "oneImg":
                 List<Advertisement> adList = adRelationService.getPositionAdList(position);
                 if (adList != null && adList.size() > 0) {
-                    result.setResult(adList.get((int) (Math.random() * adList.size())));
+                    resultMap.put("adData", adList.get((int) (Math.random() * adList.size())));
                 } else {
-                    result.setResult(null);
+                    resultMap.put("adData", null);
                 }
                 break;
             default:
                 break;
             }
         }
+        resultMap.put("imgServer", CommonProperties.getInstance().get("imgServer"));
+        result.setResult(resultMap);
         return result;
     }
 
@@ -214,7 +214,10 @@ public class AdvertisementController {
         if (user != null) {
             if (user.getIsAdmin() == 1) {
                 result.setErroCode(2000);
-                result.setResult(advertisementService.getAdvertisementList(conditions));
+                Map resultMap = new HashMap();
+                resultMap.put("adList", advertisementService.getAdvertisementList(conditions));
+                resultMap.put("imgServer", CommonProperties.getInstance().get("imgServer"));
+                result.setResult(resultMap);
             } else {
                 result.setErroCode(5000);
                 result.setErroMsg("没有权限");
