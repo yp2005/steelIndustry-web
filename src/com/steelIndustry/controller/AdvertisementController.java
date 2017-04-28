@@ -155,6 +155,7 @@ public class AdvertisementController {
             resultMap.put("adData", adRelationService.getPositionAdList(position));
         } else {
             String adType = position.equals("listPage") ? settings.getListPageAdType() : settings.getDetailPageAdType();
+            resultMap.put("adType", adType);
             switch (adType) {
             case "alliance":
                 String content = advertisementService.getAllianceAd().getContent();
