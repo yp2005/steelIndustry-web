@@ -64,6 +64,8 @@ public class MasterCardController {
         if (user == null || user.getId() != masterCard.getUserId()) {
             masterCardService.updateMasterCardBv(masterCard.getId());
         }
+        result.setErroCode(2000);
+        result.setErroMsg(null);
         result.setResult(masterCard);
         return result;
     }

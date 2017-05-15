@@ -65,6 +65,8 @@ public class StoreController {
                 storeService.updateStoreBv(store.getId());
             }
         }
+        result.setErroCode(2000);
+        result.setErroMsg(null);
         result.setResult(store);
         return result;
     }

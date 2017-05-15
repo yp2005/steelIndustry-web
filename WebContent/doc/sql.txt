@@ -3369,7 +3369,7 @@ CREATE TABLE settings (
     PRIMARY KEY (id)
 );
 
-INSERT INTO settings VALUES(1, 1, 1, 1, 1, 1, 5, 2, 'loopImg', 'loopImg', 'alliance');
+INSERT INTO settings VALUES(1, 1, 1, 1, 1, 1, 5, 2, 'loopImg', 'oneImg', 'oneImg');
 
 -- app 版本信息表
 CREATE TABLE app_version (

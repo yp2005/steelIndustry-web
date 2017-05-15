@@ -67,6 +67,8 @@ public class ProjectController {
         if (user == null || user.getId() != project.getUserId()) {
             projectService.updateProjectBv(project.getId());
         }
+        result.setErroCode(2000);
+        result.setErroMsg(null);
         result.setResult(project);
         return result;
     }

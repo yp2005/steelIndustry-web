@@ -67,6 +67,8 @@ public class EmploymentDemandController {
         if (user == null || user.getId() != employmentDemand.getUserId()) {
             employmentDemandService.updateEmploymentDemandBv(employmentDemand.getId());
         }
+        result.setErroCode(2000);
+        result.setErroMsg(null);
         result.setResult(employmentDemand);
         return result;
     }
