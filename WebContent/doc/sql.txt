@@ -3481,7 +3481,7 @@ INSERT INTO device_type VALUES (29, '其他', 2, NULL);
 -- 关联关系表
 CREATE TABLE relation_table (
     id INT (11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键id',
-    relation_master_table VARCHAR (20) NOT NULL COMMENT '主表：master_card、project、store、employment_demand',
+    relation_master_table VARCHAR (20) NOT NULL COMMENT '主表：master_card、project、store、employment_demand、main_post',
     relation_slave_table VARCHAR (20) NOT NULL COMMENT '从表：worker_type、device_type、area_data、img_xxx(图片没有表表示图片类型)',
     relation_master_id INT (11) UNSIGNED NOT NULL COMMENT '关联主表id',
     relation_slave_id INT (11) UNSIGNED COMMENT '关联从表id',
@@ -3712,3 +3712,44 @@ CREATE TABLE ad_relation (
     KEY ad_id (ad_id)
 );
 
+-- 主题帖表
+CREATE TABLE main_post (
+    id INT (11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键id',
+    plate VARCHAR (20) NOT NULL COMMENT '论坛版块', 
+    user_id INT (11) NOT NULL COMMENT '发帖人id',
+    title VARCHAR (50) NOT NULL COMMENT '标题', 
+    content VARCHAR (500) NOT NULL COMMENT '主题内容',
+    like_number INT (11) NOT NULL DEFAULT '0' COMMENT '点赞数',
+    replies_number INT (11) NOT NULL DEFAULT '0' COMMENT '回帖数',
+    browse_volume INT (11) NOT NULL DEFAULT '0' COMMENT '浏览量',
+    is_top TINYINT (1) NOT NULL DEFAULT '0' COMMENT '置顶，预留',
+    is_good TINYINT (1) NOT NULL DEFAULT '0' COMMENT '精华，预留',
+    create_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    update_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    PRIMARY KEY (id),
+    KEY plate (plate),
+    KEY user_id (user_id),
+    KEY title (title),
+    KEY update_time (update_time),
+);
+
+-- 回帖表
+CREATE TABLE replies (
+    id INT (11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键id',
+    user_id INT (11) NOT NULL COMMENT '回帖人id',
+    main_post_id INT (11) NOT NULL COMMENT '主题帖id',
+    floor INT (11) COMMENT '楼层数',
+    reply_id INT (11) COMMENT '回复的哪个回帖',
+    reply_user VARCHAR (50) COMMENT '回复的用户',
+    content VARCHAR (500) NOT NULL COMMENT '主题内容',
+    like_number INT (11) NOT NULL DEFAULT '0' COMMENT '点赞数',
+    replies_number INT (11) NOT NULL DEFAULT '0' COMMENT '回帖数',
+    is_top TINYINT (1) NOT NULL DEFAULT '0' COMMENT '置顶，预留',
+    is_good TINYINT (1) NOT NULL DEFAULT '0' COMMENT '精华，预留',
+    create_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    update_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    PRIMARY KEY (id),
+    KEY user_id (user_id),
+    KEY main_post_id (main_post_id),
+    KEY update_time (update_time),
+);
