@@ -3406,8 +3406,8 @@ CREATE TABLE `user` (
     points INT (11) NOT NULL DEFAULT '0' COMMENT '论坛积分',
     gold INT (11) NOT NULL DEFAULT '0' COMMENT '金币',
     create_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-    update_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-    latest_login_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '最后登录时间',
+    update_time TIMESTAMP NOT NULL COMMENT '更新时间',
+    latest_login_time TIMESTAMP NOT NULL COMMENT '最后登录时间',
     instance_id VARCHAR (100) NOT NULL COMMENT '用户登录设备id标识',
     access_token VARCHAR (100) NOT NULL COMMENT 'access_token',
     PRIMARY KEY (id),
@@ -3416,6 +3416,12 @@ CREATE TABLE `user` (
     KEY instance_id (instance_id),
     KEY access_token (access_token)
 );
+
+CREATE TRIGGER `update_user_trigger` BEFORE UPDATE ON `user`
+ FOR EACH ROW SET NEW.`update_time` = NOW();
+
+CREATE TRIGGER `insert_user_trigger` BEFORE INSERT ON `user`
+ FOR EACH ROW SET NEW.`latest_login_time` = NOW(),NEW.`update_time` = NOW();
 
 -- 工种表
 CREATE TABLE worker_type (
@@ -3513,7 +3519,7 @@ CREATE TABLE master_card (
     browse_volume INT (11) NOT NULL COMMENT '浏览量',
     call_times INT (11) NOT NULL COMMENT '咨询次数',
     create_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-    update_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    update_time TIMESTAMP NOT NULL COMMENT '更新时间',
     is_working TINYINT (1) NOT NULL DEFAULT '0' COMMENT '是否找到工作',
     state TINYINT (1) NOT NULL COMMENT '状态：0草稿，1通过审核，2审核中',
     sort INT (11) NOT NULL DEFAULT '99' COMMENT '排序字段',
@@ -3527,6 +3533,12 @@ CREATE TABLE master_card (
     KEY card_title (card_title),
     KEY update_time (update_time)
 );
+
+CREATE TRIGGER `update_master_card_trigger` BEFORE UPDATE ON `master_card`
+ FOR EACH ROW SET NEW.`update_time` = NOW();
+
+CREATE TRIGGER `insert_master_card_trigger` BEFORE INSERT ON `master_card`
+ FOR EACH ROW SET NEW.`update_time` = NOW();
 
 -- 用工需求表
 CREATE TABLE employment_demand (
@@ -3549,7 +3561,7 @@ CREATE TABLE employment_demand (
     browse_volume INT (11) NOT NULL COMMENT '浏览量',
     call_times INT (11) NOT NULL COMMENT '咨询次数',
     create_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-    update_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    update_time TIMESTAMP NOT NULL COMMENT '更新时间',
     due_time TIMESTAMP NOT NULL COMMENT '到期时间',
     state TINYINT (1) NOT NULL COMMENT '状态：0草稿，1通过审核，2审核中',
     sort INT (11) NOT NULL DEFAULT '99' COMMENT '排序字段',
@@ -3564,6 +3576,12 @@ CREATE TABLE employment_demand (
     KEY update_time (update_time),
     KEY due_time (due_time)
 );
+
+CREATE TRIGGER `update_employment_demand_trigger` BEFORE UPDATE ON `employment_demand`
+ FOR EACH ROW SET NEW.`update_time` = NOW();
+
+CREATE TRIGGER `insert_employment_demand_trigger` BEFORE INSERT ON `employment_demand`
+ FOR EACH ROW SET NEW.`update_time` = NOW();
 
 -- 工程信息表
 CREATE TABLE project (
@@ -3586,7 +3604,7 @@ CREATE TABLE project (
     browse_volume INT (11) NOT NULL COMMENT '浏览量',
     call_times INT (11) NOT NULL COMMENT '咨询次数',
     create_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-    update_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    update_time TIMESTAMP NOT NULL COMMENT '更新时间',
     due_time TIMESTAMP NOT NULL COMMENT '到期时间',
     state TINYINT (1) NOT NULL COMMENT '状态：0草稿，1通过审核，2审核中',
     sort INT (11) NOT NULL DEFAULT '99' COMMENT '排序字段',
@@ -3601,6 +3619,12 @@ CREATE TABLE project (
     KEY update_time (update_time),
     KEY due_time (due_time)
 );
+
+CREATE TRIGGER `update_project_trigger` BEFORE UPDATE ON `project`
+ FOR EACH ROW SET NEW.`update_time` = NOW();
+
+CREATE TRIGGER `insert_project_trigger` BEFORE INSERT ON `project`
+ FOR EACH ROW SET NEW.`update_time` = NOW();
 
 -- 店铺信息表
 CREATE TABLE store (
@@ -3624,7 +3648,7 @@ CREATE TABLE store (
     browse_volume INT (11) NOT NULL COMMENT '浏览量',
     call_times INT (11) NOT NULL COMMENT '咨询次数',
     create_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-    update_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    update_time TIMESTAMP NOT NULL COMMENT '更新时间',
     state TINYINT (1) NOT NULL COMMENT '状态：0草稿，1通过审核，2审核中',
     sort INT (11) NOT NULL DEFAULT '99' COMMENT '排序字段',
     PRIMARY KEY (id),
@@ -3637,6 +3661,12 @@ CREATE TABLE store (
     KEY store_name (store_name),
     KEY update_time (update_time)
 );
+
+CREATE TRIGGER `update_store_trigger` BEFORE UPDATE ON `store`
+ FOR EACH ROW SET NEW.`update_time` = NOW();
+
+CREATE TRIGGER `insert_store_trigger` BEFORE INSERT ON `store`
+ FOR EACH ROW SET NEW.`update_time` = NOW();
 
 -- 我的收藏表
 CREATE TABLE collection (
