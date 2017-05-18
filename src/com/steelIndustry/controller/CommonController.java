@@ -76,8 +76,14 @@ public class CommonController {
                 }
                 String originFileName = mFile.getOriginalFilename();
                 String suffix = originFileName.split("\\.")[originFileName.split("\\.").length - 1];
-                imgName = GeneratorUtil.createUUID() + "." + suffix;
-                File file = new File(uploadImgPath, imgName);
+                File file;
+                if (originFileName.indexOf("small") == 0) {
+                    file = new File(uploadImgPath, "small_" + imgName);
+                }
+                else {
+                    imgName = GeneratorUtil.createUUID() + "." + suffix;
+                    file = new File(uploadImgPath, imgName);
+                }
                 try {
                     FileUtils.copyInputStreamToFile(mFile.getInputStream(), file);
                 } catch (IOException e) {
