@@ -48,10 +48,6 @@ public class UserServiceImpl extends DataServiceImpl<User, Integer> implements U
                 result.setErroCode(7000);
                 result.setErroMsg("非法访问");
                 return null;
-            } else if (Math.abs(currentTime - Long.valueOf(reqstarttime)) > CommonProperties.getInstance().getPropertyForInt("timeDifference") * 1000) {
-                result.setErroCode(8000);
-                result.setErroMsg("本地时间异常，请校准本地时间");
-                return null;
             } else {
                 int md5Times = Integer.valueOf((reqstarttime + "").substring((reqstarttime + "").length() - 1));
                 if(md5Times == 0) {
@@ -74,6 +70,11 @@ public class UserServiceImpl extends DataServiceImpl<User, Integer> implements U
                 } else if (user.getState() == 0) {
                     result.setErroCode(3000);
                     result.setErroMsg("您的账号已被禁用！");
+                    return null;
+                }
+                else if(currentTime <= user.getLatestLoginTime().getTime()) {
+                    result.setErroCode(8000);
+                    result.setErroMsg("本地时间异常，请校准本地时间");
                     return null;
                 }
                 userDao.updateLatestLoginTime(user.getId(), new Timestamp(currentTime));

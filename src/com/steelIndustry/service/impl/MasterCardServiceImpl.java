@@ -165,7 +165,7 @@ public class MasterCardServiceImpl extends DataServiceImpl<MasterCard, Integer> 
         if (masterCard.getSort() == null) {
             masterCard.setSort(99);
         }
-        if (masterCard.getState() == (short)2 && settingsDao.getSettings().getIsCheckWork() == (short)0) {
+        if (masterCard.getState() == (short)2 && settingsDao.getSettings().getIsCheckCard() == (short)0) {
             masterCard.setState((short)1);
         }
         masterCard.setUpdateTime(new Timestamp(System.currentTimeMillis()));
@@ -224,7 +224,7 @@ public class MasterCardServiceImpl extends DataServiceImpl<MasterCard, Integer> 
 
     @Override
     public int updateMasterCardState(int id, short state) {
-        if (state == (short)2 && settingsDao.getSettings().getIsCheckWork() == (short)0) {
+        if (state == (short)2 && settingsDao.getSettings().getIsCheckCard() == (short)0) {
             state = 1;
         }
         return masterCardDao.updateMasterCardState(id, state);

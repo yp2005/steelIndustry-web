@@ -146,7 +146,7 @@ public class ProjectServiceImpl extends DataServiceImpl<Project, Integer> implem
         if (project.getSort() == null) {
             project.setSort(99);
         }
-        if (project.getState() == (short)2 && settingsDao.getSettings().getIsCheckWork() == (short)0) {
+        if (project.getState() == (short)2 && settingsDao.getSettings().getIsCheckProject() == (short)0) {
             project.setState((short)1);
         }
         project.setUpdateTime(new Timestamp(System.currentTimeMillis()));
@@ -179,7 +179,7 @@ public class ProjectServiceImpl extends DataServiceImpl<Project, Integer> implem
 
     @Override
     public int updateProjectState(int id, short state) {
-        if (state == (short)2 && settingsDao.getSettings().getIsCheckWork() == (short)0) {
+        if (state == (short)2 && settingsDao.getSettings().getIsCheckProject() == (short)0) {
             state = 1;
         }
         return projectDao.updateProjectState(id, state);

@@ -168,7 +168,7 @@ public class StoreServiceImpl extends DataServiceImpl<Store, Integer> implements
         if (store.getSort() == null) {
             store.setSort(99);
         }
-        if (store.getState() == (short)2 && settingsDao.getSettings().getIsCheckWork() == (short)0) {
+        if (store.getState() == (short)2 && settingsDao.getSettings().getIsCheckStore() == (short)0) {
             store.setState((short)1);
         }
         store.setUpdateTime(new Timestamp(System.currentTimeMillis()));
@@ -223,7 +223,7 @@ public class StoreServiceImpl extends DataServiceImpl<Store, Integer> implements
 
     @Override
     public int updateStoreState(int id, short state) {
-        if (state == (short)2 && settingsDao.getSettings().getIsCheckWork() == (short)0) {
+        if (state == (short)2 && settingsDao.getSettings().getIsCheckStore() == (short)0) {
             state = 1;
         }
         return storeDao.updateStoreState(id, state);
