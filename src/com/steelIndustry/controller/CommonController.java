@@ -2,6 +2,7 @@ package com.steelIndustry.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -21,7 +22,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.steelIndustry.bo.AjaxResult;
 import com.steelIndustry.model.AppVersion;
 import com.steelIndustry.service.AdRelationService;
-import com.steelIndustry.service.AdvertisementService;
 import com.steelIndustry.service.AppVersionService;
 import com.steelIndustry.service.EmploymentDemandService;
 import com.steelIndustry.service.StoreService;
@@ -62,6 +62,14 @@ public class CommonController {
         MultipartHttpServletRequest mRequest = (MultipartHttpServletRequest) request;
         Iterator<String> fns = mRequest.getFileNames();// 获取上传的文件列表
         String imgName = "";
+        String uploadImgPath = CommonProperties.getInstance().getProperty("uploadImgPath");
+        Calendar c = Calendar.getInstance();
+        String timePath = "" + c.get(Calendar.YEAR) + c.get(Calendar.MONTH);
+        uploadImgPath += File.separator + timePath;
+        File dir = new File(uploadImgPath);
+        if (!dir.exists()) {
+            dir.mkdirs();
+        }
         while (fns.hasNext()) {
             String s = fns.next();
             MultipartFile mFile = mRequest.getFile(s);
@@ -69,11 +77,6 @@ public class CommonController {
                 result.setErroCode(3000);
                 result.setErroMsg("上传图片为空");
             } else {
-                String uploadImgPath = CommonProperties.getInstance().getProperty("uploadImgPath");
-                File dir = new File(uploadImgPath);
-                if (!dir.exists()) {
-                    dir.mkdirs();
-                }
                 String originFileName = mFile.getOriginalFilename();
                 String suffix = originFileName.split("\\.")[originFileName.split("\\.").length - 1];
                 File file;
@@ -94,7 +97,7 @@ public class CommonController {
         result.setErroCode(2000);
         result.setErroMsg("");
         JSONObject datajson = new JSONObject();
-        datajson.put("imgName", imgName);
+        datajson.put("imgName", timePath + "/" + imgName);
         result.setResult(datajson);
         return result;
     }
