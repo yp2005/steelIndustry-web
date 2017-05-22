@@ -236,7 +236,7 @@ public class UserController {
             if (user.getIsAdmin() == 1) {
                 result.setErroCode(2000);
                 Map<String, Object> resultMap = userService.getUserList(conditions);
-                resultMap.put("imgServer", CommonProperties.getInstance().get("imgServer") + user.getAvatar());
+                resultMap.put("imgServer", CommonProperties.getInstance().get("imgServer"));
                 result.setResult(resultMap);
             } else {
                 result.setErroCode(5000);
