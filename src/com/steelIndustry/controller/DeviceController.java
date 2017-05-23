@@ -15,19 +15,19 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.alibaba.fastjson.JSONObject;
 import com.steelIndustry.bo.AjaxResult;
 import com.steelIndustry.bo.Conditions;
-import com.steelIndustry.model.Store;
+import com.steelIndustry.model.Device;
 import com.steelIndustry.model.User;
 import com.steelIndustry.service.CollectionService;
-import com.steelIndustry.service.StoreService;
+import com.steelIndustry.service.DeviceService;
 import com.steelIndustry.service.UserService;
 import com.steelIndustry.util.CommonProperties;
 
 @Controller
-@RequestMapping("/store")
-public class StoreController {
+@RequestMapping("/device")
+public class DeviceController {
 
-    @Resource(name = "storeService")
-    private StoreService storeService;
+    @Resource(name = "deviceService")
+    private DeviceService deviceService;
 
     @Resource(name = "userService")
     private UserService userService;
@@ -35,14 +35,17 @@ public class StoreController {
     @Resource(name = "collectionService")
     private CollectionService collectionService;
 
-    @RequestMapping(value = "/getStore", method = RequestMethod.GET)
+    @RequestMapping(value = "/getUserDevice", method = RequestMethod.GET)
     @ResponseBody
-    public AjaxResult getStore(HttpServletRequest request) {
+    public AjaxResult getUserDevice(HttpServletRequest request) {
         AjaxResult result = new AjaxResult();
         User user = userService.getUser(request, result);
         if (user != null) {
             result.setErroCode(2000);
-            result.setResult(storeService.getStoreByUserId(user.getId()));
+            Map resultMap = new HashMap();
+            resultMap.put("deviceList", deviceService.getUserDevice(user));
+            resultMap.put("imgServer", CommonProperties.getInstance().get("imgServer"));
+            result.setResult(resultMap);
         } else if (result.getErroCode() == null) {
             result.setErroCode(1000);
             result.setErroMsg("未知错误");
@@ -50,48 +53,48 @@ public class StoreController {
         return result;
     }
 
-    @RequestMapping(value = "/getStoreByUserId", method = RequestMethod.GET)
+    @RequestMapping(value = "/getDeviceById", method = RequestMethod.GET)
     @ResponseBody
-    public AjaxResult getStoreByUserId(int userId, HttpServletRequest request) {
+    public AjaxResult getDeviceById(int id, HttpServletRequest request) {
         AjaxResult result = new AjaxResult();
         result.setErroCode(2000);
-        Store store = storeService.getStoreByUserId(userId);
-        if (store != null) {
+        Device device = deviceService.getDeviceById(id);
+        if (device != null) {
             User user = userService.getUser(request, result);
-            if (user != null && user.getId() != userId) {
-                store.setIsCollected(collectionService.isCollected(user.getId(), "store", store.getId()));
+            if (user != null && user.getId() != device.getUserId()) {
+                device.setIsCollected(collectionService.isCollected(user.getId(), "device", device.getId()));
             }
-            if (user == null || user.getId() != store.getUserId()) {
-                storeService.updateStoreBv(store.getId());
+            if (user == null || user.getId() != device.getUserId()) {
+                deviceService.updateDeviceBv(device.getId());
             }
         }
         result.setErroCode(2000);
         result.setErroMsg(null);
-        result.setResult(store);
+        result.setResult(device);
         return result;
     }
 
-    @RequestMapping(value = "/getStoreList", method = RequestMethod.POST)
+    @RequestMapping(value = "/getDeviceList", method = RequestMethod.POST)
     @ResponseBody
-    public AjaxResult getStoreList(@RequestBody Conditions conditions) {
+    public AjaxResult getDeviceList(@RequestBody Conditions conditions) {
         AjaxResult result = new AjaxResult();
         result.setErroCode(2000);
         result.setResult(result);
         Map resultMap = new HashMap();
-        resultMap.put("storeList", storeService.getStoreList(conditions));
+        resultMap.put("deviceList", deviceService.getDeviceList(conditions));
         resultMap.put("imgServer", CommonProperties.getInstance().get("imgServer"));
         result.setResult(resultMap);
         return result;
     }
 
-    @RequestMapping(value = "/saveStore", method = RequestMethod.POST)
+    @RequestMapping(value = "/saveDevice", method = RequestMethod.POST)
     @ResponseBody
-    public AjaxResult saveStore(@RequestBody Store store, HttpServletRequest request) {
+    public AjaxResult saveDevice(@RequestBody Device device, HttpServletRequest request) {
         AjaxResult result = new AjaxResult();
         User user = userService.getUser(request, result);
         if (user != null) {
-            store.setUserId(user.getId());
-            int isSuccess = storeService.saveStore(store);
+            device.setUserId(user.getId());
+            int isSuccess = deviceService.saveDevice(device);
             if (isSuccess == 1) {
                 result.setErroCode(2000);
                 result.setResult("success");
@@ -106,11 +109,11 @@ public class StoreController {
         return result;
     }
 
-    @RequestMapping(value = "/updateStoreCt", method = RequestMethod.POST)
+    @RequestMapping(value = "/updateDeviceCt", method = RequestMethod.POST)
     @ResponseBody
-    public AjaxResult updateStoreCt(int id) {
+    public AjaxResult updateDeviceCt(int id) {
         AjaxResult result = new AjaxResult();
-        int isSuccess = storeService.updateStoreCt(id);
+        int isSuccess = deviceService.updateDeviceCt(id);
         if (isSuccess == 1) {
             result.setErroCode(2000);
             result.setResult("success");
@@ -121,16 +124,16 @@ public class StoreController {
         return result;
     }
 
-    @RequestMapping(value = "/updateStoreState", method = RequestMethod.POST)
+    @RequestMapping(value = "/updateDeviceState", method = RequestMethod.POST)
     @ResponseBody
-    public AjaxResult updateStoreState(@RequestBody JSONObject updateCd, HttpServletRequest request) {
+    public AjaxResult updateDeviceState(@RequestBody JSONObject updateCd, HttpServletRequest request) {
         AjaxResult result = new AjaxResult();
         User user = userService.getUser(request, result);
         if (user != null) {
             int id = updateCd.getIntValue("id");
             short state = updateCd.getShortValue("state");
             if (user.getIsAdmin() == 1) {
-                int isSuccess = storeService.updateStoreState(id, state);
+                int isSuccess = deviceService.updateDeviceState(id, state);
                 if (isSuccess == 1) {
                     result.setErroCode(2000);
                     result.setResult("success");
@@ -139,9 +142,9 @@ public class StoreController {
                     result.setErroMsg("fail");
                 }
             } else if (state == 0 || state == 2) {
-                Store store = storeService.findOne(id);
-                if (store.getUserId() == user.getId()) {
-                    int isSuccess = storeService.updateStoreState(id, state);
+                Device device = deviceService.findOne(id);
+                if (device.getUserId() == user.getId()) {
+                    int isSuccess = deviceService.updateDeviceState(id, state);
                     if (isSuccess == 1) {
                         result.setErroCode(2000);
                         result.setResult("success");
@@ -164,13 +167,13 @@ public class StoreController {
         return result;
     }
 
-    @RequestMapping(value = "/deleteStore", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/deleteDevice", method = RequestMethod.DELETE)
     @ResponseBody
-    public AjaxResult deleteStore(int id, HttpServletRequest request) {
+    public AjaxResult deleteDevice(int id, HttpServletRequest request) {
         AjaxResult result = new AjaxResult();
         User user = userService.getUser(request, result);
         if (user != null) {
-            storeService.delete(id);
+            deviceService.delete(id);
             result.setErroCode(2000);
             result.setResult("success");
         } else if (result.getErroCode() == null) {

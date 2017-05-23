@@ -12,7 +12,7 @@ import com.steelIndustry.model.Collection;
 import com.steelIndustry.model.EmploymentDemand;
 import com.steelIndustry.model.MasterCard;
 import com.steelIndustry.model.Project;
-import com.steelIndustry.model.Store;
+import com.steelIndustry.model.Device;
 
 @Repository
 public interface CollectionDao extends EntityJpaDao<Collection, Integer> {
@@ -25,8 +25,8 @@ public interface CollectionDao extends EntityJpaDao<Collection, Integer> {
 	@Query("select t from Project t where t.id in (select collectId from Collection where userId=:userId and type='project')")
     public List<Project> getProjects(@Param("userId") int userId);
 
-	@Query("select t from Store t where t.id in (select collectId from Collection where userId=:userId and type='store')")
-    public List<Store> getStores(@Param("userId") int userId);
+	@Query("select t from Device t where t.id in (select collectId from Collection where userId=:userId and type='device')")
+    public List<Device> getDevices(@Param("userId") int userId);
 	
 	@Modifying
 	@Query("delete from Collection where userId=:userId and type=:type and collectId=:collectId")

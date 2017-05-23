@@ -22,7 +22,7 @@ public class EnterpriseCertification implements BaseSimplePojo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;// 主键
     @Column(name = "user_id")
-    private int userId;// 发布店铺信息的用户id
+    private int userId;// 用户id
     @Column(name = "legal_person_name")
     private String legalPersonName; // 法人姓名
     @Column(name = "company_name")

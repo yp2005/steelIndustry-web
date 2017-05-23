@@ -10,7 +10,7 @@ public interface SettingsService extends DataService<Settings, Integer> {
 
     public int updateShareSwitch(short shareSwitch);
 
-    public int updateIsCheckStore(short isCheckStore);
+    public int updateIsCheckDevice(short isCheckDevice);
 
     public int updateIsCheckProject(short isCheckProject);
 

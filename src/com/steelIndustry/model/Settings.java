@@ -20,8 +20,8 @@ public class Settings implements BaseSimplePojo {
     private int id;// 主键
     @Column(name = "share_switch")
     private short shareSwitch; // 是否开启分享获取联系方式
-    @Column(name = "is_check_store")
-    private short isCheckStore; // 是否开启店铺审核
+    @Column(name = "is_check_device")
+    private short isCheckDevice; // 是否开启设备审核
     @Column(name = "is_check_project")
     private short isCheckProject; // 是否开启工程审核
     @Column(name = "is_check_card")
@@ -55,12 +55,12 @@ public class Settings implements BaseSimplePojo {
         this.shareSwitch = shareSwitch;
     }
 
-    public short getIsCheckStore() {
-        return isCheckStore;
+    public short getIsCheckDevice() {
+        return isCheckDevice;
     }
 
-    public void setIsCheckStore(short isCheckStore) {
-        this.isCheckStore = isCheckStore;
+    public void setIsCheckDevice(short isCheckDevice) {
+        this.isCheckDevice = isCheckDevice;
     }
 
     public short getIsCheckProject() {

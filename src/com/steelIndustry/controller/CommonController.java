@@ -24,7 +24,7 @@ import com.steelIndustry.model.AppVersion;
 import com.steelIndustry.service.AdRelationService;
 import com.steelIndustry.service.AppVersionService;
 import com.steelIndustry.service.EmploymentDemandService;
-import com.steelIndustry.service.StoreService;
+import com.steelIndustry.service.DeviceService;
 import com.steelIndustry.service.SystemNoticeService;
 import com.steelIndustry.util.CommonProperties;
 import com.steelIndustry.util.GeneratorUtil;
@@ -42,8 +42,8 @@ public class CommonController {
     @Resource(name = "systemNoticeService")
     private SystemNoticeService systemNoticeService;
     
-    @Resource(name = "storeService")
-    private StoreService storeService;
+    @Resource(name = "deviceService")
+    private DeviceService deviceService;
     
     @Resource(name = "employmentDemandService")
     private EmploymentDemandService employmentDemandService;
@@ -136,7 +136,7 @@ public class CommonController {
         Map resultMap = new HashMap();
         resultMap.put("advertisement", adRelationService.getPositionAdList("homePage"));
         resultMap.put("systemNotice", systemNoticeService.getSystemNoticeList());
-        resultMap.put("hotStore", storeService.getHotStore());
+        resultMap.put("hotDevice", deviceService.getHotDevice());
         resultMap.put("hotWork", employmentDemandService.getHotWork());
         resultMap.put("imgServer", CommonProperties.getInstance().get("imgServer"));
         result.setErroCode(2000);

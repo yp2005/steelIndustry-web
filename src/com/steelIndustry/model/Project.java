@@ -74,6 +74,16 @@ public class Project implements BaseSimplePojo {
     private short enterpriseCertification; // 是否实名认证
     @Transient
     private short isCollected;//是否收藏
+    @Transient
+    private String imgServer;
+
+    public String getImgServer() {
+        return imgServer;
+    }
+
+    public void setImgServer(String imgServer) {
+        this.imgServer = imgServer;
+    }
 
     public short getIsCollected() {
         return isCollected;

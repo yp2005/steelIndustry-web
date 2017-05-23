@@ -23,7 +23,7 @@ public class Collection implements BaseSimplePojo {
     @Column(name = "user_id")
     private int userId;// 用户id
     @Column(name = "type")
-    private String type;// 收藏类型：work、store、project、card
+    private String type;// 收藏类型：work、device、project、card
     @Column(name = "collect_id")
     private int collectId;// 收藏对象id
     @Column(name = "collect_time")

@@ -58,11 +58,11 @@ public class CollectionServiceImpl extends DataServiceImpl<Collection, Integer> 
         return list;
     }
 
-    public List<Map<String, Object>> getStores(int userId) {
-        String sql = "SELECT s.id id,s.user_id userId,s.store_name storeName,CONCAT_WS(' ',s.province_name,s.city_name,s.county_name) address,s.lng,s.lat,u.real_name_authentication realNameAuthentication,u.enterprise_certification enterpriseCertification,s.shop_sign_pictures shopSignPictures";
-        sql += " FROM store s LEFT JOIN relation_table typert ON typert.relation_master_id = s.id AND typert.relation_master_table = 'store' AND typert.relation_slave_table = 'device_type' LEFT JOIN device_type dt ON dt.id = typert.relation_slave_id,`user` u,collection cl WHERE u.id = s.user_id AND u.state = 1 AND s.state = 1";
+    public List<Map<String, Object>> getDevices(int userId) {
+        String sql = "SELECT s.id id,s.user_id userId,s.device_name deviceName,CONCAT_WS(' ',s.province_name,s.city_name,s.county_name) address,s.lng,s.lat,u.real_name_authentication realNameAuthentication,u.enterprise_certification enterpriseCertification,imgrt.img_name imgName";
+        sql += " FROM device s LEFT JOIN relation_table typert ON typert.relation_master_id = s.id AND typert.relation_master_table = 'device' AND typert.relation_slave_table = 'device_type' LEFT JOIN device_type dt ON dt.id = typert.relation_slave_id LEFT JOIN relation_table imgrt ON imgrt.relation_master_id = s.id AND imgrt.relation_master_table = 'device' AND imgrt.relation_slave_table = 'img_name',`user` u,collection cl WHERE u.id = s.user_id AND u.state = 1 AND s.state = 1";
         Map<String, Object> params = new HashMap<String, Object>();
-        sql += " and cl.user_id=:userId and cl.type='store' and cl.collect_id=s.id";
+        sql += " and cl.user_id=:userId and cl.type='device' and cl.collect_id=s.id";
         params.put("userId", userId);
         sql += " GROUP BY s.id order by cl.collect_time desc";
         List<Map<String, Object>> list = collectionDao.findAllMapBySQL(sql, params);

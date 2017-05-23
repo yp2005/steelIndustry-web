@@ -19,9 +19,9 @@ public class RelationTable implements BaseSimplePojo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;// 主键
     @Column(name = "relation_master_table")
-    private String relationMasterTable; // 主表：master_card、project、store、employment_demand、main_post
+    private String relationMasterTable; // 主表：master_card、project、device、employment_demand、main_post
     @Column(name = "relation_slave_table")
-    private String relationSlaveTable; // 从表：worker_type、device_type、area_data、img_xxx(图片没有表表示图片类型)
+    private String relationSlaveTable; // 从表：worker_type、device_type、area_data、img_name(图片没有表,表示图片类型)
     @Column(name = "relation_master_id")
     private int relationMasterId; // 关联主表id
     @Column(name = "relation_slave_id")

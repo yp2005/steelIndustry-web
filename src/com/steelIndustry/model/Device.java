@@ -15,17 +15,19 @@ import javax.persistence.Transient;
 import com.steelIndustry.framework.base.BaseSimplePojo;
 
 @Entity
-@Table(name = "store")
-@NamedQuery(name = "Store.findAll", query = "SELECT t FROM Store t")
-public class Store implements BaseSimplePojo {
+@Table(name = "Device")
+@NamedQuery(name = "Device.findAll", query = "SELECT t FROM Device t")
+public class Device implements BaseSimplePojo {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;// 主键
     @Column(name = "user_id")
-    private int userId;// 发布店铺信息的用户id
-    @Column(name = "store_name")
-    private String storeName;// 店铺名称
+    private int userId;// 发布设备信息的用户id
+    @Column(name = "device_name")
+    private String deviceName;// 设备名称
+    @Column(name = "company_name")
+    private String companyName;// 公司名称
     @Column(name = "contact")
     private String contact;// 联系人
     @Column(name = "mobile_number")
@@ -49,11 +51,7 @@ public class Store implements BaseSimplePojo {
     @Column(name = "lat")
     private float lat;// 商家地址-纬度
     @Column(name = "description")
-    private String description;// 店铺信息介绍
-    @Column(name = "shop_sign_pictures")
-    private String shopSignPictures;
-    @Column(name = "license_pictures")
-    private String licensePictures;
+    private String description;// 设备信息介绍
     @Column(name = "browse_volume")
     private int browseVolume;// 浏览量
     @Column(name = "call_times")
@@ -68,9 +66,7 @@ public class Store implements BaseSimplePojo {
     private Integer sort;// 排序字段
 
     @Transient
-    private List<String> environmentPictures;
-    @Transient
-    private List<String> productPictures;
+    private List<String> pictures;
     @Transient
     private List<DeviceType> deviceTypes;
     @Transient
@@ -80,7 +76,7 @@ public class Store implements BaseSimplePojo {
     @Transient
     private String imgServer; // 图片服务器url
     @Transient
-    private short isCollected;//是否收藏
+    private short isCollected;// 是否收藏
 
     public short getIsCollected() {
         return isCollected;
@@ -98,7 +94,7 @@ public class Store implements BaseSimplePojo {
         this.imgServer = imgServer;
     }
 
-    public Store() {
+    public Device() {
 
     }
 
@@ -118,12 +114,12 @@ public class Store implements BaseSimplePojo {
         this.userId = userId;
     }
 
-    public String getStoreName() {
-        return storeName;
+    public String getDeviceName() {
+        return deviceName;
     }
 
-    public void setStoreName(String storeName) {
-        this.storeName = storeName;
+    public void setDeviceName(String deviceName) {
+        this.deviceName = deviceName;
     }
 
     public String getContact() {
@@ -262,44 +258,12 @@ public class Store implements BaseSimplePojo {
         this.sort = sort;
     }
 
-    public String getShopSignPictures() {
-        return shopSignPictures;
-    }
-
-    public void setShopSignPictures(String shopSignPictures) {
-        this.shopSignPictures = shopSignPictures;
-    }
-
-    public String getLicensePictures() {
-        return licensePictures;
-    }
-
-    public void setLicensePictures(String licensePictures) {
-        this.licensePictures = licensePictures;
-    }
-
     public int getCallTimes() {
         return callTimes;
     }
 
     public void setCallTimes(int callTimes) {
         this.callTimes = callTimes;
-    }
-
-    public List<String> getEnvironmentPictures() {
-        return environmentPictures;
-    }
-
-    public void setEnvironmentPictures(List<String> environmentPictures) {
-        this.environmentPictures = environmentPictures;
-    }
-
-    public List<String> getProductPictures() {
-        return productPictures;
-    }
-
-    public void setProductPictures(List<String> productPictures) {
-        this.productPictures = productPictures;
     }
 
     public List<DeviceType> getDeviceTypes() {
@@ -325,4 +289,21 @@ public class Store implements BaseSimplePojo {
     public void setEnterpriseCertification(short enterpriseCertification) {
         this.enterpriseCertification = enterpriseCertification;
     }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
+
+    public List<String> getPictures() {
+        return pictures;
+    }
+
+    public void setPictures(List<String> pictures) {
+        this.pictures = pictures;
+    }
+
 }

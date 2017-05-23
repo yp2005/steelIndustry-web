@@ -16,7 +16,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.steelIndustry.bo.AjaxResult;
 import com.steelIndustry.bo.Conditions;
 import com.steelIndustry.model.Project;
-import com.steelIndustry.model.Store;
+import com.steelIndustry.model.Device;
 import com.steelIndustry.model.User;
 import com.steelIndustry.service.CollectionService;
 import com.steelIndustry.service.ProjectService;

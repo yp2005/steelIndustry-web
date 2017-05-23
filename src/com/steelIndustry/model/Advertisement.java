@@ -26,8 +26,8 @@ public class Advertisement implements BaseSimplePojo {
     private String img; // 图片名称
     @Column(name = "url")
     private String url; // 外部链的url
-    @Column(name = "store_id")
-    private String storeId; // 内部链接店铺用户ID
+    @Column(name = "device_id")
+    private String deviceId; // 内部链接设备用户ID
     @Column(name = "content")
     private String content; // 广告联盟设置
 
@@ -75,12 +75,12 @@ public class Advertisement implements BaseSimplePojo {
         this.url = url;
     }
 
-    public String getStoreId() {
-        return storeId;
+    public String getDeviceId() {
+        return deviceId;
     }
 
-    public void setStoreId(String storeId) {
-        this.storeId = storeId;
+    public void setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
     }
 
     public String getContent() {

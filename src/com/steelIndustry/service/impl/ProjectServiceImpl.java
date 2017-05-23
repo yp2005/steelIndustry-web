@@ -134,6 +134,7 @@ public class ProjectServiceImpl extends DataServiceImpl<Project, Integer> implem
                     pictures.add(CommonProperties.getInstance().getProperty("imgServer") + (String) map.get("imgName"));
                 }
                 project.setPictures(pictures);
+                project.setImgServer(CommonProperties.getInstance().getProperty("imgServer"));
                 project.setRealNameAuthentication(user.getRealNameAuthentication());
                 project.setEnterpriseCertification(user.getEnterpriseCertification());
             }

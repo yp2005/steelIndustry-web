@@ -32,8 +32,8 @@ public class SettingsServiceImpl extends DataServiceImpl<Settings, Integer> impl
     }
 
     @Override
-    public int updateIsCheckStore(short isCheckStore) {
-        return settingsDao.updateIsCheckStore(isCheckStore);
+    public int updateIsCheckDevice(short isCheckDevice) {
+        return settingsDao.updateIsCheckDevice(isCheckDevice);
     }
 
     @Override

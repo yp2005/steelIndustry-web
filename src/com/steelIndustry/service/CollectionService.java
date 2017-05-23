@@ -13,12 +13,12 @@ public interface CollectionService extends DataService<Collection, Integer> {
 
     public List<Map<String, Object>> getProjects(int userId);
 
-    public List<Map<String, Object>> getStores(int userId);
+    public List<Map<String, Object>> getDevices(int userId);
 
-    //取消收藏type：card、project、work、store
+    //取消收藏type：card、project、work、device
     public int deleteCollection(int userId, String type, int collectId);
     
-    //添加收藏type：card、project、work、store
+    //添加收藏type：card、project、work、device
     public Collection addCollection(int userId, String type, int collectId);
     
     public short isCollected(int userId, String type, int collectId);

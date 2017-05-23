@@ -175,6 +175,7 @@ public class EmploymentDemandServiceImpl extends DataServiceImpl<EmploymentDeman
                 employmentDemand.setWorkerTypes(workerTypeDao.getWorkerTypesByRelation(employmentDemand.getId(), "employment_demand")); 
                 employmentDemand.setRealNameAuthentication(user.getRealNameAuthentication());
                 employmentDemand.setEnterpriseCertification(user.getEnterpriseCertification());
+                employmentDemand.setImgServer(CommonProperties.getInstance().getProperty("imgServer"));
             }
         }
         return employmentDemands;

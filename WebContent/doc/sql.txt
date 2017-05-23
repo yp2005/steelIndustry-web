@@ -3357,7 +3357,7 @@ INSERT INTO `area_data` VALUES (5066, '城区', 534, 0, 3, NULL);
 CREATE TABLE settings (
     id INT (11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键id',
     share_switch TINYINT (1) NOT NULL COMMENT '是否开启分享获取联系方式',
-    is_check_store TINYINT (1) NOT NULL COMMENT '是否开启店铺审核',
+    is_check_device TINYINT (1) NOT NULL COMMENT '是否开启设备审核',
     is_check_project TINYINT (1) NOT NULL COMMENT '是否开启工程审核',
     is_check_card TINYINT (1) NOT NULL COMMENT '是否开启名片审核',
     is_check_work TINYINT (1) NOT NULL COMMENT '是否开启用工需求审核',
@@ -3487,8 +3487,8 @@ INSERT INTO device_type VALUES (29, '其他', 2, NULL);
 -- 关联关系表
 CREATE TABLE relation_table (
     id INT (11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键id',
-    relation_master_table VARCHAR (20) NOT NULL COMMENT '主表：master_card、project、store、employment_demand、main_post',
-    relation_slave_table VARCHAR (20) NOT NULL COMMENT '从表：worker_type、device_type、area_data、img_xxx(图片没有表表示图片类型)',
+    relation_master_table VARCHAR (20) NOT NULL COMMENT '主表：master_card、project、device、employment_demand、main_post',
+    relation_slave_table VARCHAR (20) NOT NULL COMMENT '从表：worker_type、device_type、area_data、img_name(图片没有表,表示图片类型)',
     relation_master_id INT (11) UNSIGNED NOT NULL COMMENT '关联主表id',
     relation_slave_id INT (11) UNSIGNED COMMENT '关联从表id',
     img_name VARCHAR (50) COMMENT '关联是图片时存放图片名称',
@@ -3626,12 +3626,13 @@ CREATE TRIGGER `update_project_trigger` BEFORE UPDATE ON `project`
 CREATE TRIGGER `insert_project_trigger` BEFORE INSERT ON `project`
  FOR EACH ROW SET NEW.`update_time` = NOW();
 
--- 店铺信息表
-CREATE TABLE store (
+-- 设备信息表
+CREATE TABLE device (
     id INT (11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键id',
-    user_id INT (11) UNSIGNED NOT NULL COMMENT '发布店铺的用户id',
-    store_name VARCHAR (50) NOT NULL COMMENT '店铺名称',
+    user_id INT (11) UNSIGNED NOT NULL COMMENT '发布设备的用户id',
+    device_name VARCHAR (50) NOT NULL COMMENT '设备名称',
     contact VARCHAR (50) NOT NULL COMMENT '联系人',
+    company_name VARCHAR (50) NOT NULL COMMENT '公司名称',
     mobile_number BIGINT (11) NOT NULL COMMENT '联系电话',
     province_id INT (11) UNSIGNED NOT NULL COMMENT '商家地址-省份id',
     province_name VARCHAR (50) NOT NULL COMMENT '商家地址-省份名称',
@@ -3642,9 +3643,7 @@ CREATE TABLE store (
     street VARCHAR (100) COMMENT '商家地址-详细地址',
     lng FLOAT (10, 6) DEFAULT '0.000000' COMMENT '商家地址-经度',
     lat FLOAT (10, 6) DEFAULT '0.000000' COMMENT '商家地址-纬度',
-    description VARCHAR (200) COMMENT '店铺介绍',
-    shop_sign_pictures VARCHAR (50) COMMENT '店招图片',
-    license_pictures VARCHAR (50) COMMENT '营业执照',
+    description VARCHAR (200) COMMENT '设备介绍',
     browse_volume INT (11) NOT NULL COMMENT '浏览量',
     call_times INT (11) NOT NULL COMMENT '咨询次数',
     create_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
@@ -3658,21 +3657,21 @@ CREATE TABLE store (
     KEY county_id (county_id),
     KEY lng (lng),
     KEY lat (lat),
-    KEY store_name (store_name),
+    KEY device_name (device_name),
     KEY update_time (update_time)
 );
 
-CREATE TRIGGER `update_store_trigger` BEFORE UPDATE ON `store`
+CREATE TRIGGER `update_device_trigger` BEFORE UPDATE ON `device`
  FOR EACH ROW SET NEW.`update_time` = NOW();
 
-CREATE TRIGGER `insert_store_trigger` BEFORE INSERT ON `store`
+CREATE TRIGGER `insert_device_trigger` BEFORE INSERT ON `device`
  FOR EACH ROW SET NEW.`update_time` = NOW();
 
 -- 我的收藏表
 CREATE TABLE collection (
     id INT (11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键id',
     user_id INT (11) UNSIGNED NOT NULL COMMENT '用户id',
-    type VARCHAR (20) NOT NULL COMMENT '收藏类型：work、store、project、card',
+    type VARCHAR (20) NOT NULL COMMENT '收藏类型：work、device、project、card',
     collect_id INT (11) UNSIGNED NOT NULL COMMENT '收藏对象id',
     collect_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '收藏时间',
     PRIMARY KEY (id),
@@ -3727,7 +3726,7 @@ CREATE TABLE advertisement (
     link_type VARCHAR (10) COMMENT '广告链接类型：innerLink、outerLink、alliance',
     img VARCHAR (50) COMMENT '图片名称',
     url VARCHAR (100) COMMENT '外部链的url',
-    store_id INT (11) COMMENT '内部链接店铺id',
+    device_id INT (11) COMMENT '内部链接设备id',
     content VARCHAR (100) COMMENT '广告联盟所需信息的json字符串',
     PRIMARY KEY (id),
     KEY link_type (link_type)
@@ -3760,7 +3759,7 @@ CREATE TABLE main_post (
     KEY plate (plate),
     KEY user_id (user_id),
     KEY title (title),
-    KEY update_time (update_time),
+    KEY update_time (update_time)
 );
 
 -- 回帖表
@@ -3781,5 +3780,5 @@ CREATE TABLE replies (
     PRIMARY KEY (id),
     KEY user_id (user_id),
     KEY main_post_id (main_post_id),
-    KEY update_time (update_time),
+    KEY update_time (update_time)
 );

@@ -18,8 +18,8 @@ public interface SettingsDao extends EntityJpaDao<Settings, Integer> {
     public int updateShareSwitch(@Param("shareSwitch") short shareSwitch);
 
     @Modifying
-    @Query("update Settings s set s.isCheckStore=:isCheckStore where id=1")
-    public int updateIsCheckStore(@Param("isCheckStore") short isCheckStore);
+    @Query("update Settings s set s.isCheckDevice=:isCheckDevice where id=1")
+    public int updateIsCheckDevice(@Param("isCheckDevice") short isCheckDevice);
 
     @Modifying
     @Query("update Settings s set s.isCheckProject=:isCheckProject where id=1")

@@ -70,6 +70,7 @@ public class MasterCardServiceImpl extends DataServiceImpl<MasterCard, Integer> 
                 pictures.add(imgServer + (String) map.get("imgName"));
             }
             masterCard.setPictures(pictures);
+            masterCard.setImgServer(imgServer);
             masterCard.setWorkerTypes(workerTypeDao.getWorkerTypesByRelation(masterCard.getId(), "master_card")); 
             masterCard.setServiceArea(areaDataDao.getAreaDatasByRelation(masterCard.getId(), "master_card"));
             for (int i = 0; i < masterCard.getServiceArea().size(); i++) {

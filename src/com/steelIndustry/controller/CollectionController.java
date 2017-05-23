@@ -82,15 +82,15 @@ public class CollectionController {
         return result;
     }
     
-    @RequestMapping(value = "/getStores", method = RequestMethod.GET)
+    @RequestMapping(value = "/getDevices", method = RequestMethod.GET)
     @ResponseBody
-    public AjaxResult getStores(HttpServletRequest request) {
+    public AjaxResult getDevices(HttpServletRequest request) {
         AjaxResult result = new AjaxResult();
         User user = userService.getUser(request, result);
         if (user != null) {
             result.setErroCode(2000);
             Map resultMap = new HashMap();
-            resultMap.put("storeList", collectionService.getStores(user.getId()));
+            resultMap.put("deviceList", collectionService.getDevices(user.getId()));
             resultMap.put("imgServer", CommonProperties.getInstance().get("imgServer"));
             result.setResult(resultMap);
         } else if (result.getErroCode() == null) {
