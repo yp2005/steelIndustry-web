@@ -72,20 +72,38 @@ public class MasterCardServiceImpl extends DataServiceImpl<MasterCard, Integer> 
             masterCard.setPictures(pictures);
             masterCard.setImgServer(imgServer);
             masterCard.setWorkerTypes(workerTypeDao.getWorkerTypesByRelation(masterCard.getId(), "master_card")); 
-            masterCard.setServiceArea(areaDataDao.getAreaDatasByRelation(masterCard.getId(), "master_card"));
-            for (int i = 0; i < masterCard.getServiceArea().size(); i++) {
-                AreaData area  = masterCard.getServiceArea().get(i);
-                AreaData pArea = area.getParentArea();
-                AreaData pAreaNew = new AreaData();
-                pAreaNew.setAreaId(pArea.getAreaId());
-                pAreaNew.setAreaNname(pArea.getAreaNname());
-                AreaData ppArea = pArea.getParentArea();
-                AreaData ppAreaNew = new AreaData();
-                ppAreaNew.setAreaId(ppArea.getAreaId());
-                ppAreaNew.setAreaNname(ppArea.getAreaNname());
-                pAreaNew.setParentAreaPageUse(ppAreaNew);
-                area.setParentAreaPageUse(pAreaNew);
+            sql = "select area_id,area_name,area_parent_id from area_data ad where ad.area_id in (select relation_slave_id from relation_table rt where rt.relation_master_id=:relationMasterId and rt.relation_master_table = 'master_card' and rt.relation_slave_table='area_data')";
+            List<Map<String, Object>> areaList = masterCardDao.findAllMapBySQL(sql, params);
+            List<AreaData> serviceArea = new ArrayList<>();
+            for (int i = 0; i < areaList.size(); i++) {
+                Map areaMap  = areaList.get(i);
+                AreaData area = new AreaData();
+                area.setAreaId((int)areaMap.get("area_id"));
+                area.setAreaNname((String)areaMap.get("area_name"));
+                if(areaMap.get("area_parent_id") != null) {
+                    sql = "select area_id,area_name,area_parent_id from area_data ad where ad.area_id=" + (int)areaMap.get("area_parent_id");
+                    params = new HashMap<String, Object>();
+                    List<Map<String, Object>> pareaList = masterCardDao.findAllMapBySQL(sql, params);
+                    if (pareaList.size() == 1) {
+                        AreaData pAreaDataNew = new AreaData();
+                        pAreaDataNew.setAreaId((int)pareaList.get(0).get("area_id"));
+                        pAreaDataNew.setAreaNname((String)pareaList.get(0).get("area_name"));
+                        if(pareaList.get(0).get("area_parent_id") != null) {
+                            sql = "select area_id,area_name,area_parent_id from area_data ad where ad.area_id=" + (int)pareaList.get(0).get("area_parent_id");
+                            List<Map<String, Object>> ppareaList = masterCardDao.findAllMapBySQL(sql, params);
+                            if (ppareaList.size() == 1) {
+                                AreaData ppAreaDataNew = new AreaData();
+                                ppAreaDataNew.setAreaId((int)ppareaList.get(0).get("area_id"));
+                                ppAreaDataNew.setAreaNname((String)ppareaList.get(0).get("area_name"));
+                                pAreaDataNew.setParentAreaPageUse(ppAreaDataNew);
+                            }
+                        }
+                        area.setParentAreaPageUse(pAreaDataNew);
+                    }
+                }
+                serviceArea.add(area);
             }
+            masterCard.setServiceArea(serviceArea);
             User user = userDao.getOne(userId);
             masterCard.setRealNameAuthentication(user.getRealNameAuthentication());
         }
