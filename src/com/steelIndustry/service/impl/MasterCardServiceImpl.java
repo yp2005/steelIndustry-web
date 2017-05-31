@@ -111,7 +111,7 @@ public class MasterCardServiceImpl extends DataServiceImpl<MasterCard, Integer> 
     }
 
     public List<Map<String, Object>> getMasterCardList(Conditions conditions) {
-        String sql = "SELECT mc.id id,mc.user_id userId,mc.card_title cardTitle,mc.lng,mc.lat,u.real_name_authentication realNameAuthentication,GROUP_CONCAT(DISTINCT wt.type_name SEPARATOR '、') workerTypes,GROUP_CONCAT(DISTINCT ad.area_name SEPARATOR '、') serviceArea,imgrt.img_name imgName";
+        String sql = "SELECT mc.id id,mc.user_id userId,mc.card_title cardTitle,mc.lng,mc.lat,CAST(u.real_name_authentication AS CHAR) realNameAuthentication,GROUP_CONCAT(DISTINCT wt.type_name SEPARATOR '、') workerTypes,GROUP_CONCAT(DISTINCT ad.area_name SEPARATOR '、') serviceArea,imgrt.img_name imgName";
         if (conditions.getSortType() != null && conditions.getSortType() == 2) {
             sql += ",(6378.138 * 2 * asin(sqrt(pow(sin((mc.lat * pi() / 180 - " + conditions.getLat() + " * pi() / 180) / 2),2) + cos(mc.lat * pi() / 180) * cos(" + conditions.getLat() + " * pi() / 180) * pow(sin((mc.lng * pi() / 180 - " + conditions.getLng() + " * pi() / 180) / 2),2))) * 1000) distance";
         }

@@ -67,7 +67,7 @@ public class ProjectServiceImpl extends DataServiceImpl<Project, Integer> implem
     }
 
     public List<Map<String, Object>> getProjectList(Conditions conditions) {
-        String sql = "SELECT p.id id,p.user_id userId,p.project_name projectName,p.create_time createTime,CONCAT_WS(' ',p.province_name,p.city_name,p.county_name) address,p.lng,p.lat,u.real_name_authentication realNameAuthentication,u.enterprise_certification enterpriseCertification,imgrt.img_name imgName";
+        String sql = "SELECT p.id id,p.user_id userId,p.project_name projectName,p.create_time createTime,CONCAT_WS(' ',p.province_name,p.city_name,p.county_name) address,p.lng,p.lat,CAST(u.real_name_authentication AS CHAR) realNameAuthentication,CAST(u.enterprise_certification AS CHAR) enterpriseCertification,imgrt.img_name imgName";
         if (conditions.getSortType() != null && conditions.getSortType() == 2) {
             sql += ",(6378.138 * 2 * asin(sqrt(pow(sin((p.lat * pi() / 180 - " + conditions.getLat() + " * pi() / 180) / 2),2) + cos(p.lat * pi() / 180) * cos(" + conditions.getLat() + " * pi() / 180) * pow(sin((p.lng * pi() / 180 - " + conditions.getLng() + " * pi() / 180) / 2),2))) * 1000) distance";
         }

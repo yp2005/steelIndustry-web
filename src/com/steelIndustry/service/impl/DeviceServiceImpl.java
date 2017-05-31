@@ -100,7 +100,7 @@ public class DeviceServiceImpl extends DataServiceImpl<Device, Integer> implemen
     }
 
     public List<Map<String, Object>> getDeviceList(Conditions conditions) {
-        String sql = "SELECT s.id id,s.user_id userId,s.device_name deviceName,CONCAT_WS(' ',s.province_name,s.city_name,s.county_name) address,s.lng,s.lat,u.real_name_authentication realNameAuthentication,u.enterprise_certification enterpriseCertification,imgrt.img_name imgName";
+        String sql = "SELECT s.id id,s.user_id userId,s.device_name deviceName,CONCAT_WS(' ',s.province_name,s.city_name,s.county_name) address,s.lng,s.lat,CAST(u.real_name_authentication AS CHAR) realNameAuthentication,CAST(u.enterprise_certification AS CHAR) enterpriseCertification,imgrt.img_name imgName";
         if (conditions.getSortType() != null && conditions.getSortType() == 2) {
             sql += ",(6378.138 * 2 * asin(sqrt(pow(sin((s.lat * pi() / 180 - " + conditions.getLat() + " * pi() / 180) / 2),2) + cos(s.lat * pi() / 180) * cos(" + conditions.getLat() + " * pi() / 180) * pow(sin((s.lng * pi() / 180 - " + conditions.getLng() + " * pi() / 180) / 2),2))) * 1000) distance";
         }
@@ -167,7 +167,7 @@ public class DeviceServiceImpl extends DataServiceImpl<Device, Integer> implemen
     }
     
     public List<Map<String, Object>> getHotDevice() {
-        String sql = "SELECT s.id id,s.user_id userId,s.device_name deviceName,CONCAT_WS(' ',s.province_name,s.city_name,s.county_name) address,s.lng,s.lat,u.real_name_authentication realNameAuthentication,u.enterprise_certification enterpriseCertification,imgrt.img_name imgName";
+        String sql = "SELECT s.id id,s.user_id userId,s.device_name deviceName,CONCAT_WS(' ',s.province_name,s.city_name,s.county_name) address,s.lng,s.lat,CAST(u.real_name_authentication AS CHAR) realNameAuthentication,CAST(u.enterprise_certification AS CHAR) enterpriseCertification,imgrt.img_name imgName";
         sql += " FROM device s LEFT JOIN relation_table typert ON typert.relation_master_id = s.id AND typert.relation_master_table = 'device' AND typert.relation_slave_table = 'device_type' LEFT JOIN device_type dt ON dt.id = typert.relation_slave_id LEFT JOIN relation_table imgrt ON imgrt.relation_master_id = s.id AND imgrt.relation_master_table = 'device' AND imgrt.relation_slave_table = 'img_name',`user` u WHERE u.id = s.user_id AND u.state = 1 AND s.state = 1";
         Map<String, Object> params = new HashMap<String, Object>();
         sql += " GROUP BY s.id";
