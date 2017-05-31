@@ -3689,7 +3689,7 @@ CREATE TABLE real_name_authentication (
     card_picture_obverse VARCHAR (50) NOT NULL COMMENT '身份证正面照片',
     card_picture_reverse VARCHAR (50) NOT NULL COMMENT '身份证反面照片',
     hand_card_picture VARCHAR (50) NOT NULL COMMENT '手持身份证照片',
-    full_face_picture VARCHAR (50) NOT NULL COMMENT '正面照',
+    full_face_picture VARCHAR (50) DEFAULT NULL COMMENT '正面照',
     state TINYINT (1) NOT NULL COMMENT '是否通过认证',
     create_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间',
     PRIMARY KEY (id),
