@@ -171,7 +171,7 @@ public class DeviceServiceImpl extends DataServiceImpl<Device, Integer> implemen
         sql += " FROM device s LEFT JOIN relation_table typert ON typert.relation_master_id = s.id AND typert.relation_master_table = 'device' AND typert.relation_slave_table = 'device_type' LEFT JOIN device_type dt ON dt.id = typert.relation_slave_id LEFT JOIN relation_table imgrt ON imgrt.relation_master_id = s.id AND imgrt.relation_master_table = 'device' AND imgrt.relation_slave_table = 'img_name',`user` u WHERE u.id = s.user_id AND u.state = 1 AND s.state = 1";
         Map<String, Object> params = new HashMap<String, Object>();
         sql += " GROUP BY s.id";
-        sql += " order by s.browse_volume desc";
+        sql += " order by s.create_time desc";
         sql += " limit 0,5";
         List<Map<String, Object>> list = deviceDao.findAllMapBySQL(sql, params);
         return list;

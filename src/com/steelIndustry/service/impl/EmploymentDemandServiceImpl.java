@@ -150,7 +150,7 @@ public class EmploymentDemandServiceImpl extends DataServiceImpl<EmploymentDeman
         sql += " FROM employment_demand ed LEFT JOIN relation_table typert ON typert.relation_master_id = ed.id AND typert.relation_master_table = 'employment_demand' AND typert.relation_slave_table = 'worker_type' LEFT JOIN worker_type wt ON wt.id = typert.relation_slave_id LEFT JOIN relation_table imgrt ON imgrt.relation_master_id = ed.id AND imgrt.relation_master_table = 'employment_demand' AND imgrt.relation_slave_table = 'img_name',`user` u WHERE u.id = ed.user_id AND u.state = 1 AND ed.state = 1 AND ed.due_time > CURRENT_TIMESTAMP";
         Map<String, Object> params = new HashMap<String, Object>();
         sql += " GROUP BY ed.id";
-        sql += " order by ed.browse_volume desc";
+        sql += " order by ed.create_time desc";
         sql += " limit 0,5";
         List<Map<String, Object>> list = employmentDemandDao.findAllMapBySQL(sql, params);
         return list;
